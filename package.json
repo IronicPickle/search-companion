@@ -1,0 +1,25 @@
+{
+  "name": "search-compaion",
+  "version": "1.0.0",
+  "description": "Search Companion",
+  "main": "background.js",
+  "dependencies": {
+    "material-components-web": "^8.0.0",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.1.2",
+    "webpack": "^5.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IronicPickle/search-companion.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IronicPickle/search-companion/issues"
+  },
+  "homepage": "https://github.com/IronicPickle/search-companion#readme"
+}

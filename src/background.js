@@ -7,9 +7,13 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.addRules([{
       conditions: [
         new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: { hostEquals: "https://www.google.com/" },
+          pageUrl: {}
         })
       ], actions: [new chrome.declarativeContent.ShowPageAction()]
     }]);
   });
+});
+
+chrome.tabs.onActivated.addListener(() => {
+  print("Tab Changed")
 });

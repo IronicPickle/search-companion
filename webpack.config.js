@@ -1,7 +1,11 @@
-import path from "path";
+const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: {
+    background: path.join(__dirname, "src/scripts/background.ts"),
+    popupPage: path.join(__dirname, "src/react/popup.tsx")
+  },
   module: {
     rules: [
       {
@@ -15,7 +19,14 @@ module.exports = {
     extensions: [ ".tsx", ".ts", ".js" ],
   },
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js",
+    path: path.resolve(__dirname, "build"),
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "public" }
+      ]
+    })
+  ]
 }

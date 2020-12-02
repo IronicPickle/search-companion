@@ -15,5 +15,5 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 chrome.tabs.onActivated.addListener(() => {
-  print("Tab Changed")
+  console.log("Tab Changed")
 });

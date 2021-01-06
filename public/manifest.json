@@ -2,7 +2,7 @@
   "name": "Search Companion",
   "version": "1.0.0",
   "description": "Search Companion",
-  "permissions": [ "tabs", "storage", "activeTab", "declarativeContent" ],
+  "permissions": [ "tabs", "storage", "activeTab", "declarativeContent", "webNavigation" ],
   "background": {
     "scripts": [ "background.js" ],
     "persistent": false

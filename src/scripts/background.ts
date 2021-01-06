@@ -14,10 +14,16 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
+chrome.webNavigation.onCompleted.addListener((details) => {
+  if(details.url === "https://indexcms.co.uk/2.7/case-management") {
+    console.log("CMS")
+  }
+});
+
 chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
   chrome.tabs.get(activeInfo.tabId, async (currentTab?: chrome.tabs.Tab) => {
-    if(currentTab != null) console.log(currentTab.url)
+    //if(currentTab != null) console.log(currentTab.url)
     const storage = await chromep.storage.sync.get();
-    console.log(storage.test);
+    //console.log(storage.test);
   })
 });

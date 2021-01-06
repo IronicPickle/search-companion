@@ -1,7 +1,7 @@
+import chromep from "chrome-promise"
+
 chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({test: "test"}, function() {
-    console.log("test");
-  });
+  chrome.storage.sync.set({test: "joe"});
 
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     chrome.declarativeContent.onPageChanged.addRules([{
@@ -14,6 +14,10 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
-chrome.tabs.onActivated.addListener(() => {
-  console.log("Tab Changed")
+chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
+  chrome.tabs.get(activeInfo.tabId, async (currentTab?: chrome.tabs.Tab) => {
+    if(currentTab != null) console.log(currentTab.url)
+    const storage = await chromep.storage.sync.get();
+    console.log(storage.test);
+  })
 });

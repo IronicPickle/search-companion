@@ -4,6 +4,7 @@
   "description": "Search Companion",
   "main": "background.js",
   "dependencies": {
+    "chrome-promise": "^3.0.5",
     "copy-webpack-plugin": "^6.3.2",
     "cross-env": "^7.0.3",
     "material-components-web": "^8.0.0",

@@ -32,10 +32,6 @@ export interface Order {
   postCode: string;
 }
 
-const root = document.createElement("div");
-root.setAttribute("id", "searchCompanionRoot")
-document.getElementsByTagName("body").item(0)?.prepend(root)
-
 setInterval(() => {
   const order: Order = <Order> {};
   const url = location.href
@@ -47,11 +43,7 @@ setInterval(() => {
         const fieldElement = <HTMLInputElement> document.getElementById(orderField.documentId);
         order[orderField.actualId] = fieldElement.value;
       }
-      const root = document.getElementById("searchCompanionRoot");
-      if(root != null) {
-
-      }
-      chrome.storage.sync.set({ order });
+      chrome.storage.local.set({ order });
     }
   }
 }, 1000);

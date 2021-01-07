@@ -19,33 +19,34 @@ class Popup extends React.Component<PropsI, StateI> {
     this.state = {}
   }
 
-  async componentDidMount() {
-    const storage = await chromep.storage.local.get();
-    if(storage.order != null) {
-      this.setState({ order: storage.order })
-    }
+  componentDidMount() {
+    setInterval(async () => {
+      const storage = await chromep.storage.local.get();
+      if(storage.order != null) {
+        this.setState({ order: storage.order })
+      }
+    }, 500);
   }
 
   render() {
 
     const { order } = this.state;
-    console.log(order)
 
     return (
       <>
         <Paper style={{ padding: 10, minWidth: 200 }}>
-          <Typography align="left" variant="body2" component="p" noWrap>
+          <Typography align="left" variant="body2" component="h6" noWrap>
             {
               (order != null) ?
                 <>
-                  <Typography align="center" variant="h6" component="h6" noWrap>
+                  <Typography align="center" variant="h6" component="p" noWrap>
                     Order Info
                   </Typography>
                   {
                     orderFields.map((orderField) => {
                       const orderInput = order[orderField.actualId];
                       if(orderInput != null && orderInput !== "") {
-                        return <><b>{orderField.name}</b> {orderInput}<br/></>
+                        return <span key={orderField.actualId}><b>{orderField.name}</b> {orderInput}<br/></span>
                       }
                     })
                   }
@@ -59,4 +60,8 @@ class Popup extends React.Component<PropsI, StateI> {
   }
 }
 
-ReactDOM.render(<Popup/>, document.getElementById("root"))
+const embeddedRoot = document.createElement("div");
+embeddedRoot.setAttribute("id", "embeddedRoot")
+embeddedRoot.setAttribute("style", "position: fixed; right: 10px; z-index: 10000;")
+document.getElementsByTagName("body").item(0)?.prepend(embeddedRoot)
+ReactDOM.render(<Popup/>, document.getElementById("embeddedRoot"))

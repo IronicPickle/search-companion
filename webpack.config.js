@@ -6,7 +6,8 @@ module.exports = {
   entry: {
     background: path.join(__dirname, "src/scripts/background.ts"),
     urlChecker: path.join(__dirname, "src/scripts/urlChecker.ts"),
-    popupPage: path.join(__dirname, "src/react/popup.tsx")
+    popupPage: path.join(__dirname, "src/react/popup.tsx"),
+    embeddedPage: path.join(__dirname, "src/react/embedded.tsx")
   },
   module: {
     rules: [

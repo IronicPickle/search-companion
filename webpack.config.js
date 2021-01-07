@@ -5,6 +5,7 @@ module.exports = {
   devtool: false,
   entry: {
     background: path.join(__dirname, "src/scripts/background.ts"),
+    urlChecker: path.join(__dirname, "src/scripts/urlChecker.ts"),
     popupPage: path.join(__dirname, "src/react/popup.tsx")
   },
   module: {

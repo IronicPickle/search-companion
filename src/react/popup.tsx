@@ -1,39 +1,59 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
+import { Order, orderFields } from "../scripts/urlChecker";
+import { Paper, Typography } from "@material-ui/core";
 
 interface PropsI {
 
 }
 
 interface StateI {
-  test: string;
+  order?: Order;
 }
 
 class Popup extends React.Component<PropsI, StateI> {
   constructor(props: PropsI) {
     super(props)
 
-    this.state = {
-      test: ""
-    }
+    this.state = {}
   }
 
   async componentDidMount() {
     const storage = await chromep.storage.sync.get();
-    this.setState({ test: storage.test })
+    if(storage.order != null) {
+      this.setState({ order: storage.order })
+    }
   }
 
   render() {
 
-    setTimeout(() => {
-      chromep.storage.sync.set({test: "jess"});
-      this.setState({ test: "jess" })
-    }, 500);
+    const { order } = this.state;
+    console.log(order)
 
     return (
       <>
-        <div>{this.state.test}</div>
+        <Paper style={{ padding: 10, minWidth: 200 }}>
+          <Typography align="left" variant="body2" component="p" noWrap>
+            {
+              (order != null) ?
+                <>
+                  <Typography align="center" variant="h6" component="h6" noWrap>
+                    Order Info
+                  </Typography>
+                  {
+                    orderFields.map((orderField) => {
+                      const orderInput = order[orderField.actualId];
+                      if(orderInput != null && orderInput !== "") {
+                        return <><b>{orderField.name}</b> {orderInput}<br/></>
+                      }
+                    })
+                  }
+                </>
+              : <>No order info available</>
+            }
+          </Typography>
+        </Paper>
       </>
     )
   }

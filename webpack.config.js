@@ -4,10 +4,13 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   devtool: false,
   entry: {
-    background: path.join(__dirname, "src/scripts/background.ts"),
-    urlChecker: path.join(__dirname, "src/scripts/urlChecker.ts"),
-    popupPage: path.join(__dirname, "src/react/popup.tsx"),
-    embeddedPage: path.join(__dirname, "src/react/embedded.tsx")
+    background_main: path.join(__dirname, "src/scripts/background/main.ts"),
+
+    content_main: path.join(__dirname, "src/scripts/content/main.ts"),
+    content_cmsHandler: path.join(__dirname, "src/scripts/content/cmsHandler.ts"),
+
+    react_popup: path.join(__dirname, "src/react/popup.tsx"),
+    react_embed: path.join(__dirname, "src/react/embed.tsx")
   },
   module: {
     rules: [

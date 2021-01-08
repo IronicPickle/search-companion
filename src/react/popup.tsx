@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { Order, orderFields } from "../scripts/urlChecker";
+import { Order, orderFields } from "../scripts/content/cmsHandler";
 import { Paper, Typography } from "@material-ui/core";
 
 interface PropsI {
@@ -29,7 +29,6 @@ class Popup extends React.Component<PropsI, StateI> {
   render() {
 
     const { order } = this.state;
-    console.log(order)
 
     return (
       <>

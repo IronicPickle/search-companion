@@ -1,5 +1,6 @@
-import { RootRef } from "@material-ui/core";
 import chromep from "chrome-promise";
+import _ from "lodash";
+import { queryElement } from "../../lib/utils";
 
 export const orderFields = [
   { documentId: "CompanyName", actualId: "companyName", name: "Company Name" },
@@ -30,20 +31,43 @@ export interface Order {
   town: string;
   county: string;
   postCode: string;
+  products: { name: string; price: string }[];
 }
 
-setInterval(() => {
+export default function checkSignature() {
+  if(queryElement(["id:view2"]) != null) {
+    updateOrderInfo();
+  }
+}
+
+async function updateOrderInfo() {
   const order: Order = <Order> {};
-  const url = location.href
-  if(url.includes("https://indexcms.co.uk/2.7/case-management")) {
-    if(document.getElementById("view2") != null) {
-      console.log("Detected Order Page")
-      for(const i in orderFields) {
-        const orderField = orderFields[i]
-        const fieldElement = <HTMLInputElement> document.getElementById(orderField.documentId);
-        order[orderField.actualId] = fieldElement.value;
-      }
-      chrome.storage.local.set({ order });
+  const storage = await chromep.storage.local.get();
+
+  for(const i in orderFields) {
+    const orderField = orderFields[i]
+    const fieldElement = <HTMLInputElement> document.getElementById(orderField.documentId);
+    order[orderField.actualId] = fieldElement.value;
+  }
+
+  order.products = [];
+  for(let i = 0; true; i++) {
+    const trElement = queryElement(["id:products", "id:product_table_", "table", "tbody", `tr#${i}`]);
+    if(trElement == null) {
+      break;
+    } else {
+      const product: { name: string; price: string } = { name: "", price: "" };
+      const nameElement = queryElement(["td#0"], trElement);
+      if(nameElement != null) product.name = nameElement.innerHTML;
+      const priceElement = <HTMLInputElement | null> queryElement(["td#8", "input"], trElement);
+      if(priceElement != null) product.price = priceElement.value;
+      order.products.push(product);
     }
   }
-}, 1000);
+
+  if(!_.isEqual(order, storage.order)) {
+    console.log("Order has changed, updating...");
+    chrome.storage.local.set({ order });
+  }
+}
+

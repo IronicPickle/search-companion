@@ -4,17 +4,24 @@
   "description": "Search Companion",
   "permissions": [ "storage", "webNavigation", "<all_urls>" ],
   "background": {
-    "scripts": [ "background_main.js" ],
+    "scripts": [ "js/background/main.js" ],
     "persistent": false
   },
   "content_scripts": [{
-    "matches": ["<all_urls>"],
-    "js": ["content_main.js", "content_cmsHandler.js",
-      "react_embed.js"]
+    "matches": [ "<all_urls>" ],
+    "js": [ "js/content/main.js", "js/react/embed.js" ]
+  }, {
+    "matches": [ "https://indexcms.co.uk/2.7/case-management*" ],
+    "js": [ "js/content/interfaces/cms.js" ]
+  }, {
+    "matches": [ "https://www.terrafirmaidc.co.uk/order/order_report*",
+      "https://www.terrafirmaidc.co.uk/order"
+    ],
+    "js": [ "js/content/interfaces/terra.js" ]
   }],
-  "options_page": "options.html",
+  "options_page": "html/options.html",
   "page_action": {
-    "default_popup": "popup.html",
+    "default_popup": "html/popup.html",
     "default_icon": {
       "16": "images/get_started16.png",
       "32": "images/get_started32.png",

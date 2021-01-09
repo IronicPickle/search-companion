@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { Order, orderFields } from "../scripts/content/cmsHandler";
+import { orderFields } from "../lib/vars";
+import { Order } from "../lib/interfaces";
 import { Paper, Typography } from "@material-ui/core";
 
 interface PropsI {

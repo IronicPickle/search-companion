@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { Order, orderFields } from "../scripts/content/cmsHandler";
+import { orderFields } from "../lib/vars";
+import { Order } from "../lib/interfaces";
 import { Paper, Typography } from "@material-ui/core";
 
 interface PropsI {
@@ -51,16 +52,21 @@ class Embed extends React.Component<PropsI, StateI> {
               (order != null) ?
                 <>
                   <Typography align="center" variant="h6" component="p" noWrap>
-                    Order Info
+                    Order: {order.reference}
                   </Typography>
+                  <b>Type: </b>{order.type}<br/>
+                  <b>Council: </b>{order.council}<br/>
+                  <b>Water: </b>{order.water}<br/><br/>
                   {
                     orderFields.map((orderField) => {
-                      const orderInput = order[orderField.actualId];
+                      const orderInput = order.property[orderField.actualId];
                       if(orderInput != null && orderInput !== "") {
                         return <span key={orderField.actualId}><b>{orderField.name}</b> {orderInput}<br/></span>
                       }
                     })
                   }
+                  <br/><b>Products: </b>{order.products.length}<br/>
+                  <b>Total Cost: </b>{order.totalCost}
                 </>
               : <>No order info available</>
             }
@@ -73,6 +79,11 @@ class Embed extends React.Component<PropsI, StateI> {
 
 const embeddedRoot = document.createElement("div");
 embeddedRoot.setAttribute("id", "embeddedRoot")
-embeddedRoot.setAttribute("style", "position: fixed; right: 10px; z-index: 10000;")
+embeddedRoot.setAttribute("style", 
+  `position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 2147483647;`
+)
 document.getElementsByTagName("body").item(0)?.prepend(embeddedRoot)
 ReactDOM.render(<Embed/>, document.getElementById("embeddedRoot"))

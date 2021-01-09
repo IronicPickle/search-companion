@@ -4,13 +4,14 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   devtool: false,
   entry: {
-    background_main: path.join(__dirname, "src/scripts/background/main.ts"),
+    "js/background/main": path.join(__dirname, "src/background/main.ts"),
 
-    content_main: path.join(__dirname, "src/scripts/content/main.ts"),
-    content_cmsHandler: path.join(__dirname, "src/scripts/content/cmsHandler.ts"),
+    "js/content/main": path.join(__dirname, "src/content/main.ts"),
+    "js/content/interfaces/cms": path.join(__dirname, "src/content/interfaces/cms.ts"),
+    "js/content/interfaces/terra": path.join(__dirname, "src/content/interfaces/terra.ts"),
 
-    react_popup: path.join(__dirname, "src/react/popup.tsx"),
-    react_embed: path.join(__dirname, "src/react/embed.tsx")
+    "js/react/popup": path.join(__dirname, "src/react/popup.tsx"),
+    "js/react/embed": path.join(__dirname, "src/react/embed.tsx")
   },
   module: {
     rules: [
@@ -26,12 +27,14 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname,  "build/")
   },
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "public" }
+        { from: "src/images", to: "images/" },
+        { from: "src/html", to: "html/" },
+        { from: "src/manifest.json", to: "./"}
       ]
     })
   ]

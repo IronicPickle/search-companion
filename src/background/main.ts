@@ -50,8 +50,11 @@ const interfaces = [
     scripts: [ "js/content/interfaces/cms.js" ]
   }, {
     urls: [ "https://www.terrafirmaidc.co.uk/order/order_report",
-      "https://www.terrafirmaidc.co.uk/order"
-    ],
+      "https://www.terrafirmaidc.co.uk/order" ],
     scripts: [ "js/content/interfaces/terra.js" ]
+  }, {
+    urls: [ "https://planning.stockport.gov.uk/PlanningData-live/applicationDetails.do",
+      "https://planning.stockport.gov.uk/PlanningData-live/buildingControlDetails.do" ],
+    scripts: [ "js/content/interfaces/stockport.js" ]
   }
 ]

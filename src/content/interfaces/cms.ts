@@ -28,6 +28,7 @@ async function updateOrderInfo() {
     const notification = createNotification({ severity: "info", text: "Order Info Extracted" }, 0);
     console.log("Order Info Extracted");
     chrome.storage.local.set({ order, notification });
+    chrome.storage.local.remove([ "planning", "building" ]);
   }
 }
 

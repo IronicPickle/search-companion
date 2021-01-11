@@ -3,6 +3,8 @@ export interface Storage {
   order?: Order;
   settings?: Settings;
   notification?: Notification;
+  planning: Planning;
+  building: Building;
 }
 
 export interface Property {
@@ -48,6 +50,29 @@ export interface Order {
   water: string;
   totalCost: string;
 }
+
+export interface Planning {
+  [key: string]: any;
+  reference?: string;
+  descripton?: string;
+  address?: string;
+  decision?: string;
+  decisionIssuedDate?: number;
+  decisionMadeDate?: number;
+  applicationReceivedDate?: number;
+}
+
+export interface Building {
+  [key: string]: any;
+  reference?: string;
+  descripton?: string;
+  address?: string;
+  status?: string;
+  applicationReceivedDate?: number;
+}
+
+
+
 
 export interface NotificationSettings {
   [key: string]: any;

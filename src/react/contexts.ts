@@ -1,9 +1,11 @@
 import { Context, createContext } from "react";
-import { Notification, Order, Settings } from "../lib/interfaces";
+import { Building, Notification, Order, Planning, Settings } from "../lib/interfaces";
 
 export interface GlobalContext {
   order?: Order;
   settings: Settings;
+  planning?: Planning;
+  building?: Building;
   notification?: Notification;
   sendNotification?: (settings: Notification) => any;
 }

@@ -9,7 +9,7 @@ module.exports = {
     "js/content/main": path.join(__dirname, "src/content/main.ts"),
     "js/content/interfaces/cms": path.join(__dirname, "src/content/interfaces/cms.ts"),
     "js/content/interfaces/terra": path.join(__dirname, "src/content/interfaces/terra.ts"),
-    "js/content/interfaces/mapping": path.join(__dirname, "src/content/interfaces/mapping.ts"),
+    "js/content/interfaces/stockport": path.join(__dirname, "src/content/interfaces/stockport.ts"),
 
     "js/react/popup": path.join(__dirname, "src/react/popup.tsx"),
     "js/react/embed": path.join(__dirname, "src/react/embed.tsx")

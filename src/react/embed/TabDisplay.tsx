@@ -10,6 +10,7 @@ import Alert from "@material-ui/lab/Alert";
 import { Notification, Storage } from "../../lib/interfaces";
 import _ from "lodash";
 import chromep from "chrome-promise";
+import BuildingDisplay from "./BuildingDisplay";
 
 const styles = (theme: Theme) => ({
   divider: {
@@ -75,7 +76,8 @@ class TabDisplay extends Component<PropsI, StateI> {
 export const displays: any[] = [
   { name: "Order Info", component: <OrderDisplay/> },
   { name: "Products", component: <ProductsDisplay/> },
-  { name: "Planning Info", component: <PlanningDisplay/> }
+  { name: "Planning Application Info", component: <PlanningDisplay/> },
+  { name: "Building Regulation Info", component: <BuildingDisplay/> }
 ]
 
 export default withStyles(styles, { withTheme: true })(TabDisplay);

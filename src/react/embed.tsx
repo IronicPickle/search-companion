@@ -2,7 +2,7 @@
 import React, { Component, SyntheticEvent } from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { Notification, Order, Settings } from "../lib/interfaces";
+import { Building, Notification, Order, Planning, Settings } from "../lib/interfaces";
 import { create } from "jss";
 import { jssPreset, NoSsr, StylesProvider, ThemeProvider } from "@material-ui/core";
 import { lightTheme, darkTheme } from "./themes";
@@ -16,6 +16,8 @@ interface PropsI {
 
 interface StateI {
   order?: Order;
+  planning?: Planning;
+  building?: Building;
   settings: Settings;
   notification?: Notification;
 }
@@ -81,7 +83,13 @@ class Embed extends Component<PropsI, StateI> {
     const storage = await chromep.storage.local.get() as Storage;
     if(storage.order != null) this.setState({
       order: storage.order
-    })
+    });
+    if(storage.planning != null) this.setState({
+      planning: storage.planning
+    });
+    if(storage.building != null) this.setState({
+      building: storage.building
+    });
     if(storage.settings != null) this.setState({
       settings: storage.settings
     });
@@ -109,7 +117,7 @@ class Embed extends Component<PropsI, StateI> {
 
   render() {
 
-    const { order, settings, notification } = this.state;
+    const { order, planning, building, settings, notification } = this.state;
 
     return (
       <NoSsr>
@@ -130,7 +138,7 @@ class Embed extends Component<PropsI, StateI> {
               return (
                 <StylesProvider jss={jss}>
                   <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-                    <globalContext.Provider value={{ order, settings, notification,
+                    <globalContext.Provider value={{ order, settings, notification, planning, building,
                       sendNotification: this.sendNotification }}>
                       <EmbedRoot />
                     </globalContext.Provider>

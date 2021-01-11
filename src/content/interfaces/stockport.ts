@@ -33,7 +33,7 @@ async function updatePlanningInfo() {
   if(planning.applicationReceivedDate != null)
     planning.applicationReceivedDate = new Date(planning.applicationReceivedDate).getTime();
 
-  planning = { ...storage.planning, ...planning }
+  planning = (planning.reference == null) ? { ...storage.planning, ...planning } : planning
   
   if(!_.isEqual(planning, storage.planning)) {
     const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
@@ -92,7 +92,7 @@ async function updateBuildingInfo() {
   if(building.applicationReceivedDate != null)
     building.applicationReceivedDate = new Date(building.applicationReceivedDate).getTime();
 
-    building = { ...storage.building, ...building }
+  building = (building.reference == null) ? { ...storage.building, ...building } : building
   
   if(!_.isEqual(building, storage.building)) {
     const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);

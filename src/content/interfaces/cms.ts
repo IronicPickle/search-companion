@@ -1,21 +1,15 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
 import { Order, Product, Property } from "../../lib/interfaces";
-import { injectIndicator, queryElement } from "../../lib/utils";
+import { createNotification, injectIndicator, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval, orderFields } from "../../lib/vars";
-
-const indicatorElement = injectIndicator();
-checkSignature();
 
 setInterval(() => {
   checkSignature();
 }, interfaceCheckInterval)
 
 function checkSignature() {
-  if(queryElement(["id:view2"]) != null) {
-    indicatorElement.style.display = "block";
-    updateOrderInfo();
-  } else { indicatorElement.style.display = "none"; }
+  if(queryElement(["id:view2"]) != null) updateOrderInfo();
 }
 
 async function updateOrderInfo() {
@@ -31,8 +25,9 @@ async function updateOrderInfo() {
   order.totalCost = extractTotalCost();
   
   if(!_.isEqual(order, storage.order)) {
-    console.log("Order has changed, updating...");
-    chrome.storage.local.set({ order });
+    const notification = createNotification({ severity: "info", text: "Order Info Extracted" }, 0);
+    console.log("Order Info Extracted");
+    chrome.storage.local.set({ order, notification });
   }
 }
 
@@ -116,7 +111,7 @@ function extractProducts() {
       const iElement = queryElement(["i"], tdElement0);
       if(iElement != null) tdElement0 = <HTMLSpanElement> iElement;
       product.name = tdElement0.innerText.replace(/(&[A-Za-z]+;)+/g, "").replace("     - ", "");
-      if(tdElement4.innerHTML === "") {
+      if(tdElement4.innerHTML !== "") {
         let dateArray = tdElement4.innerHTML.split("-").map(dateItem => parseInt(dateItem));
         product.returned = new Date(dateArray[2], dateArray[1], dateArray[0]).toDateString();
       }

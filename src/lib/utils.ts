@@ -1,3 +1,4 @@
+import { NotificationSettings } from "./interfaces";
 import { interfaceCheckInterval } from "./vars";
 
 export function queryElement(signature: string[], prevElement?: Element): Element | null {
@@ -49,4 +50,8 @@ export function injectIndicator() {
   const body = document.getElementsByTagName("body").item(0);
   if(body != null) body.prepend(div);
   return div;
+}
+
+export function createNotification(settings: NotificationSettings, tabOverride?: number) {
+  return { settings, created: new Date().getTime(), tabOverride, href: window.location.href }
 }

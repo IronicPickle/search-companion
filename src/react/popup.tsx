@@ -1,9 +1,12 @@
-import React from "react";
+// Main imports
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { orderFields } from "../lib/vars";
-import { Order } from "../lib/interfaces";
-import { Paper, Typography } from "@material-ui/core";
+import { Order, Settings, Storage } from "../lib/interfaces";
+import { Paper, ThemeProvider } from "@material-ui/core";
+import { darkTheme, lightTheme } from "./themes";
+import PopupSettings from "./popup/PopupSettings";
+import { globalContext, globalContextDefaults } from "./contexts";
 
 interface PropsI {
 
@@ -11,52 +14,54 @@ interface PropsI {
 
 interface StateI {
   order?: Order;
+  settings: Settings;
 }
 
-class Popup extends React.Component<PropsI, StateI> {
+class Popup extends Component<PropsI, StateI> {
   constructor(props: PropsI) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      settings: globalContextDefaults.settings
+    }
+    
+    this.syncStorage = this.syncStorage.bind(this);
   }
 
-  async componentDidMount() {
-    const storage = await chromep.storage.local.get();
-    if(storage.order != null) {
-      this.setState({ order: storage.order })
-    }
+  async syncStorage() {
+    const storage = await chromep.storage.local.get() as Storage;
+    if(storage.order != null) this.setState({
+      order: storage.order
+    })
+    if(storage.settings != null) this.setState({
+      settings: storage.settings
+    });
+  }
+
+  componentDidMount() {
+    this.syncStorage();
+    chrome.storage.onChanged.addListener(async (changes) => {
+      console.log("Syncing new storage to state");
+      this.syncStorage();
+    });
   }
 
   render() {
 
-    const { order } = this.state;
+    const { order, settings } = this.state;
 
     return (
       <>
-        <Paper style={{ padding: 10, minWidth: 200 }}>
-          <Typography align="left" variant="body2" component="p" noWrap>
-            {
-              (order != null) ?
-                <>
-                  <Typography align="center" variant="h6" component="h6" noWrap>
-                    Order Info
-                  </Typography>
-                  {
-                    orderFields.map((orderField) => {
-                      const orderInput = order[orderField.actualId];
-                      if(orderInput != null && orderInput !== "") {
-                        return <><b>{orderField.name}</b> {orderInput}<br/></>
-                      }
-                    })
-                  }
-                </>
-              : <>No order info available</>
-            }
-          </Typography>
-        </Paper>
+        <globalContext.Provider value={{ order, settings }}>
+          <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
+            <Paper style={{ padding: 10 }}>
+              <PopupSettings />
+            </Paper>
+          </ThemeProvider>
+        </globalContext.Provider>
       </>
     )
   }
 }
 
-ReactDOM.render(<Popup/>, document.getElementById("root"))
+ReactDOM.render(<Popup/>, document.getElementById("root"));

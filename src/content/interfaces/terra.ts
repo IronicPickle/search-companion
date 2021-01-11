@@ -1,36 +1,42 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
 import { Order, Product } from "../../lib/interfaces";
-import { injectIndicator, queryElement } from "../../lib/utils";
-import { interfaceCheckInterval, orderFields } from "../../lib/vars";
+import { createNotification, injectIndicator, queryElement } from "../../lib/utils";
 
-const indicatorElement = injectIndicator();
-checkSignature();
+setTimeout(() => checkSignature(), 500);
 
-chrome.storage.onChanged.addListener(() => {
-  checkSignature();
+chrome.storage.onChanged.addListener((changes) => {
+  if(changes.order != null) checkSignature();
 });
 
 async function checkSignature() {
   const terraProduct = getTerraProduct();
   if(terraProduct == null) return;
   if(queryElement(["class:report_details"]) != null) {
-    indicatorElement.style.display = "block";
-    injectOrderData();
+
+    if(await injectOrderData() == null) return;
+    console.log("Order Info Injected");
+    const notification = createNotification({ severity: "info", text: "Order Info Injected" }, 0);
+    chrome.storage.local.set({ notification });
+
   } else if(queryElement(["class:op_tiles"]) != null) {
-    indicatorElement.style.display = "block";
-    injectHazardData();
-  } else { indicatorElement.style.display = "none"; }
+
+    if(await injectHazardData() == null) return;
+    console.log("Hazard Info Injected");
+    const notification = createNotification({ severity: "info", text: "Order Info Injected" }, 0);
+    chrome.storage.local.set({ notification });
+  }
 }
 
 async function getTerraProduct(): Promise<Product | null> {
   const order = <Order> (await chromep.storage.local.get()).order;
+  if(order == null) return null;
   const terraProduct = order.products.filter(product => product.name.includes("TerraSearch"))[0];
 
   return terraProduct;
 }
 
-async function injectHazardData() {
+async function injectHazardData(): Promise<boolean | undefined> {
   const order = <Order> (await chromep.storage.local.get()).order;
   const terraProduct = await getTerraProduct();
   if(terraProduct == null) return;
@@ -38,9 +44,11 @@ async function injectHazardData() {
 
   (<HTMLSelectElement> queryElement(["class:search_type_values"])).value = "Coal";
   (<HTMLInputElement> queryElement(["id:postcode"])).value = property.postCode;
+
+  return true;
 }
 
-async function injectOrderData() {
+async function injectOrderData(): Promise<boolean | undefined> {
   const order = <Order> (await chromep.storage.local.get()).order;
   const terraProduct = await getTerraProduct();
   if(terraProduct == null) return;
@@ -70,6 +78,8 @@ async function injectOrderData() {
     property.developmentName.length > 0 || 
     property.developer.length > 0
   );
+
+  return true;
 }
 
 function getType(name: string) {

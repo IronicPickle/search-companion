@@ -1,9 +1,14 @@
-import React from "react";
+// Main imports
+import React, { Component, SyntheticEvent } from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { orderFields } from "../lib/vars";
-import { Order } from "../lib/interfaces";
-import { Paper, Typography } from "@material-ui/core";
+import { Notification, Order, Settings } from "../lib/interfaces";
+import { create } from "jss";
+import { jssPreset, NoSsr, StylesProvider, ThemeProvider } from "@material-ui/core";
+import { lightTheme, darkTheme } from "./themes";
+import { globalContext, globalContextDefaults } from "./contexts";
+import EmbedRoot from "./embed/EmbedRoot";
+import FrameComponent, { FrameContextConsumer } from "react-frame-component";
 
 interface PropsI {
 
@@ -11,79 +16,158 @@ interface PropsI {
 
 interface StateI {
   order?: Order;
+  settings: Settings;
+  notification?: Notification;
 }
 
-class Embed extends React.Component<PropsI, StateI> {
+const CustomHead = (props: any) => {
+  return (
+    <>
+      <meta charSet="utf-8" />
+      <title>Previewer</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <base target="_parent" />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      />
+    </>
+    );
+}
+
+const initialContent = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      
+    </head>
+    <body id='mountHere' style='position: fixed; margin: 0;'></body>
+    <script>
+      window.onload = () => sendPostMessage(true);
+      window.document = () => sendPostMessage();
+      const resizeObserver = new ResizeObserver(() => sendPostMessage());
+      resizeObserver.observe(document.getElementById("mountHere"));
+
+      let height;
+      let width;
+      function sendPostMessage(force) {
+        const frameContentWrapper = document.getElementById("mountHere");
+        if(frameContentWrapper == null) return;
+        if((height !== frameContentWrapper.offsetHeight ||
+            width !== frameContentWrapper.offsetWidth) || force) {
+          height = frameContentWrapper.offsetHeight;
+          width = frameContentWrapper.offsetWidth;
+          window.parent.postMessage({ frameHeight: height, frameWidth: width }, "*");
+        }
+      }
+    </script>
+  </html>
+`
+
+class Embed extends Component<PropsI, StateI> {
   constructor(props: PropsI) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      settings: globalContextDefaults.settings
+    }
 
     this.syncStorage = this.syncStorage.bind(this);
+    this.sendNotification = this.sendNotification.bind(this);
   }
+  
 
   async syncStorage() {
-    const storage = await chromep.storage.local.get();
-    if(storage.order != null) {
-      this.setState({ order: storage.order })
-    }
+    const storage = await chromep.storage.local.get() as Storage;
+    if(storage.order != null) this.setState({
+      order: storage.order
+    })
+    if(storage.settings != null) this.setState({
+      settings: storage.settings
+    });
+    if(storage.notification != null) this.sendNotification({ ...storage.notification })
   }
 
   componentDidMount() {
     this.syncStorage();
     chrome.storage.onChanged.addListener(async (changes) => {
-      if(changes.order != null) {
-        console.log("Order info change detected, updating...");
-        console.log(await chromep.storage.local.get())
-        this.syncStorage();
-      }
-    })
+      console.log("Syncing new storage to state");
+      this.syncStorage();
+    });
+  }
+
+  iframeLoad(event: SyntheticEvent<HTMLIFrameElement>) {
+    const embeddedIframe = document.getElementById("embeddedIframe");
+    if(embeddedIframe == null) return;
+    embeddedIframe.setAttribute("onload", "resizeIframe(this)");
+    embeddedIframe.setAttribute("scrolling", "no");
+  }
+
+  sendNotification(notification: Notification) {
+    if(notification.href === window.location.href) this.setState({ notification });
   }
 
   render() {
 
-    const { order } = this.state;
+    const { order, settings, notification } = this.state;
 
     return (
-      <>
-        <Paper style={{ padding: 10, minWidth: 200 }}>
-          <Typography align="left" variant="body2" component="h6" noWrap>
-            {
-              (order != null) ?
-                <>
-                  <Typography align="center" variant="h6" component="p" noWrap>
-                    Order: {order.reference}
-                  </Typography>
-                  <b>Type: </b>{order.type}<br/>
-                  <b>Council: </b>{order.council}<br/>
-                  <b>Water: </b>{order.water}<br/><br/>
-                  {
-                    orderFields.map((orderField) => {
-                      const orderInput = order.property[orderField.actualId];
-                      if(orderInput != null && orderInput !== "") {
-                        return <span key={orderField.actualId}><b>{orderField.name}</b> {orderInput}<br/></span>
-                      }
-                    })
-                  }
-                  <br/><b>Products: </b>{order.products.length}<br/>
-                  <b>Total Cost: </b>{order.totalCost}
-                </>
-              : <>No order info available</>
-            }
-          </Typography>
-        </Paper>
-      </>
+      <NoSsr>
+        <FrameComponent
+            head={<CustomHead />}
+            initialContent={initialContent}
+            mountTarget="#mountHere"
+            id="embeddedIframe"
+            onLoad={this.iframeLoad}
+            style={{ width: 68, height: 68, border: 0 }}
+          >
+          <FrameContextConsumer>
+            {({ document, window }) => {
+              const jss = create({
+                plugins: [...jssPreset().plugins],
+                insertionPoint: document.head
+              });
+              return (
+                <StylesProvider jss={jss}>
+                  <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
+                    <globalContext.Provider value={{ order, settings, notification,
+                      sendNotification: this.sendNotification }}>
+                      <EmbedRoot />
+                    </globalContext.Provider>
+                  </ThemeProvider>
+                </StylesProvider>
+              )
+            }}
+          </FrameContextConsumer>
+        </FrameComponent>
+      </NoSsr>
     )
   }
 }
 
-const embeddedRoot = document.createElement("div");
-embeddedRoot.setAttribute("id", "embeddedRoot")
-embeddedRoot.setAttribute("style", 
-  `position: fixed;
-  right: 10px;
-  top: 10px;
-  z-index: 2147483647;`
-)
-document.getElementsByTagName("body").item(0)?.prepend(embeddedRoot)
-ReactDOM.render(<Embed/>, document.getElementById("embeddedRoot"))
+function injectEmbed() {
+  const embeddedRoot = document.createElement("div") as HTMLIFrameElement;
+  embeddedRoot.setAttribute("style", 
+    `position: fixed;
+    right: 10px;
+    top: 10px;
+    z-index: 1000000;`
+  );
+  document.body.prepend(embeddedRoot);
+
+  const embeddedRootScript = document.createElement("script") as HTMLScriptElement;
+  embeddedRootScript.innerHTML = `
+    window.onmessage = (e) => {
+      if(e.data.hasOwnProperty("frameHeight")) {
+        document.getElementById("embeddedIframe").style.height = e.data.frameHeight + "px";
+      } if(e.data.hasOwnProperty("frameWidth")) {
+        document.getElementById("embeddedIframe").style.width = e.data.frameWidth + "px";
+      }
+    }
+  `
+  document.body.prepend(embeddedRootScript);
+
+  ReactDOM.render(<Embed/>, embeddedRoot);
+}
+
+injectEmbed();

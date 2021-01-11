@@ -55,7 +55,8 @@ async function injectOrderData(): Promise<boolean | undefined> {
   const type = getType(terraProduct.name);
   const property = order.property;
   
-  if(type != null) (<HTMLSelectElement> queryElement(["id:product_type_select"])).value = type;
+  const productTypeSelect = (<HTMLSelectElement> queryElement(["id:product_type_select"]))
+  if(type != null) if(productTypeSelect != null) productTypeSelect.value = type;
   (<HTMLInputElement> queryElement(["id:search_ref"])).value = order.reference;
   (<HTMLInputElement> queryElement(["id:postcode"])).value = property.postCode;
   (<HTMLInputElement> queryElement(["id:house-name"])).value = property.houseName;
@@ -73,7 +74,8 @@ async function injectOrderData(): Promise<boolean | undefined> {
   }
 
   (<HTMLSelectElement> queryElement(["id:site_use_select"])).value = order.type;
-  (<HTMLInputElement> queryElement(["id:new_build"])).checked = (
+  const newBuildInput = (<HTMLInputElement> queryElement(["id:new_build"]));
+  if(newBuildInput != null) newBuildInput.checked = (
     property.plotNumber.length > 0 ||
     property.developmentName.length > 0 || 
     property.developer.length > 0

@@ -46,15 +46,28 @@ chrome.runtime.onInstalled.addListener(async function() {
 
 const interfaces = [
   {
-    urls: [ "https://indexcms.co.uk/2.7/case-management" ],
+    urls: [ "https://indexcms.co.uk/2.7/case-management",
+      "https://indexcms.co.uk/2.7/franchiseemenu.php"
+    ],
     scripts: [ "js/content/interfaces/cms.js" ]
   }, {
     urls: [ "https://www.terrafirmaidc.co.uk/order/order_report",
-      "https://www.terrafirmaidc.co.uk/order" ],
+      "https://www.terrafirmaidc.co.uk/order",
+      "https://www.terrafirmaidc.co.uk/order/render_order_anc"
+    ],
     scripts: [ "js/content/interfaces/terra.js" ]
   }, {
     urls: [ "https://planning.stockport.gov.uk/PlanningData-live/applicationDetails.do",
-      "https://planning.stockport.gov.uk/PlanningData-live/buildingControlDetails.do" ],
-    scripts: [ "js/content/interfaces/stockport.js" ]
+      "https://planning.stockport.gov.uk/PlanningData-live/buildingControlDetails.do",
+      "https://planning.stockport.gov.uk/PlanningData-live/simpleSearchResults.do"
+    ],
+    scripts: [ "js/content/interfaces/simpleSearch.js" ]
+  }, {
+    urls: [ "https://www.planningpa.bolton.gov.uk/online-applications-17/applicationDetails.do",
+      "https://www.planningpa.bolton.gov.uk/online-applications-17/buildingControlDetails.do",
+      "https://www.planningpa.bolton.gov.uk/online-applications-17/simpleSearchResults.do",
+      "https://www.planningpa.bolton.gov.uk/online-applications-17/shortUrlResults.do?action=firstPage&searchType=Application"
+    ],
+    scripts: [ "js/content/interfaces/simpleSearch.js" ]
   }
 ]

@@ -121,35 +121,35 @@ class Embed extends Component<Props, State> {
 
     return (
 
-        <NoSsr>
-          <FrameComponent
-              head={<CustomHead />}
-              initialContent={initialContent}
-              mountTarget="#mountHere"
-              id="embeddedIframe"
-              onLoad={this.iframeLoad}
-              style={{ width: 68, height: 68, border: 0 }}
-            >
-            <FrameContextConsumer>
-              {({ document, window }) => {
-                const jss = create({
-                  plugins: [...jssPreset().plugins],
-                  insertionPoint: document.head
-                });
-                return (
-                  <StylesProvider jss={jss}>
-                    <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-                      <globalContext.Provider value={{ order, settings, notification, planning, building,
-                        sendNotification: this.sendNotification }}>
-                        <EmbedRoot />
-                      </globalContext.Provider>
-                    </ThemeProvider>
-                  </StylesProvider>
-                )
-              }}
-            </FrameContextConsumer>
-          </FrameComponent>
-        </NoSsr>
+      <NoSsr>
+        <FrameComponent
+            head={<CustomHead />}
+            initialContent={initialContent}
+            mountTarget="#mountHere"
+            id="embeddedIframe"
+            onLoad={this.iframeLoad}
+            style={{ width: 68, height: 68, border: 0 }}
+          >
+          <FrameContextConsumer>
+            {({ document, window }) => {
+              const jss = create({
+                plugins: [...jssPreset().plugins],
+                insertionPoint: document.head
+              });
+              return (
+                <StylesProvider jss={jss}>
+                  <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
+                    <globalContext.Provider value={{ order, settings, notification, planning, building,
+                      sendNotification: this.sendNotification }}>
+                      <EmbedRoot />
+                    </globalContext.Provider>
+                  </ThemeProvider>
+                </StylesProvider>
+              )
+            }}
+          </FrameContextConsumer>
+        </FrameComponent>
+      </NoSsr>
     )
   }
 }

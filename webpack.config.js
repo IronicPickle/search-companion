@@ -33,9 +33,7 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "src/images", to: "images/" },
-        { from: "src/html", to: "html/" },
-        { from: "src/manifest.json", to: "./"}
+        { from: "main/", to: "./" }
       ]
     })
   ]

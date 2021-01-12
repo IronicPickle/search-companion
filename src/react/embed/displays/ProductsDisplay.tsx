@@ -2,10 +2,9 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Box, Container, TextField, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
-import { globalContext, GlobalContext } from "../contexts";
+import { Box, Container, Divider, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import { orderFields } from "../../lib/vars";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -22,11 +21,17 @@ const styles = (theme: Theme) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     minHeight: theme.spacing(4),
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText
+    }
   },
   entryTitle: {
     marginRight: theme.spacing(2)
-  }, field: {
-    width: theme.spacing(24)
+  },
+  divider: {
+    marginRight: theme.spacing(2)
   }
 });
 
@@ -38,7 +43,7 @@ interface State {
   
 }
 
-class OrderDisplay extends Component<Props, State> {
+class ProductsDisplay extends Component<Props, State> {
   static contextType = globalContext;
   constructor(props: Props) {
     super(props)
@@ -73,23 +78,34 @@ class OrderDisplay extends Component<Props, State> {
             >
               {
                 (order != null) ?
-                  orderFields.map(orderField => {
-                    const title = orderField.name;
-                    const value = order.property[orderField.actualId];
-                    if(value.length === 0) return;
+                  order.products.map(product => {
+                    const tooltip = (product.returned == null) ?
+                      "Not returned"
+                    : `Returned: ${product.returned}`
                     return (
-                      <Toolbar disableGutters className={classes.entryToolbar} key={orderField.actualId} >
-                        <Box flexGrow={1}>
-                          <b className={classes.entryTitle}>{title}</b><br />
+                      <Tooltip title={tooltip} PopperProps={{ disablePortal: true }} >
+                        <Toolbar disableGutters className={classes.entryToolbar} key={product.name} >
+                          <Box flexGrow={1}>
+                            <b className={classes.entryTitle}>{product.name}</b><br />
+                            </Box>
+                            <Box>
+                            £{product.cost}
                           </Box>
-                          <Box>
-                          <TextField value={value} InputProps={{ readOnly: true }} className={classes.field} />
-                        </Box>
-                      </Toolbar>
+                        </Toolbar>
+                      </Tooltip>
                     )
                   })
                 : <></>
               }
+              <Divider className={classes.divider} />
+              <Toolbar disableGutters className={classes.entryToolbar} key="totalCost" >
+                <Box flexGrow={1}>
+                  <b className={classes.entryTitle}>Total Cost </b><br />
+                  </Box>
+                  <Box>
+                  £{order?.totalCost}
+                </Box>
+              </Toolbar>
             </Typography>
           </div>
         </Container>
@@ -98,4 +114,4 @@ class OrderDisplay extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(OrderDisplay);
+export default withStyles(styles, { withTheme: true })(ProductsDisplay);

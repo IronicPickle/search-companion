@@ -3,14 +3,15 @@ import React, { Component } from "react";
 import { Divider, Theme, withStyles, Snackbar } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import OrderDisplay from "./OrderDisplay";
-import PlanningDisplay from "./PlanningDisplay";
-import ProductsDisplay from "./ProductsDisplay";
+import OrderDisplay from "./displays/OrderDisplay";
+import PlanningDisplay from "./displays/PlanningDisplay";
+import ProductsDisplay from "./displays/ProductsDisplay";
 import Alert from "@material-ui/lab/Alert";
 import { Notification, Storage } from "../../lib/interfaces";
 import _ from "lodash";
 import chromep from "chrome-promise";
-import BuildingDisplay from "./BuildingDisplay";
+import BuildingDisplay from "./displays/BuildingDisplay";
+import ActionsDisplay from "./displays/ActionsDisplay";
 
 const styles = (theme: Theme) => ({
   divider: {
@@ -77,7 +78,8 @@ export const displays: any[] = [
   { name: "Order Info", component: <OrderDisplay/> },
   { name: "Products", component: <ProductsDisplay/> },
   { name: "Planning Application Info", component: <PlanningDisplay/> },
-  { name: "Building Regulation Info", component: <BuildingDisplay/> }
+  { name: "Building Regulation Info", component: <BuildingDisplay/> },
+  { name: "Actions", component: <ActionsDisplay/> }
 ]
 
 export default withStyles(styles, { withTheme: true })(TabDisplay);

@@ -3,7 +3,7 @@
 // Main imports
 import React, { Component } from "react";
 import { TextField, Theme, withStyles } from "@material-ui/core";
-import { GlobalContext, globalContext } from "../contexts";
+import { GlobalContext, globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
 

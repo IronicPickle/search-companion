@@ -3,6 +3,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ListIcon from "@material-ui/icons/List";
 import HomeIcon from "@material-ui/icons/Home";
+import MapIcon from "@material-ui/icons/Map";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
@@ -69,6 +70,11 @@ class TabBar extends Component<Props, State> {
           <Grid item>
             <IconButton onClick={this.tabSelect(3)} >
               <HomeIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton onClick={this.tabSelect(4)} >
+              <MapIcon />
             </IconButton>
           </Grid>
         </Grid>

@@ -6,7 +6,6 @@ module.exports = {
   entry: {
     "js/background/main": path.join(__dirname, "src/background/main.ts"),
 
-    "js/content/main": path.join(__dirname, "src/content/main.ts"),
     "js/content/interfaces/cms": path.join(__dirname, "src/content/interfaces/cms.ts"),
     "js/content/interfaces/terra": path.join(__dirname, "src/content/interfaces/terra.ts"),
     "js/content/interfaces/simpleSearch": path.join(__dirname, "src/content/interfaces/simpleSearch.ts"),

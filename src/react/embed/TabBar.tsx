@@ -7,7 +7,7 @@ import MapIcon from "@material-ui/icons/Map";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Divider, Grid, IconButton, Theme, withStyles } from "@material-ui/core";
+import { Divider, Grid, IconButton, Theme, Tooltip, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
@@ -36,11 +36,20 @@ class TabBar extends Component<Props, State> {
     this.state = {}
 
     this.tabSelect = this.tabSelect.bind(this);
+    this.openGoogleMaps = this.openGoogleMaps.bind(this);
   }
 
   tabSelect(index: number) {
     return (event: MouseEvent<HTMLButtonElement>) => {
       this.props.onSelect(index);
+    }
+  }
+
+  openGoogleMaps() {
+    const { order } = this.context as GlobalContext;
+    const postcode = order?.property.postCode;
+    if(postcode != null) {
+      window.open(`https://www.google.com/maps/place/${postcode}`);
     }
   }
 
@@ -53,29 +62,39 @@ class TabBar extends Component<Props, State> {
         <Grid container direction="column" style={{ height: "100%" }} >
           <Divider className={classes.divider} />
           <Grid item>
-            <IconButton onClick={this.tabSelect(0)} disabled={order == null} >
-              <InfoIcon />
-            </IconButton>
+            <Tooltip title="Property" PopperProps={{ disablePortal: true }} >
+              <IconButton onClick={this.tabSelect(0)} disabled={order == null} >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item>
-            <IconButton onClick={this.tabSelect(1)} disabled={order == null} >
-              <AttachMoneyIcon />
-            </IconButton>
+            <Tooltip title="Products" PopperProps={{ disablePortal: true }} >
+              <IconButton onClick={this.tabSelect(1)} disabled={order == null} >
+                <AttachMoneyIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item>
-            <IconButton onClick={this.tabSelect(2)} >
-              <ListIcon />
-            </IconButton>
+            <Tooltip title="Planning" PopperProps={{ disablePortal: true }} >
+              <IconButton onClick={this.tabSelect(2)} >
+                <ListIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item>
-            <IconButton onClick={this.tabSelect(3)} >
-              <HomeIcon />
-            </IconButton>
+            <Tooltip title="Building" PopperProps={{ disablePortal: true }} >
+              <IconButton onClick={this.tabSelect(3)} >
+                <HomeIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item>
-            <IconButton onClick={this.tabSelect(4)} >
-              <MapIcon />
-            </IconButton>
+            <Tooltip title="Maps" PopperProps={{ disablePortal: true }} >
+              <IconButton onClick={this.openGoogleMaps} disabled={order?.property.postCode == null} >
+                <MapIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </> 

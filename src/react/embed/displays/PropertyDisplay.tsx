@@ -38,7 +38,7 @@ interface State {
   
 }
 
-class OrderDisplay extends Component<Props, State> {
+class PropertyDisplay extends Component<Props, State> {
   static contextType = globalContext;
   constructor(props: Props) {
     super(props)
@@ -98,4 +98,4 @@ class OrderDisplay extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(OrderDisplay);
+export default withStyles(styles, { withTheme: true })(PropertyDisplay);

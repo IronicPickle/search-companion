@@ -4,7 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Box, Collapse, Divider, IconButton, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
+import { Box, Collapse, Divider, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
@@ -86,9 +86,11 @@ class TabController extends Component<Props, State> {
         <Box display="flex">
           <Box flexGrow={1} hidden={currentDisplay == null}>
             <Toolbar disableGutters={true} className={classes.header} hidden={currentDisplay == null} >
-              <IconButton onClick={() => { this.changeTab(displays.length) }} style={{ position: "absolute" as "absolute" }}>
-                <CloseIcon />
-              </IconButton>
+              <Tooltip title="Close" PopperProps={{ disablePortal: true }} >
+                <IconButton onClick={() => { this.changeTab(displays.length) }} style={{ position: "absolute" as "absolute" }}>
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
               <Typography
                 variant="h6"
                 component="h1"

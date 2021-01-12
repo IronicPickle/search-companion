@@ -19,18 +19,18 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface PropsI {
+interface Props {
   classes: ClassNameMap
   currentTab: number;
 }
 
-interface StateI {
+interface State {
   prevNotification?: Notification;
 }
 
-class TabDisplay extends Component<PropsI, StateI> {
+class TabDisplay extends Component<Props, State> {
   static contextType = globalContext;
-  constructor(props: PropsI) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {}

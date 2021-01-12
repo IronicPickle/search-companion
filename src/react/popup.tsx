@@ -8,17 +8,17 @@ import { darkTheme, lightTheme } from "./themes";
 import PopupSettings from "./popup/PopupSettings";
 import { globalContext, globalContextDefaults } from "./contexts";
 
-interface PropsI {
+interface Props {
 
 }
 
-interface StateI {
+interface State {
   order?: Order;
   settings: Settings;
 }
 
-class Popup extends Component<PropsI, StateI> {
-  constructor(props: PropsI) {
+class Popup extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
 
     this.state = {

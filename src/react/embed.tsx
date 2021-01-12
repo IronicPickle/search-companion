@@ -9,12 +9,13 @@ import { lightTheme, darkTheme } from "./themes";
 import { globalContext, globalContextDefaults } from "./contexts";
 import EmbedRoot from "./embed/EmbedRoot";
 import FrameComponent, { FrameContextConsumer } from "react-frame-component";
+import ErrorBoundary from "./utils/ErrorBoundary";
 
-interface PropsI {
+interface Props {
 
 }
 
-interface StateI {
+interface State {
   order?: Order;
   planning?: Planning;
   building?: Building;
@@ -66,8 +67,8 @@ const initialContent = `
   </html>
 `
 
-class Embed extends Component<PropsI, StateI> {
-  constructor(props: PropsI) {
+class Embed extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -107,7 +108,6 @@ class Embed extends Component<PropsI, StateI> {
   iframeLoad(event: SyntheticEvent<HTMLIFrameElement>) {
     const embeddedIframe = document.getElementById("embeddedIframe");
     if(embeddedIframe == null) return;
-    embeddedIframe.setAttribute("onload", "resizeIframe(this)");
     embeddedIframe.setAttribute("scrolling", "no");
   }
 
@@ -120,35 +120,36 @@ class Embed extends Component<PropsI, StateI> {
     const { order, planning, building, settings, notification } = this.state;
 
     return (
-      <NoSsr>
-        <FrameComponent
-            head={<CustomHead />}
-            initialContent={initialContent}
-            mountTarget="#mountHere"
-            id="embeddedIframe"
-            onLoad={this.iframeLoad}
-            style={{ width: 68, height: 68, border: 0 }}
-          >
-          <FrameContextConsumer>
-            {({ document, window }) => {
-              const jss = create({
-                plugins: [...jssPreset().plugins],
-                insertionPoint: document.head
-              });
-              return (
-                <StylesProvider jss={jss}>
-                  <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-                    <globalContext.Provider value={{ order, settings, notification, planning, building,
-                      sendNotification: this.sendNotification }}>
-                      <EmbedRoot />
-                    </globalContext.Provider>
-                  </ThemeProvider>
-                </StylesProvider>
-              )
-            }}
-          </FrameContextConsumer>
-        </FrameComponent>
-      </NoSsr>
+
+        <NoSsr>
+          <FrameComponent
+              head={<CustomHead />}
+              initialContent={initialContent}
+              mountTarget="#mountHere"
+              id="embeddedIframe"
+              onLoad={this.iframeLoad}
+              style={{ width: 68, height: 68, border: 0 }}
+            >
+            <FrameContextConsumer>
+              {({ document, window }) => {
+                const jss = create({
+                  plugins: [...jssPreset().plugins],
+                  insertionPoint: document.head
+                });
+                return (
+                  <StylesProvider jss={jss}>
+                    <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
+                      <globalContext.Provider value={{ order, settings, notification, planning, building,
+                        sendNotification: this.sendNotification }}>
+                        <EmbedRoot />
+                      </globalContext.Provider>
+                    </ThemeProvider>
+                  </StylesProvider>
+                )
+              }}
+            </FrameContextConsumer>
+          </FrameComponent>
+        </NoSsr>
     )
   }
 }
@@ -162,20 +163,17 @@ function injectEmbed() {
     z-index: 1000000;`
   );
   document.body.prepend(embeddedRoot);
-
-  const embeddedRootScript = document.createElement("script") as HTMLScriptElement;
-  embeddedRootScript.innerHTML = `
-    window.onmessage = (e) => {
-      if(e.data.hasOwnProperty("frameHeight")) {
-        document.getElementById("embeddedIframe").style.height = e.data.frameHeight + "px";
-      } if(e.data.hasOwnProperty("frameWidth")) {
-        document.getElementById("embeddedIframe").style.width = e.data.frameWidth + "px";
-      }
-    }
-  `
-  document.body.prepend(embeddedRootScript);
-
+  
   ReactDOM.render(<Embed/>, embeddedRoot);
+
+  const iframeElement = document.getElementById("embeddedIframe") as HTMLIFrameElement;
+  window.onmessage = (event: MessageEvent<any>) => {
+    if(event.data.hasOwnProperty("frameHeight"))
+      iframeElement.style.height = event.data.frameHeight + "px";
+    if(event.data.hasOwnProperty("frameWidth"))
+      iframeElement.style.width = event.data.frameWidth + "px";
+  }
+
 }
 
 injectEmbed();

@@ -30,17 +30,17 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface PropsI {
+interface Props {
   classes: ClassNameMap;
 }
 
-interface StateI {
+interface State {
   
 }
 
-class OrderDisplay extends Component<PropsI, StateI> {
+class OrderDisplay extends Component<Props, State> {
   static contextType = globalContext;
-  constructor(props: PropsI) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {}

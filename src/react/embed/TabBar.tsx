@@ -17,19 +17,19 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface PropsI {
+interface Props {
   classes: ClassNameMap;
   onSelect: (index: number) => any;
   currentTab: number;
 }
 
-interface StateI {
+interface State {
   
 }
 
-class TabBar extends Component<PropsI, StateI> {
+class TabBar extends Component<Props, State> {
   static contextType = globalContext;
-  constructor(props: PropsI) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {}

@@ -62,39 +62,39 @@ class TabBar extends Component<Props, State> {
         <Grid container direction="column" style={{ height: "100%" }} >
           <Divider className={classes.divider} />
           <Grid item>
-            <Tooltip title="Property" PopperProps={{ disablePortal: true }} >
-              <IconButton onClick={this.tabSelect(0)} disabled={order == null} >
+            <IconButton onClick={this.tabSelect(0)} disabled={order == null} >
+              <Tooltip title="Property" PopperProps={{ disablePortal: true }} >
                 <InfoIcon />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           </Grid>
           <Grid item>
-            <Tooltip title="Products" PopperProps={{ disablePortal: true }} >
-              <IconButton onClick={this.tabSelect(1)} disabled={order == null} >
+            <IconButton onClick={this.tabSelect(1)} disabled={order == null} >
+              <Tooltip title="Products" PopperProps={{ disablePortal: true }} >
                 <AttachMoneyIcon />
-              </IconButton>
-            </Tooltip>
+             </Tooltip>
+            </IconButton>
           </Grid>
           <Grid item>
-            <Tooltip title="Planning" PopperProps={{ disablePortal: true }} >
-              <IconButton onClick={this.tabSelect(2)} >
+            <IconButton onClick={this.tabSelect(2)} >
+              <Tooltip title="Planning" PopperProps={{ disablePortal: true }} >
                 <ListIcon />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           </Grid>
           <Grid item>
-            <Tooltip title="Building" PopperProps={{ disablePortal: true }} >
-              <IconButton onClick={this.tabSelect(3)} >
+            <IconButton onClick={this.tabSelect(3)} >
+              <Tooltip title="Building" PopperProps={{ disablePortal: true }} >
                 <HomeIcon />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           </Grid>
           <Grid item>
-            <Tooltip title="Maps" PopperProps={{ disablePortal: true }} >
-              <IconButton onClick={this.openGoogleMaps} disabled={order?.property.postCode == null} >
+            <IconButton onClick={this.openGoogleMaps} disabled={order?.property.postCode == null} >
+              <Tooltip title="Maps" PopperProps={{ disablePortal: true }} >
                 <MapIcon />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           </Grid>
         </Grid>
       </> 

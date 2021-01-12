@@ -78,6 +78,7 @@ const decisions: { [key: string]: string } = {
   "granted": "APPROVED WITH CONDITIONS",
   "approve": "APPROVED WITH CONDITIONS",
   "grant": "APPROVED WITH CONDITIONS",
+  "grant subject to conditions": "APPROVED WITH CONDITIONS",
   "refuse": "REFUSED",
   "application withdrawn": "WITHDRAWN"
 }

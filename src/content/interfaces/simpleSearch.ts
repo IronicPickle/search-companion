@@ -4,9 +4,9 @@ import { Building, Planning} from "../../lib/interfaces";
 import { createNotification, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval } from "../../lib/vars";
 
-setInterval(() => {
+setTimeout(() => {
   checkSignature();
-}, interfaceCheckInterval)
+}, interfaceCheckInterval);
 
 function checkSignature() {
   const titleElement = queryElement(["id:pageheading", "h1", "strong"]);
@@ -33,7 +33,7 @@ async function updatePlanningInfo() {
   if(planning.applicationReceivedDate != null)
     planning.applicationReceivedDate = new Date(planning.applicationReceivedDate).getTime();
 
-  planning = (planning.reference == null) ? { ...storage.planning, ...planning } : planning
+  planning = (planning.reference == null) ? { ...storage.planning, ...planning } : planning;
   
   if(!_.isEqual(planning, storage.planning)) {
     const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);

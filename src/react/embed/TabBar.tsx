@@ -4,6 +4,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ListIcon from "@material-ui/icons/List";
 import HomeIcon from "@material-ui/icons/Home";
 import MapIcon from "@material-ui/icons/Map";
+import OpacityIcon from "@material-ui/icons/Opacity";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
@@ -37,6 +38,7 @@ class TabBar extends Component<Props, State> {
 
     this.tabSelect = this.tabSelect.bind(this);
     this.openGoogleMaps = this.openGoogleMaps.bind(this);
+    this.openDuct = this.openDuct.bind(this);
   }
 
   tabSelect(index: number) {
@@ -51,6 +53,12 @@ class TabBar extends Component<Props, State> {
     if(postcode != null) {
       window.open(`https://www.google.com/maps/place/${postcode}`);
     }
+  }
+
+  openDuct() {
+    const { order } = this.context as GlobalContext;
+    console.log(encodeURIComponent(location.href))
+    window.open(`duct://upload/?ref=${order?.reference}&url=${encodeURIComponent(location.href)}`);
   }
 
   render() {
@@ -96,10 +104,21 @@ class TabBar extends Component<Props, State> {
               </Tooltip>
             </IconButton>
           </Grid>
+          <Grid item>
+            <IconButton onClick={this.openDuct} disabled={order?.reference == null || !isOnlineMapping()} >
+              <Tooltip title="Duct" PopperProps={{ disablePortal: true }} >
+                <OpacityIcon />
+              </Tooltip>
+            </IconButton>
+          </Grid>
         </Grid>
       </> 
     )
   }
+}
+
+function isOnlineMapping() {
+  return location.href.includes("https://indexcms-master.s3.eu-west-2.amazonaws.com/CMSDocumentStore/");
 }
 
 export default withStyles(styles, { withTheme: true })(TabBar);

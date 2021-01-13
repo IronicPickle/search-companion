@@ -31,7 +31,9 @@ async function checkSignature() {
 async function getTerraProduct(): Promise<Product | null> {
   const order = <Order> (await chromep.storage.local.get()).order;
   if(order == null) return null;
-  const terraProduct = order.products.filter(product => product.name.includes("TerraSearch"))[0];
+  const terraProduct = order.products.filter(
+    product => product.name.includes("TerraSearch") || product.name.includes("Terrafirma")
+  )[0];
 
   return terraProduct;
 }
@@ -85,8 +87,9 @@ async function injectOrderData(): Promise<boolean | undefined> {
 }
 
 function getType(name: string) {
-  if(name.includes("Coal Extra")) return "Coal Extra";
-  if(name.includes("Coal")) return "Coal";
-  if(name.includes("Con29M")) return "CON29M";
+  name = name.toLowerCase();
+  if(name.includes("con29m")) return "CON29M";
+  if(name.includes("coal extra")) return "Coal Extra";
+  if(name.includes("coal")) return "Coal";
   return null;
 }

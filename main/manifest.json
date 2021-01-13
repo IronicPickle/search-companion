@@ -1,6 +1,6 @@
 {
   "name": "Search Companion",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Search Companion",
   "permissions": [ "webNavigation", "tabs", "storage", "<all_urls>" ],
   "background": {

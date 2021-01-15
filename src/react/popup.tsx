@@ -5,8 +5,8 @@ import chromep from "chrome-promise"
 import { Order, Settings, Storage } from "../lib/interfaces";
 import { Paper, ThemeProvider } from "@material-ui/core";
 import { darkTheme, lightTheme } from "./themes";
-import PopupSettings from "./popup/PopupSettings";
 import { globalContext, globalContextDefaults } from "./contexts";
+import PopupRoot from "./popup/PopupRoot";
 
 interface Props {
 
@@ -54,8 +54,8 @@ class Popup extends Component<Props, State> {
       <>
         <globalContext.Provider value={{ order, settings }}>
           <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-            <Paper style={{ padding: 10 }}>
-              <PopupSettings />
+            <Paper style={{ padding: 8, overflow: "auto", maxHeight: 568 }}>
+              <PopupRoot />
             </Paper>
           </ThemeProvider>
         </globalContext.Provider>

@@ -1,3 +1,13 @@
+import { Settings } from "./interfaces";
+
+export const settingsDefaults: Settings = {
+  darkThemeState: false,
+  embeddedState: true,
+  notificationsState: true
+}
+
+export const interfaceCheckInterval = 2500;
+
 export const orderFields = [
   { documentId: "CompanyName", actualId: "companyName", name: "Company Name" },
   { documentId: "FlatNumber", actualId: "flatNumber", name: "Flat Number" },
@@ -16,4 +26,21 @@ export const orderFields = [
   { documentId: "UPRN", actualId: "uprn", name: "UPRN" }
 ]
 
-export const interfaceCheckInterval = 2500;
+export const planningFields = [
+  { documentId: "Reference", actualId: "reference" },
+  { documentId: "Proposal", actualId: "descripton" },
+  { documentId: "Address", actualId: "address" },
+  { documentId: "Decision", actualId: "decision" },
+  { documentId: "Decision Issued Date", actualId: "decisionIssuedDate" },
+  { documentId: "Decision Made Date", actualId: "decisionMadeDate" },
+  { documentId: "Application Received", actualId: "applicationReceivedDate" },
+  { documentId: "Application Received Date", actualId: "applicationReceivedDate" }
+]
+
+export const buildingFields = [
+  { documentId: "Application Reference Number", actualId: "reference" },
+  { documentId: "Description Of Works", actualId: "descripton" },
+  { documentId: "Site Address", actualId: "address" },
+  { documentId: "Status", actualId: "status" },
+  { documentId: "Application Received", actualId: "applicationReceivedDate" }
+]

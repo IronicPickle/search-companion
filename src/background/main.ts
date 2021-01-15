@@ -1,10 +1,15 @@
 import chromep from "chrome-promise"
 import { createNotification } from "../lib/utils";
+import { settingsDefaults } from "../lib/vars";
 
 chrome.runtime.onInstalled.addListener(async function() {
 
-  chrome.storage.local.remove([ "notification" ]);
   chrome.storage.local.clear();
+  chrome.storage.local.remove([ "notification" ]);
+
+  const storage = await chromep.storage.local.get();
+  if(storage.settings == null) await chromep.storage.local.set({ settings: settingsDefaults });
+
 
   chrome.webNavigation.onDOMContentLoaded.addListener(async (navDetails) => {
     if(navDetails.frameId !== 0) return;

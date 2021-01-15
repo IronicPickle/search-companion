@@ -1,5 +1,6 @@
 import { Context, createContext } from "react";
 import { Building, Notification, Order, Planning, Settings } from "../lib/interfaces";
+import { settingsDefaults } from "../lib/vars"
 
 export interface GlobalContext {
   order?: Order;
@@ -11,10 +12,7 @@ export interface GlobalContext {
 }
 
 export const globalContextDefaults: GlobalContext = {
-  settings: {
-    darkThemeState: false,
-    embeddedState: true
-  }
+  settings: settingsDefaults
 }
 
 export const globalContext: Context<GlobalContext> = createContext(globalContextDefaults);

@@ -9,7 +9,6 @@ import { lightTheme, darkTheme } from "./themes";
 import { globalContext, globalContextDefaults } from "./contexts";
 import EmbedRoot from "./embed/EmbedRoot";
 import FrameComponent, { FrameContextConsumer } from "react-frame-component";
-import ErrorBoundary from "./utils/ErrorBoundary";
 
 interface Props {
 
@@ -112,7 +111,8 @@ class Embed extends Component<Props, State> {
   }
 
   sendNotification(notification: Notification) {
-    if(notification.href === window.location.href) this.setState({ notification });
+    if(notification.href === window.location.href &&
+      this.state.settings.notificationsState) this.setState({ notification });
   }
 
   render() {

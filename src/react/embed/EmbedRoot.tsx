@@ -1,12 +1,20 @@
 // Main Imports
 import React from "react";
-import { Paper, Theme } from "@material-ui/core";
+import { Container, Paper, Theme } from "@material-ui/core";
 import withStyles, { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { Component } from "react";
 import { globalContext, GlobalContext } from "../contexts";
 import TabController from "./TabController";
 
 const styles = (theme: Theme) => ({
+  outerContainer: {
+    padding: theme.spacing(0.25),
+    whiteSpace: "nowrap" as "nowrap"
+  },
+  innerContainer: {
+    padding: theme.spacing(1),
+    whiteSpace: "nowrap" as "nowrap"
+  },
   "@global": {
     "*::-webkit-scrollbar": {
       width: "0.4em",
@@ -47,9 +55,11 @@ class EmbedRoot extends Component<Props, State> {
       <>
         {
           (settings.embeddedState) ?
-            <Paper style={{ padding: 10, whiteSpace: "nowrap" }}>
-              <TabController />
-            </Paper>
+            <Container className={classes.outerContainer}>
+              <Paper className={classes.innerContainer}>
+                <TabController />
+              </Paper>
+            </Container>
           : <></>
         }
         

@@ -2,14 +2,9 @@ import chromep from "chrome-promise";
 import _ from "lodash";
 import { Mapping} from "../../lib/interfaces";
 import { injectIndicator, queryElement } from "../../lib/utils";
-import { interfaceCheckInterval } from "../../lib/vars";
 
 const indicatorElement = injectIndicator();
 checkSignature();
-
-setInterval(() => {
-  checkSignature();
-}, interfaceCheckInterval)
 
 function checkSignature() {
   if(queryElement(["embed"]) != null) {

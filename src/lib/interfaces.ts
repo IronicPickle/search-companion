@@ -92,4 +92,5 @@ export interface Settings {
   [key: string]: any;
   embeddedState: boolean;
   darkThemeState: boolean;
+  notificationsState: boolean;
 }

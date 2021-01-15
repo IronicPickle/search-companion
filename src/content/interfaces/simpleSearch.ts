@@ -2,11 +2,11 @@ import chromep from "chrome-promise";
 import _ from "lodash";
 import { Building, Planning} from "../../lib/interfaces";
 import { createNotification, queryElement } from "../../lib/utils";
-import { interfaceCheckInterval } from "../../lib/vars";
+import { buildingFields, planningFields } from "../../lib/vars";
 
 setTimeout(() => {
   checkSignature();
-}, interfaceCheckInterval);
+}, 500);
 
 function checkSignature() {
   const titleElement = queryElement(["id:pageheading", "h1", "strong"]);
@@ -41,17 +41,6 @@ async function updatePlanningInfo() {
     chrome.storage.local.set({ planning, notification });
   }
 }
-
-const planningFields = [
-  { documentId: "Reference", actualId: "reference" },
-  { documentId: "Proposal", actualId: "descripton" },
-  { documentId: "Address", actualId: "address" },
-  { documentId: "Decision", actualId: "decision" },
-  { documentId: "Decision Issued Date", actualId: "decisionIssuedDate" },
-  { documentId: "Decision Made Date", actualId: "decisionMadeDate" },
-  { documentId: "Application Received", actualId: "applicationReceivedDate" },
-  { documentId: "Application Received Date", actualId: "applicationReceivedDate" }
-]
 
 function extractPlanningInfo() {
   const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]);
@@ -101,13 +90,7 @@ async function updateBuildingInfo() {
   }
 }
 
-const buildingFields = [
-  { documentId: "Application Reference Number", actualId: "reference" },
-  { documentId: "Description Of Works", actualId: "descripton" },
-  { documentId: "Site Address", actualId: "address" },
-  { documentId: "Status", actualId: "status" },
-  { documentId: "Application Received", actualId: "applicationReceivedDate" }
-]
+
 
 function extractBuildingInfo() {
   const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]);

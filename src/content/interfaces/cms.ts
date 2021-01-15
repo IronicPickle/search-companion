@@ -1,8 +1,9 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
 import { Order, Product, Property } from "../../lib/interfaces";
-import { createNotification, injectIndicator, queryElement } from "../../lib/utils";
-import { interfaceCheckInterval, orderFields } from "../../lib/vars";
+import { orderFields } from "../../lib/vars";
+import { createNotification, queryElement } from "../../lib/utils";
+import { interfaceCheckInterval } from "../../lib/vars";
 
 setInterval(() => {
   checkSignature();

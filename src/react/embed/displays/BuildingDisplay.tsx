@@ -35,7 +35,7 @@ class BuildingDisplay extends Component<Props, State> {
     const { settings, order } = this.context as GlobalContext;
     let { building } = this.context as GlobalContext;
 
-    let planningString = `{reference}\n{descripton}\n{address}\n{status}\nRECEIVED {receivedDate}`;
+    let planningString = `{reference}\n{descripton}\n{address}\n{decision} {decisionDate}\nreceived {receivedDate}`;
 
     if(building != null) {
 
@@ -45,16 +45,19 @@ class BuildingDisplay extends Component<Props, State> {
         planningString = planningString.replace("{descripton}", building.descripton);
       if(building.address != null)
         planningString = planningString.replace("{address}", building.address);
-      if(building.status != null) {
-        planningString = planningString.replace("{status}", building.status);
-      } else {
-        planningString = planningString.replace("{status}\n", "");
-      }
-
-      if(building.applicationReceivedDate != null)
+      
+      if(building.decision != null && building.decisionDate != null) {
+        planningString = planningString.replace("{decision}", building.decision);
+        planningString = planningString.replace("{decisionDate}",
+          moment(new Date(building.decisionDate)).format("DD/MM/YYYY")
+        );
+        planningString = planningString.replace("\nreceived {receivedDate}", "")
+      } else if(building.applicationReceivedDate != null) {
         planningString = planningString.replace("{receivedDate}",
           moment(new Date(building.applicationReceivedDate)).format("DD/MM/YYYY")
         );
+        planningString = planningString.replace("\n{decision} {decisionDate}", "")
+      }
 
     }
 

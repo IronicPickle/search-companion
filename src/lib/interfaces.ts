@@ -67,7 +67,8 @@ export interface Building {
   reference?: string;
   descripton?: string;
   address?: string;
-  status?: string;
+  decision?: string;
+  decisionDate?: string;
   applicationReceivedDate?: number;
 }
 

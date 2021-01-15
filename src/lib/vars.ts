@@ -30,6 +30,7 @@ export const planningFields = [
   { documentId: "Reference", actualId: "reference" },
   { documentId: "Proposal", actualId: "descripton" },
   { documentId: "Address", actualId: "address" },
+
   { documentId: "Decision", actualId: "decision" },
   { documentId: "Decision Issued Date", actualId: "decisionIssuedDate" },
   { documentId: "Decision Made Date", actualId: "decisionMadeDate" },
@@ -41,6 +42,8 @@ export const buildingFields = [
   { documentId: "Application Reference Number", actualId: "reference" },
   { documentId: "Description Of Works", actualId: "descripton" },
   { documentId: "Site Address", actualId: "address" },
-  { documentId: "Status", actualId: "status" },
+  
+  { documentId: "Decision", actualId: "decision" },
+  { documentId: "Decision Date", actualId: "decisionDate" },
   { documentId: "Application Received", actualId: "applicationReceivedDate" }
 ]

@@ -35,7 +35,7 @@ class PlanningDisplay extends Component<Props, State> {
     const { settings, order } = this.context as GlobalContext;
     let { planning } = this.context as GlobalContext;
 
-    let planningString = `{reference}\n{descripton}\n{address}\n{decision} {decisionDate}`;
+    let planningString = `{reference}\n{descripton}\n{address}\n{decision} {decisionDate}\nreceived {receivedDate}`;
 
     if(planning != null) {
       if(planning.reference != null)
@@ -45,18 +45,25 @@ class PlanningDisplay extends Component<Props, State> {
       if(planning.address != null)
         planningString = planningString.replace("{address}", planning.address);
 
-      if(planning.decision != null) {
-        planning.decision = decisions[planning.decision.toLocaleLowerCase()] || planning.decision;
+      if(planning.decision != null &&
+        (planning.decisionMadeDate != null || planning.decisionIssuedDate)) {
+        planning.decision = decisions[planning.decision.toLowerCase()] || planning.decision;
         planningString = planningString.replace("{decision}", planning.decision);
+        if(planning.decisionIssuedDate != null)
+          planningString = planningString.replace("{decisionDate}",
+            moment(new Date(planning.decisionIssuedDate)).format("DD/MM/YYYY")
+          );
+        if(planning.decisionMadeDate != null)
+          planningString = planningString.replace("{decisionDate}",
+            moment(new Date(planning.decisionMadeDate)).format("DD/MM/YYYY")
+          );
+        planningString = planningString.replace("\nreceived {receivedDate}", "")
+      } else if(planning.applicationReceivedDate != null) {
+        planningString = planningString.replace("{receivedDate}",
+          moment(new Date(planning.applicationReceivedDate)).format("DD/MM/YYYY")
+        );
+        planningString = planningString.replace("\n{decision} {decisionDate}", "")
       }
-      if(planning.decisionIssuedDate != null)
-        planningString = planningString.replace("{decisionDate}",
-          moment(new Date(planning.decisionIssuedDate)).format("DD/MM/YYYY")
-        );
-      if(planning.decisionMadeDate != null)
-        planningString = planningString.replace("{decisionDate}",
-          moment(new Date(planning.decisionMadeDate)).format("DD/MM/YYYY")
-        );
 
     }
 

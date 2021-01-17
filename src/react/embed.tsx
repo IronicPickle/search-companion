@@ -81,19 +81,9 @@ class Embed extends Component<Props, State> {
 
   async syncStorage() {
     const storage = await chromep.storage.local.get() as Storage;
-    if(storage.order != null) this.setState({
-      order: storage.order
-    });
-    if(storage.planning != null) this.setState({
-      planning: storage.planning
-    });
-    if(storage.building != null) this.setState({
-      building: storage.building
-    });
-    if(storage.settings != null) this.setState({
-      settings: storage.settings
-    });
-    if(storage.notification != null) this.sendNotification({ ...storage.notification })
+    const { order, planning, building, settings, notification } = storage;
+    this.setState({ order, planning, building, settings });
+    if(notification != null) this.sendNotification({ ...notification })
   }
 
   componentDidMount() {
@@ -111,8 +101,9 @@ class Embed extends Component<Props, State> {
   }
 
   sendNotification(notification: Notification) {
+    const { settings } = this.state;
     if(notification.href === window.location.href &&
-      this.state.settings.notificationsState) this.setState({ notification });
+      settings.notificationsState && settings.extensionState) this.setState({ notification });
   }
 
   render() {

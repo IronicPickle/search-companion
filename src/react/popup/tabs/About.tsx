@@ -4,7 +4,7 @@ import InfoIcon from "@material-ui/icons/Info";
 // Main imports
 import React, { Component } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Container, Divider, Theme, Typography, withStyles } from "@material-ui/core";
-import { GlobalContext, globalContext } from "../contexts";
+import { GlobalContext, globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const styles = (theme: Theme) => ({
@@ -16,11 +16,10 @@ const styles = (theme: Theme) => ({
   },
   details: {
     display: "block" as "block",
-    paddingRight: 0,
-    paddingLeft: 0,
     overflowY: "auto" as "auto",
-    maxHeight: theme.spacing(32)
-
+    maxHeight: theme.spacing(32),
+    padding: 0,
+    paddingBottom: theme.spacing(1)
   }
 });
 
@@ -32,7 +31,7 @@ interface State {
   
 }
 
-class AboutTab extends Component<Props, State> {
+class About extends Component<Props, State> {
   static contextType = globalContext;
   constructor(props: Props) {
     super(props)
@@ -47,9 +46,11 @@ class AboutTab extends Component<Props, State> {
     return (
       <>
         <Accordion>
-          <AccordionSummary
-            expandIcon={<InfoIcon />}
-          >About</AccordionSummary>
+          <AccordionSummary expandIcon={<InfoIcon />}>
+            <Typography variant="subtitle2" component="p">
+              About
+            </Typography>
+          </AccordionSummary>
           <Divider className={classes.divider} />
           <AccordionDetails className={classes.details} >
             <Container>
@@ -88,4 +89,4 @@ class AboutTab extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AboutTab);
+export default withStyles(styles, { withTheme: true })(About);

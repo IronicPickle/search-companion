@@ -54,11 +54,11 @@ async function injectOrderData(): Promise<boolean | undefined> {
   const order = <Order> (await chromep.storage.local.get()).order;
   const terraProduct = await getTerraProduct();
   if(terraProduct == null) return;
-  const type = getType(terraProduct.name);
+  const productType = getProductType(terraProduct.name);
   const property = order.property;
   
   const productTypeSelect = (<HTMLSelectElement> queryElement(["id:product_type_select"]));
-  if(type != null) if(productTypeSelect != null) productTypeSelect.value = type;
+  if(productType != null && productTypeSelect != null) productTypeSelect.value = productType;
   (<HTMLInputElement> queryElement(["id:search_ref"])).value = order.reference;
   (<HTMLInputElement> queryElement(["id:postcode"])).value = property.postCode;
   (<HTMLInputElement> queryElement(["id:house-name"])).value = property.houseName;
@@ -99,7 +99,7 @@ async function injectOrderData(): Promise<boolean | undefined> {
   return true;
 }
 
-function getType(name: string) {
+function getProductType(name: string) {
   name = name.toLowerCase();
   if(name.includes("con29m")) return "CON29M";
   if(name.includes("coal extra")) return "Coal Extra";

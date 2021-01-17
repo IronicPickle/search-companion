@@ -11,6 +11,7 @@ import React, { Component, MouseEvent } from "react";
 import { Divider, Grid, IconButton, Theme, Tooltip, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { createNotification } from "../../lib/utils";
 
 const styles = (theme: Theme) => ({
   divider: {
@@ -57,8 +58,9 @@ class TabBar extends Component<Props, State> {
 
   openDuct() {
     const { order } = this.context as GlobalContext;
-    console.log(encodeURIComponent(location.href))
     window.open(`duct://upload/?ref=${order?.reference}&url=${encodeURIComponent(location.href)}`);
+    const notification = createNotification({ severity: "success", text: "Sent PDF to Duct" }, 0);
+    chrome.storage.local.set({ notification });
   }
 
   render() {
@@ -70,14 +72,14 @@ class TabBar extends Component<Props, State> {
         <Grid container direction="column" style={{ height: "100%" }} >
           <Divider className={classes.divider} />
           <Grid item>
-            <IconButton onClick={this.tabSelect(0)} disabled={order == null} >
+            <IconButton onClick={this.tabSelect(0)} >
               <Tooltip title="Property" PopperProps={{ disablePortal: true }} >
                 <InfoIcon />
               </Tooltip>
             </IconButton>
           </Grid>
           <Grid item>
-            <IconButton onClick={this.tabSelect(1)} disabled={order == null} >
+            <IconButton onClick={this.tabSelect(1)} >
               <Tooltip title="Products" PopperProps={{ disablePortal: true }} >
                 <AttachMoneyIcon />
              </Tooltip>
@@ -97,6 +99,7 @@ class TabBar extends Component<Props, State> {
               </Tooltip>
             </IconButton>
           </Grid>
+          <Divider className={classes.divider} />
           <Grid item>
             <IconButton onClick={this.openGoogleMaps} disabled={order?.property.postCode == null} >
               <Tooltip title="Maps" PopperProps={{ disablePortal: true }} >

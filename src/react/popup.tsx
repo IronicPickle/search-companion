@@ -30,12 +30,8 @@ class Popup extends Component<Props, State> {
 
   async syncStorage() {
     const storage = await chromep.storage.local.get() as Storage;
-    if(storage.order != null) this.setState({
-      order: storage.order
-    })
-    if(storage.settings != null) this.setState({
-      settings: storage.settings
-    });
+    const { settings } = storage;
+    if(settings != null) this.setState({ settings });
   }
 
   componentDidMount() {
@@ -54,7 +50,7 @@ class Popup extends Component<Props, State> {
       <>
         <globalContext.Provider value={{ order, settings }}>
           <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-            <Paper style={{ padding: 8, overflow: "auto", maxHeight: 568 }}>
+            <Paper style={{ padding: 8, overflow: "auto", maxHeight: 568, width: 284 }}>
               <PopupRoot />
             </Paper>
           </ThemeProvider>

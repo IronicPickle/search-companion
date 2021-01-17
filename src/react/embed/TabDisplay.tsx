@@ -3,14 +3,14 @@ import React, { Component } from "react";
 import { Divider, Theme, withStyles, Snackbar } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import OrderDisplay from "./displays/PropertyDisplay";
-import PlanningDisplay from "./displays/PlanningDisplay";
-import ProductsDisplay from "./displays/ProductsDisplay";
+import OrderDisplay from "./displays/Property";
+import PlanningDisplay from "./displays/Planning";
+import ProductsDisplay from "./displays/Products";
 import Alert from "@material-ui/lab/Alert";
 import { Notification, Storage } from "../../lib/interfaces";
 import _ from "lodash";
 import chromep from "chrome-promise";
-import BuildingDisplay from "./displays/BuildingDisplay";
+import BuildingDisplay from "./displays/Building";
 
 const styles = (theme: Theme) => ({
   divider: {

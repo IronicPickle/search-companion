@@ -68,7 +68,7 @@ export interface Building {
   descripton?: string;
   address?: string;
   decision?: string;
-  decisionDate?: string;
+  decisionDate?: number;
   applicationReceivedDate?: number;
 }
 
@@ -94,4 +94,12 @@ export interface Settings {
   embeddedState: boolean;
   darkThemeState: boolean;
   notificationsState: boolean;
+  extensionState: boolean;
+}
+
+export interface InterfaceInfo {
+  [key: string]: any;
+  urls: string[];
+  scripts: string[];
+  restrictToOneTab: boolean;
 }

@@ -25,7 +25,7 @@ interface Props {
   classes: ClassNameMap;
   title: string;
   icon: IconProps;
-  controller: any;
+  controller?: any;
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => any;
 }
 
@@ -64,7 +64,7 @@ class Section extends Component<Props, State> {
                 >{ title }</Typography>
               </Toolbar>
             </Box>
-            { controller }
+            { (controller != null) ? controller : <></> }
           </Toolbar>
         </ListItem>
       </>

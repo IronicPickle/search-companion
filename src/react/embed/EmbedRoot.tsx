@@ -54,7 +54,7 @@ class EmbedRoot extends Component<Props, State> {
     return (
       <>
         {
-          (settings.embeddedState) ?
+          (settings.embeddedState && settings.extensionState) ?
             <Container className={classes.outerContainer}>
               <Paper className={classes.innerContainer}>
                 <TabController />

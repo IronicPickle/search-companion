@@ -3,7 +3,8 @@ import { Settings } from "./interfaces";
 export const settingsDefaults: Settings = {
   darkThemeState: false,
   embeddedState: true,
-  notificationsState: true
+  notificationsState: true,
+  extensionState: true
 }
 
 export const interfaceCheckInterval = 2500;

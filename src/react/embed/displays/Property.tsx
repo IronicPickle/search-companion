@@ -6,11 +6,13 @@ import { Box, Container, TextField, Theme, Toolbar, Typography, withStyles } fro
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { orderFields } from "../../../lib/vars";
+import Header from "./Header";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
     paddingRight: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
+    minWidth: theme.spacing(48)
   },
   infoContainer: {
     marginTop: theme.spacing(1),
@@ -25,7 +27,8 @@ const styles = (theme: Theme) => ({
   },
   entryTitle: {
     marginRight: theme.spacing(2)
-  }, field: {
+  },
+  field: {
     width: theme.spacing(24)
   }
 });
@@ -38,7 +41,7 @@ interface State {
   
 }
 
-class PropertyDisplay extends Component<Props, State> {
+class Property extends Component<Props, State> {
   static contextType = globalContext;
   constructor(props: Props) {
     super(props)
@@ -51,21 +54,26 @@ class PropertyDisplay extends Component<Props, State> {
     const { classes } = this.props;
     const { settings, order } = this.context as GlobalContext;
 
-    return (
+    let display = (
       <>
         <Container className={classes.mainContainer}>
-          <Container>
-            <Typography
-              variant="subtitle1"
-              component="h2"
-              align="center"
-            ><b>{order?.reference} - {order?.type}</b></Typography>
-            <Typography
-              variant="subtitle2"
-              component="h3"
-              align="center"
-            >{order?.council}</Typography>
-          </Container>
+          <Typography
+            variant="subtitle1"
+            component="h2"
+            align="center"
+          >No Order to Show</Typography>
+        </Container>
+      </>
+    )
+
+    if(order != null) display = (
+      <>
+        <Container className={classes.mainContainer}>
+          <Header
+            reference={order?.reference}
+            type={order?.type}
+            council={order?.council} 
+          />
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"
@@ -95,7 +103,9 @@ class PropertyDisplay extends Component<Props, State> {
         </Container>
       </>
     )
+
+    return display;
   }
 }
 
-export default withStyles(styles, { withTheme: true })(PropertyDisplay);
+export default withStyles(styles, { withTheme: true })(Property);

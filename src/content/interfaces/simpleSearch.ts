@@ -33,7 +33,7 @@ async function updatePlanningInfo() {
   if(planning.applicationReceivedDate != null)
     planning.applicationReceivedDate = new Date(planning.applicationReceivedDate).getTime();
 
-  planning = (planning.reference == null) ? { ...storage.planning, ...planning } : planning;
+  planning = (!checkIfNewPage()) ? { ...storage.planning, ...planning } : planning;
   
   if(!_.isEqual(planning, storage.planning)) {
     const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
@@ -43,7 +43,8 @@ async function updatePlanningInfo() {
 }
 
 function extractPlanningInfo() {
-  const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]);
+  const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]) || 
+    queryElement(["id:applicationDetails", "tbody"]);
   if(tbodyElement == null) return;
 
   const planning = <Planning> {}
@@ -72,16 +73,14 @@ async function updateBuildingInfo() {
   let building = extractBuildingInfo();
   if(building == null) return;
 
-  if(building.decisionIssuedDate != null)
-    building.decisionIssuedDate = new Date(building.decisionIssuedDate).getTime();
 
-  if(building.decisionMadeDate != null)
-    building.decisionMadeDate = new Date(building.decisionMadeDate).getTime();
+  if(building.decisionDate != null)
+    building.decisionDate = new Date(building.decisionDate).getTime();
 
   if(building.applicationReceivedDate != null)
     building.applicationReceivedDate = new Date(building.applicationReceivedDate).getTime();
 
-  building = (building.reference == null) ? { ...storage.building, ...building } : building
+  building = (!checkIfNewPage()) ? { ...storage.building, ...building } : building;
   
   if(!_.isEqual(building, storage.building)) {
     const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);
@@ -93,7 +92,8 @@ async function updateBuildingInfo() {
 
 
 function extractBuildingInfo() {
-  const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]);
+  const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]) || 
+    queryElement(["id:applicationDetails", "tbody"]);
   if(tbodyElement == null) return;
 
   const planning = <Building> {}
@@ -114,4 +114,9 @@ function extractBuildingInfo() {
     });
 
   return planning;
+}
+
+function checkIfNewPage() {
+  const summaryElement = <HTMLSpanElement> queryElement([ "id:subtab_summary" ]);
+  return summaryElement.className === "active";
 }

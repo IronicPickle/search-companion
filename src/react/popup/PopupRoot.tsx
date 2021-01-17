@@ -5,8 +5,8 @@ import React, { Component } from "react";
 import { Divider, Theme, Typography, withStyles } from "@material-ui/core";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { GlobalContext, globalContext } from "../contexts";
-import SettingsTab from "./SettingsTab";
-import AboutTab from "./AboutTab";
+import GlobalSettings from "./tabs/GlobalSettings";
+import AboutTab from "./tabs/About";
 
 const styles = (theme: Theme) => ({
   "@global": {
@@ -38,7 +38,7 @@ const styles = (theme: Theme) => ({
 });
 
 interface Props {
-  classes: ClassNameMap
+  classes: ClassNameMap;
 }
 
 interface State {
@@ -68,7 +68,7 @@ class PopupRoot extends Component<Props, State> {
         >Search Companion</Typography>
         <Divider className={classes.divider} />
         
-        <SettingsTab />
+        <GlobalSettings />
         <AboutTab />
       </>
     )

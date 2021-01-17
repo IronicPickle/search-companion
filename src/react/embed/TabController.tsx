@@ -54,13 +54,14 @@ class TabController extends Component<Props, State> {
   }
 
   componentDidMount() {
+    const { settings } = this.context;
     chrome.storage.onChanged.addListener(async (changes) => {
       if(changes.notification != null) {
         const notification = changes.notification.newValue;
         if(notification.href !== window.location.href) return;
         const tabOverride = notification.tabOverride | 0;
         if(tabOverride != null &&
-          this.context.settings.notificationsState) this.changeTab(tabOverride);
+          settings.notificationsState && settings.extensionState) this.changeTab(tabOverride);
       }
     });
 

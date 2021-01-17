@@ -12,11 +12,10 @@ chrome.storage.onChanged.addListener((changes) => {
 async function checkSignature() {
   const caProduct = getCAProduct();
   if(caProduct == null) return;
-  if(queryElement([
-    "id:maincontentarea",
-    "class:standard-content",
-    "class:inferisContainer",
-    "class:pageTitle"]) != null) {
+  const h1Element = queryElement(
+    [ "id:maincontentarea", "class:standard-content", "class:inferisContainer", "class:pageTitle"]
+  );
+  if(h1Element != null) {
     injectOrderData();
     if(await injectOrderData() == null) return;
     console.log("Order Info Injected");

@@ -19,6 +19,9 @@ export function queryElement(signature: string[], prevElement?: Element): Elemen
   } else if(query.startsWith("class:")) {
     const className = query.slice(6);
     element = rootElement.getElementsByClassName(className).item(index);
+  } else if(query.startsWith("name:")) {
+    const name = query.slice(5);
+    element = document.getElementsByName(name).item(index);
   } else {
     const tag = query;
     element = rootElement.getElementsByTagName(tag).item(index);

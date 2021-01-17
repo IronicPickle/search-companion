@@ -11,6 +11,9 @@ module.exports = {
     "js/content/interfaces/coalAuthority": path.join(__dirname, "src/content/interfaces/coalAuthority.ts"), // Coal Authority interface
     "js/content/interfaces/unitedUtilities": path.join(__dirname, "src/content/interfaces/unitedUtilities.ts"), // United Utilities interface
     "js/content/interfaces/simpleSearch": path.join(__dirname, "src/content/interfaces/simpleSearch.ts"), // Simple Search interface
+    "js/content/interfaces/tameside": path.join(__dirname, "src/content/interfaces/tameside.ts"), // Tameside interface
+    "js/content/interfaces/warrington": path.join(__dirname, "src/content/interfaces/warrington.ts"), // Warrington interface
+    "js/content/interfaces/blackburn": path.join(__dirname, "src/content/interfaces/blackburn.ts"), // Warrington interface
 
     "js/react/popup": path.join(__dirname, "src/react/popup.tsx"), // Popup react root
     "js/react/embed": path.join(__dirname, "src/react/embed.tsx") // Embed react root

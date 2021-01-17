@@ -34,7 +34,24 @@ class Header extends Component<Props, State> {
     const { classes, reference, type, council } = this.props;
     const { settings } = this.context as GlobalContext;
 
-    return (
+    let display = (
+      <>
+        <Container>
+          <Typography
+            variant="subtitle1"
+            component="h2"
+            align="center"
+          ><b>No Order Info Available</b></Typography>
+          <Typography
+            variant="subtitle2"
+            component="h3"
+            align="center"
+          >Load an order on the CMS to populate this section</Typography>
+        </Container>
+      </>
+    )
+
+    if(reference != null || type != null || council != null) display =  (
       <>
         <Container>
           <Typography
@@ -50,6 +67,8 @@ class Header extends Component<Props, State> {
         </Container>
       </>
     )
+
+    return display;
   }
 }
 

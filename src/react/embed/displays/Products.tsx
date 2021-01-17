@@ -33,7 +33,7 @@ const styles = (theme: Theme) => ({
   entryTitle: {
     marginRight: theme.spacing(2)
   },
-  divider: {
+  totalCostDivider: {
     marginRight: theme.spacing(2)
   },
   openLinkButton: {
@@ -41,6 +41,12 @@ const styles = (theme: Theme) => ({
   },
   totalCost: {
     marginRight: 30 + theme.spacing(1)
+  },
+  divider: {
+    marginTop: theme.spacing(0.5),
+    marginRight: theme.spacing(8),
+    marginLeft: theme.spacing(8),
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -80,6 +86,15 @@ class Products extends Component<Props, State> {
             align="center"
           >No Products to Show</Typography>
         </Container>
+        <Divider className={classes.divider} />
+        <Typography
+          variant="subtitle2"
+          component="p"
+          align="center"
+        >
+          Load up an Order on the CMS and this section<br/>
+          will display all products on the order.
+        </Typography>
       </>
     )
 
@@ -134,7 +149,7 @@ class Products extends Component<Props, State> {
                   })
                 : <></>
               }
-              <Divider className={classes.divider} />
+              <Divider className={classes.totalCostDivider} />
               <Toolbar disableGutters className={classes.entryToolbar} key="totalCost" >
                 <Box flexGrow={1}>
                   <b className={classes.entryTitle}>Total Cost </b><br />

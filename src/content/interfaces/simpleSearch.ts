@@ -9,8 +9,8 @@ setTimeout(() => {
 }, 500);
 
 function checkSignature() {
-  const titleElement = queryElement(["id:pageheading", "h1", "strong"]);
-  const dataType = titleElement?.innerHTML;
+  const spanElement = <HTMLSpanElement> queryElement(["id:pageheading", "h1", "strong"]);
+  const dataType = spanElement?.innerHTML;
   if(dataType === "Planning") {
     updatePlanningInfo();
   } else if(dataType === "Building Control") {
@@ -89,14 +89,12 @@ async function updateBuildingInfo() {
   }
 }
 
-
-
 function extractBuildingInfo() {
   const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]) || 
     queryElement(["id:applicationDetails", "tbody"]);
   if(tbodyElement == null) return;
 
-  const planning = <Building> {}
+  const building = <Building> {}
 
   Array.from(tbodyElement.getElementsByTagName("tr"))
     .map((trElement: HTMLTableRowElement) => {
@@ -109,14 +107,21 @@ function extractBuildingInfo() {
 
       buildingFields.map(buildingField => {
         if(buildingField.documentId === name)
-          planning[buildingField.actualId] = value;
+        building[buildingField.actualId] = value;
       });
     });
 
-  return planning;
+  return building;
 }
 
 function checkIfNewPage() {
-  const summaryElement = <HTMLSpanElement> queryElement([ "id:subtab_summary" ]);
-  return summaryElement.className === "active";
+  let isNewPage = false;
+
+  isNewPage = document.getElementsByClassName("active").length === 1;
+
+  const subtabSummaryElement = <HTMLSpanElement> queryElement([ "id:subtab_summary" ]);
+  if(subtabSummaryElement != null)
+    isNewPage = subtabSummaryElement.className === "active";
+
+  return isNewPage;
 }

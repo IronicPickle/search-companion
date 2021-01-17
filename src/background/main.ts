@@ -112,5 +112,17 @@ const interfaces: InterfaceInfo[] = [
     ],
     scripts: [ "js/content/interfaces/simpleSearch.js" ],
     restrictToOneTab: false
+  }, {
+    urls: [ "https://public.tameside.gov.uk/forms/f513buildregcomp385.asp" ],
+    scripts: [ "js/content/interfaces/tameside.js" ],
+    restrictToOneTab: false
+  }, {
+    urls: [ "https://planning.warrington.gov.uk/swiftlg/apas/run/WPHAPPDETAIL.DisplayUrl" ],
+    scripts: [ "js/content/interfaces/warrington.js" ],
+    restrictToOneTab: false
+  }, {
+    urls: [ "https://planning.blackburn.gov.uk/Northgate/PlanningExplorer/Generic/StdDetails.aspx" ],
+    scripts: [ "js/content/interfaces/blackburn.js" ],
+    restrictToOneTab: false
   }
 ]

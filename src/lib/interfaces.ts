@@ -56,10 +56,11 @@ export interface Planning {
   reference?: string;
   descripton?: string;
   address?: string;
+  status?: string;
   decision?: string;
-  decisionIssuedDate?: number;
-  decisionMadeDate?: number;
-  applicationReceivedDate?: number;
+  decisionIssuedDate?: number | string;
+  decisionMadeDate?: number | string;
+  applicationReceivedDate?: number | string;
 }
 
 export interface Building {
@@ -68,8 +69,8 @@ export interface Building {
   descripton?: string;
   address?: string;
   decision?: string;
-  decisionDate?: number;
-  applicationReceivedDate?: number;
+  decisionDate?: number | string;
+  applicationReceivedDate?: number | string;
 }
 
 

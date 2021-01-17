@@ -64,21 +64,15 @@ class About extends Component<Props, State> {
                   variant="body2"
                   component="p"
                 >
-                  Search Companion automates various mundane and time consuming tasks.<br/>
-                  Below is a list of what it can current do.<br/>
-                </Typography>
-                <br/>
-                <b>Current Capabilities</b><br/>
-                <Typography
-                  variant="body2"
-                  component="p"
-                >
-                - Automatic CMS Data Extraction<br/>
-                - Automatic Planning Application Data Extraction and Formatting<br/>
-                - Automatic Building Control Data Extraction and Formatting<br/>
-                - TerraFirma Field Auto-Fill<br/>
-                - Send Online Mapping Directly to Duct<br/>
-                - Open Property on Google Maps<br/>
+                  <br/>Search Companion brings convenience and automation to various tasks.<br/><br/>
+
+                  <b>Automation:</b><br/>
+                  - Auto-filling property information when ordering reports.<br/>
+                  - Automatic formatting of Planning Applications and Building Regulations.<br/>
+                  <br/><b>Convenience:</b><br/>
+                  - Displays your current order's information on all tabs for easy access.<br/>
+                  - Opens directly to a property on Google Maps.<br/>
+                  - Sends Online Mapping directly to Duct.
                 </Typography>
               </Typography>
             </Container>

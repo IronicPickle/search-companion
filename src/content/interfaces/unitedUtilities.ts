@@ -12,10 +12,10 @@ chrome.storage.onChanged.addListener((changes) => {
 async function checkSignature() {
   const terraProduct = getUUProduct();
   if(terraProduct == null) return;
-  if(queryElement([
-    "class:c-order-wizard__step-header",
-    "class:o-wrapper__inner",
-    "h1"]) != null) {
+  const h1Element = <HTMLHeadingElement> queryElement([
+    "class:c-order-wizard__step-header", "class:o-wrapper__inner", "h1"]
+  );
+  if(h1Element != null) {
     injectOrderData();
     if(await injectOrderData() == null) return;
     console.log("Order Info Injected");

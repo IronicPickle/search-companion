@@ -29,22 +29,58 @@ export const orderFields = [
 
 export const planningFields = [
   { documentId: "Reference", actualId: "reference" },
+  { documentId: "Application Number", actualId: "reference" },
+
   { documentId: "Proposal", actualId: "descripton" },
+  { documentId: "Proposal", actualId: "descripton" },
+
   { documentId: "Address", actualId: "address" },
+  { documentId: "Main Location", actualId: "address" },
+  { documentId: "Site Address", actualId: "address" },
+
+  { documentId: "Status", actualId: "status" },
 
   { documentId: "Decision", actualId: "decision" },
+
   { documentId: "Decision Issued Date", actualId: "decisionIssuedDate" },
   { documentId: "Decision Made Date", actualId: "decisionMadeDate" },
+  { documentId: "Decision Date", actualId: "decisionMadeDate" },
+
   { documentId: "Application Received", actualId: "applicationReceivedDate" },
-  { documentId: "Application Received Date", actualId: "applicationReceivedDate" }
+  { documentId: "Application Received Date", actualId: "applicationReceivedDate" },
+  { documentId: "Application Date", actualId: "applicationReceivedDate" },
+  { documentId: "Received", actualId: "applicationReceivedDate" }
 ]
 
 export const buildingFields = [
   { documentId: "Application Reference Number", actualId: "reference" },
+  { documentId: "Case Reference", actualId: "reference" },
+
   { documentId: "Description Of Works", actualId: "descripton" },
+  { documentId: "Description", actualId: "descripton" },
+
   { documentId: "Site Address", actualId: "address" },
+  { documentId: "Address", actualId: "address" },
   
   { documentId: "Decision", actualId: "decision" },
+
   { documentId: "Decision Date", actualId: "decisionDate" },
-  { documentId: "Application Received", actualId: "applicationReceivedDate" }
+  
+  { documentId: "Application Received", actualId: "applicationReceivedDate" },
+  { documentId: "Date Received", actualId: "applicationReceivedDate" }
+]
+
+export const monthStringToNumber = [
+  { matches: [ "jan" ], number: 0 },
+  { matches: [ "feb" ], number: 1 },
+  { matches: [ "mar" ], number: 2 },
+  { matches: [ "apr" ], number: 3 },
+  { matches: [ "may" ], number: 4 },
+  { matches: [ "jun" ], number: 5 },
+  { matches: [ "jul" ], number: 6 },
+  { matches: [ "aug" ], number: 7 },
+  { matches: [ "sep" ], number: 8 },
+  { matches: [ "oct" ], number: 9 },
+  { matches: [ "nov" ], number: 10 },
+  { matches: [ "dec" ], number: 11 }
 ]

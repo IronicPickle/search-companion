@@ -2,7 +2,7 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Box, Container, TextField, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
+import { Box, Container, Divider, TextField, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { orderFields } from "../../../lib/vars";
@@ -30,6 +30,12 @@ const styles = (theme: Theme) => ({
   },
   field: {
     width: theme.spacing(24)
+  },
+  divider: {
+    marginTop: theme.spacing(0.5),
+    marginRight: theme.spacing(8),
+    marginLeft: theme.spacing(8),
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -62,6 +68,15 @@ class Property extends Component<Props, State> {
             component="h2"
             align="center"
           >No Order to Show</Typography>
+          <Divider className={classes.divider} />
+          <Typography
+            variant="subtitle2"
+            component="p"
+            align="center"
+          >
+            Load up an Order on the CMS and this section<br/>
+            will display the property's information
+          </Typography>
         </Container>
       </>
     )

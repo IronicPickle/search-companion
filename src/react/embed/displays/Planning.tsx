@@ -2,7 +2,7 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Container, TextField, Theme, Typography, withStyles } from "@material-ui/core";
+import { Container, Divider, TextField, Theme, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
@@ -17,6 +17,12 @@ const styles = (theme: Theme) => ({
   field: {
     margin: theme.spacing(2),
     width: theme.spacing(64)
+  },
+  divider: {
+    marginTop: theme.spacing(0.5),
+    marginRight: theme.spacing(8),
+    marginLeft: theme.spacing(8),
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -46,6 +52,24 @@ class Planning extends Component<Props, State> {
     const planningArray = planningString.split("\n");
 
     if(planning != null) {
+
+      let matchedDecision = decisions.find(decision => {
+        if(planning?.decision == null) return;
+        return decision.matches.includes(planning.decision.toLowerCase())
+      });
+      if(matchedDecision == null) {
+        matchedDecision = decisions.find(decision => {
+          if(planning?.status == null) return;
+          return decision.matches.includes(planning.status.toLowerCase())
+        });
+      }
+
+      if(matchedDecision != null) {
+        planningString = planningString.replace("{decision}", matchedDecision.decision);
+      } else if(planning.decision != null) {
+        planningString = planningString.replace("{decision}", planning.decision);
+      }
+      
       if(planning.reference != null)
         planningString = planningString.replace("{reference}", planning.reference);
       if(planning.descripton != null)
@@ -53,10 +77,7 @@ class Planning extends Component<Props, State> {
       if(planning.address != null)
         planningString = planningString.replace("{address}", planning.address);
 
-      if(planning.decision != null &&
-        (planning.decisionMadeDate != null || planning.decisionIssuedDate)) {
-        planning.decision = decisions[planning.decision.toLowerCase()] || planning.decision;
-        planningString = planningString.replace("{decision}", planning.decision);
+      if(planning.decisionMadeDate != null || planning.decisionIssuedDate) {
         if(planning.decisionIssuedDate != null)
           planningString = planningString.replace("{decisionDate}",
             moment(new Date(planning.decisionIssuedDate)).format("DD/MM/YYYY")
@@ -70,6 +91,9 @@ class Planning extends Component<Props, State> {
           moment(new Date(planning.applicationReceivedDate)).format("DD/MM/YYYY")
         );
       }
+
+      if(!planningString.includes("{decision} {decisionDate}"))
+        planningString = planningString.replace("{decisionDate}", "");
 
     }
 
@@ -95,10 +119,19 @@ class Planning extends Component<Props, State> {
             align="center"
           >No Planning Info to Show</Typography>
         </Container>
+        <Divider className={classes.divider} />
+        <Typography
+          variant="subtitle2"
+          component="p"
+          align="center"
+        >
+          Load up a Planning Application on a council's website<br/>
+          and this section will format the information.
+        </Typography>
       </>
     )
 
-    if(order != null) display = (
+    if(planningString !== "(no further details)") display = (
       <>
       <Container className={classes.mainContainer}>
           <Header
@@ -112,12 +145,7 @@ class Planning extends Component<Props, State> {
               component="div"
             >
               <TextField
-                value={
-                  (planningString == "(no further details)") ?
-                    "NO PLANNING INFO TO SHOW"
-                  :
-                    planningString.toUpperCase()
-                }
+                value={planningString.toUpperCase()}
                 className={classes.field}
                 multiline={true}
                 rows={10}
@@ -133,19 +161,38 @@ class Planning extends Component<Props, State> {
   }
 }
 
-const decisions: { [key: string]: string } = {
-  "approved": "APPROVED WITH CONDITIONS",
-  "granted": "APPROVED WITH CONDITIONS",
+const decisions: { decision: string, matches: string[] }[] = [
+  {
+    decision: "APPROVED WITH CONDITIONS",
+    matches: [
+      "approved", "granted", "approve", "grant",
+      "grant subject to conditions", "approve with conditions",
+      "planning permission granted", "outline planning granted",
+      "approval", "approval with conditions",
+      "permit outline planning permission", "permit full planning permission",
+      "grant permission", "permits", "x permits"
+    ]
+  }, {
+    decision: "REFUSED",
+    matches: [
+      "refused", "refuse",
+      "planning permission refused",
+      "refusal",
+      "refuse full planning permission", "refuse outline planning permission"
+    ]
+  }, {
+    decision: "WITHDRAWN",
+    matches: [
+      "withdrawn", "application withdrawn"
+    ]
+  }, {
+    decision: "DISCHARGE OF CONDITIONS",
+    matches: [
+      "discharge of conditions", "approved discharge of conditions"
+    ]
+  }
 
-  "approve": "APPROVED WITH CONDITIONS",
-  "grant": "APPROVED WITH CONDITIONS",
-
-  "grant subject to conditions": "APPROVED WITH CONDITIONS",
-  
-  "approve with conditions": "APPROVED WITH CONDITIONS",
-
-  "refuse": "REFUSED",
-  "application withdrawn": "WITHDRAWN"
-}
+  // 	PNH Prior Approval NOT required (West Lancs)
+]
 
 export default withStyles(styles, { withTheme: true })(Planning);

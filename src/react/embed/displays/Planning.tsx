@@ -77,15 +77,17 @@ class Planning extends Component<Props, State> {
       if(planning.address != null)
         planningString = planningString.replace("{address}", planning.address);
 
-      if(planning.decisionMadeDate != null || planning.decisionIssuedDate) {
-        if(planning.decisionIssuedDate != null)
-          planningString = planningString.replace("{decisionDate}",
-            moment(new Date(planning.decisionIssuedDate)).format("DD/MM/YYYY")
-          );
-        if(planning.decisionMadeDate != null)
+      if(planning.decisionMadeDate != null || planning.decisionIssuedDate != null) {
+        if(planning.decisionMadeDate != null) {
           planningString = planningString.replace("{decisionDate}",
             moment(new Date(planning.decisionMadeDate)).format("DD/MM/YYYY")
           );
+        } else if(planning.decisionIssuedDate != null) {
+          planningString = planningString.replace("{decisionDate}",
+            moment(new Date(planning.decisionIssuedDate)).format("DD/MM/YYYY")
+          );
+        }
+        
       } else if(planning.applicationReceivedDate != null) {
         planningString = planningString.replace("{receivedDate}",
           moment(new Date(planning.applicationReceivedDate)).format("DD/MM/YYYY")
@@ -183,7 +185,7 @@ const decisions: { decision: string, matches: string[] }[] = [
   }, {
     decision: "WITHDRAWN",
     matches: [
-      "withdrawn", "application withdrawn"
+      "withdrawn", "application withdrawn", "withdrawn by the applicant"
     ]
   }, {
     decision: "DISCHARGE OF CONDITIONS",

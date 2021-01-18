@@ -37,6 +37,7 @@ export const planningFields = [
   { documentId: "Address", actualId: "address" },
   { documentId: "Main Location", actualId: "address" },
   { documentId: "Site Address", actualId: "address" },
+  { documentId: "Development address", actualId: "address" },
 
   { documentId: "Status", actualId: "status" },
 
@@ -49,7 +50,8 @@ export const planningFields = [
   { documentId: "Application Received", actualId: "applicationReceivedDate" },
   { documentId: "Application Received Date", actualId: "applicationReceivedDate" },
   { documentId: "Application Date", actualId: "applicationReceivedDate" },
-  { documentId: "Received", actualId: "applicationReceivedDate" }
+  { documentId: "Received", actualId: "applicationReceivedDate" },
+  { documentId: "Key dates", actualId: "applicationReceivedDate" }
 ]
 
 export const buildingFields = [

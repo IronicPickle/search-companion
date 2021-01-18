@@ -124,5 +124,12 @@ const interfaces: InterfaceInfo[] = [
     urls: [ "https://planning.blackburn.gov.uk/Northgate/PlanningExplorer/Generic/StdDetails.aspx" ],
     scripts: [ "js/content/interfaces/blackburn.js" ],
     restrictToOneTab: false
+  }, {
+    urls: [
+      "https://www.ribblevalley.gov.uk/planningApplication/",
+      "http://5.61.123.171/Northgate/BC/BCExplorer/BC/ApplicationDetails.aspx"
+  ],
+    scripts: [ "js/content/interfaces/ribbleValley.js" ],
+    restrictToOneTab: false
   }
 ]

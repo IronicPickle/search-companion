@@ -51,6 +51,7 @@ class Planning extends Component<Props, State> {
     let planningString = `{reference}\n{descripton}\n{address}\n{decision} {decisionDate}\nreceived {receivedDate}`;
     const planningArray = planningString.split("\n");
 
+
     if(planning != null) {
 
       let matchedDecision = decisions.find(decision => {
@@ -77,20 +78,21 @@ class Planning extends Component<Props, State> {
       if(planning.address != null)
         planningString = planningString.replace("{address}", planning.address);
 
-      if(planning.decisionMadeDate != null || planning.decisionIssuedDate != null) {
-        if(planning.decisionMadeDate != null) {
-          planningString = planningString.replace("{decisionDate}",
-            moment(new Date(planning.decisionMadeDate)).format("DD/MM/YYYY")
-          );
-        } else if(planning.decisionIssuedDate != null) {
-          planningString = planningString.replace("{decisionDate}",
-            moment(new Date(planning.decisionIssuedDate)).format("DD/MM/YYYY")
-          );
-        }
-        
-      } else if(planning.applicationReceivedDate != null) {
+      const decisionMadeDate = planning.decisionMadeDate;
+      const decisionIssuedDate = planning.decisionIssuedDate;
+      const applicationReceivedDate = planning.applicationReceivedDate;
+
+      if(decisionMadeDate != null && !isNaN(decisionMadeDate as number)) {
+        planningString = planningString.replace("{decisionDate}",
+          moment(new Date(decisionMadeDate)).format("DD/MM/YYYY")
+        );
+      } else if(decisionIssuedDate != null && !isNaN(decisionIssuedDate as number)) {
+        planningString = planningString.replace("{decisionDate}",
+          moment(new Date(decisionIssuedDate)).format("DD/MM/YYYY")
+        );
+      } else if(applicationReceivedDate != null && !isNaN(applicationReceivedDate as number)) {
         planningString = planningString.replace("{receivedDate}",
-          moment(new Date(planning.applicationReceivedDate)).format("DD/MM/YYYY")
+          moment(new Date(applicationReceivedDate)).format("DD/MM/YYYY")
         );
       }
 
@@ -172,7 +174,7 @@ const decisions: { decision: string, matches: string[] }[] = [
       "planning permission granted", "outline planning granted",
       "approval", "approval with conditions",
       "permit outline planning permission", "permit full planning permission",
-      "grant permission", "permits", "x permits"
+      "grant permission", "permits", "x permits", "grant permission subject to condition"
     ]
   }, {
     decision: "REFUSED",

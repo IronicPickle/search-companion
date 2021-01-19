@@ -153,7 +153,7 @@ function injectEmbed() {
     `position: fixed;
     right: 10px;
     top: 10px;
-    z-index: 1000000;`
+    z-index: 2147483647;`
   );
   document.body.prepend(embeddedRoot);
   

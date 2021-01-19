@@ -2,7 +2,7 @@
 import React, { Component, SyntheticEvent } from "react";
 import ReactDOM from "react-dom";
 import chromep from "chrome-promise"
-import { Building, Notification, Order, Planning, Settings } from "../lib/interfaces";
+import { Building, KanbanOrder, Notification, Order, OrderHistory, Planning, Settings, Storage } from "../lib/interfaces";
 import { create } from "jss";
 import { jssPreset, NoSsr, StylesProvider, ThemeProvider } from "@material-ui/core";
 import { lightTheme, darkTheme } from "./themes";
@@ -20,6 +20,8 @@ interface State {
   building?: Building;
   settings: Settings;
   notification?: Notification;
+  orderHistory?: OrderHistory;
+  kanbanOrder?: KanbanOrder;
 }
 
 const CustomHead = (props: any) => {
@@ -81,8 +83,8 @@ class Embed extends Component<Props, State> {
 
   async syncStorage() {
     const storage = await chromep.storage.local.get() as Storage;
-    const { order, planning, building, settings, notification } = storage;
-    this.setState({ order, planning, building, settings });
+    const { order, planning, building, settings, notification, orderHistory, kanbanOrder } = storage;
+    this.setState({ order, planning, building, settings, orderHistory, kanbanOrder });
     if(notification != null) this.sendNotification({ ...notification })
   }
 
@@ -108,7 +110,7 @@ class Embed extends Component<Props, State> {
 
   render() {
 
-    const { order, planning, building, settings, notification } = this.state;
+    const { order, planning, building, settings, notification, orderHistory, kanbanOrder } = this.state;
 
     return (
 
@@ -130,7 +132,7 @@ class Embed extends Component<Props, State> {
               return (
                 <StylesProvider jss={jss}>
                   <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-                    <globalContext.Provider value={{ order, settings, notification, planning, building,
+                    <globalContext.Provider value={{ order, settings, notification, planning, building, orderHistory, kanbanOrder,
                       sendNotification: this.sendNotification }}>
                       <EmbedRoot />
                     </globalContext.Provider>

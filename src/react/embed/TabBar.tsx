@@ -3,6 +3,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ListIcon from "@material-ui/icons/List";
 import HomeIcon from "@material-ui/icons/Home";
+import HistoryIcon from "@material-ui/icons/History";
 import MapIcon from "@material-ui/icons/Map";
 import OpacityIcon from "@material-ui/icons/Opacity";
 
@@ -38,21 +39,12 @@ class TabBar extends Component<Props, State> {
     this.state = {}
 
     this.tabSelect = this.tabSelect.bind(this);
-    this.openGoogleMaps = this.openGoogleMaps.bind(this);
     this.openDuct = this.openDuct.bind(this);
   }
 
   tabSelect(index: number) {
     return (event: MouseEvent<HTMLButtonElement>) => {
       this.props.onSelect(index);
-    }
-  }
-
-  openGoogleMaps() {
-    const { order } = this.context as GlobalContext;
-    const postcode = order?.property.postCode;
-    if(postcode != null) {
-      window.open(`https://www.google.com/maps/place/${postcode}`);
     }
   }
 
@@ -99,9 +91,20 @@ class TabBar extends Component<Props, State> {
               </Tooltip>
             </IconButton>
           </Grid>
+          <Grid item>
+            <IconButton onClick={this.tabSelect(4)} >
+              <Tooltip title="History" PopperProps={{ disablePortal: true }} >
+                <HistoryIcon />
+              </Tooltip>
+            </IconButton>
+          </Grid>
           <Divider className={classes.divider} />
           <Grid item>
-            <IconButton onClick={this.openGoogleMaps} disabled={order?.property.postCode == null} >
+            <IconButton
+              href={`https://www.google.com/maps/place/${order?.property.postCode || ""}`}
+              target="_blank"
+              disabled={order?.property.postCode == null}
+            >
               <Tooltip title="Maps" PopperProps={{ disablePortal: true }} >
                 <MapIcon />
               </Tooltip>

@@ -1,5 +1,5 @@
 import { Context, createContext } from "react";
-import { Building, Notification, Order, Planning, Settings } from "../lib/interfaces";
+import { Building, KanbanOrder, Notification, Order, OrderHistory, Planning, Settings } from "../lib/interfaces";
 import { settingsDefaults } from "../lib/vars"
 
 export interface GlobalContext {
@@ -9,6 +9,8 @@ export interface GlobalContext {
   building?: Building;
   notification?: Notification;
   sendNotification?: (settings: Notification) => any;
+  orderHistory?: OrderHistory;
+  kanbanOrder?: KanbanOrder;
 }
 
 export const globalContextDefaults: GlobalContext = {

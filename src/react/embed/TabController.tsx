@@ -59,7 +59,7 @@ class TabController extends Component<Props, State> {
       if(changes.notification != null) {
         const notification = changes.notification.newValue;
         if(notification.href !== window.location.href) return;
-        const tabOverride = notification.tabOverride | 0;
+        const tabOverride = notification.tabOverride;
         if(tabOverride != null && settings.notificationsState &&
           settings.extensionState) this.changeTab(tabOverride);
       }

@@ -1,5 +1,5 @@
 import chromep from "chrome-promise"
-import { InterfaceInfo, Storage } from "../lib/interfaces";
+import { InterfaceInfo, Order, OrderHistory, Storage } from "../lib/interfaces";
 import { createNotification } from "../lib/utils";
 import { settingsDefaults } from "../lib/vars";
 
@@ -15,7 +15,7 @@ export async function resetSettings() {
 
 export async function clearCurrentOrder() {
 
-  await chromep.storage.local.remove([ "order", "planning", "building" ]);
+  await chromep.storage.local.remove([ "order", "planning", "building", "orderHistory" ]);
 
 }
 
@@ -32,6 +32,8 @@ function closeOtherTabs(tabs: chrome.tabs.Tab[], exemptTabs: chrome.tabs.Tab[]) 
 async function start() {
 
   console.log("Extension Started - Listening for Interface Compatible URLs");
+
+  chrome.storage.onChanged.addListener(changes => storageChange(changes));
 
   chrome.storage.local.remove([ "notification" ]);
 
@@ -78,8 +80,29 @@ async function start() {
     }
   });
 
+}
 
-};
+async function storageChange(changes: { [key: string]: chrome.storage.StorageChange }) {
+
+  const storage = <Storage> await chromep.storage.local.get();
+  let orderHistory = storage.orderHistory || [];
+
+  const newOrder = <Order> changes.order?.newValue;
+  if(newOrder == null) return;
+
+  for(const i in orderHistory) {
+    if(orderHistory[i].reference === newOrder.reference) {
+      orderHistory.splice(parseInt(i), 1);
+      break;
+    }
+  }
+
+  orderHistory.unshift({ ...newOrder, lastViewed: new Date().getTime() });
+  orderHistory = orderHistory.slice(0, 10);
+
+  chrome.storage.local.set({ orderHistory });
+  
+}
 
 const interfaces: InterfaceInfo[] = [
   {
@@ -87,6 +110,10 @@ const interfaces: InterfaceInfo[] = [
       "https://indexcms.co.uk/2.7/franchiseemenu.php"
     ],
     scripts: [ "js/content/interfaces/cms.js" ],
+    restrictToOneTab: true
+  }, {
+    urls: [ "https://kanbanflow.com/board/" ],
+    scripts: [ "js/content/interfaces/kanban.js" ],
     restrictToOneTab: true
   }, {
     urls: [ "https://www.terrafirmaidc.co.uk/order/order_report",

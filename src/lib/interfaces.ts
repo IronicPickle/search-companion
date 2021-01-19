@@ -1,10 +1,12 @@
 export interface Storage {
   [key: string]: any;
   order?: Order;
-  settings?: Settings;
+  settings: Settings;
   notification?: Notification;
-  planning: Planning;
-  building: Building;
+  planning?: Planning;
+  building?: Building;
+  orderHistory?: OrderHistory;
+  kanbanOrder?: KanbanOrder;
 }
 
 export interface Property {
@@ -49,6 +51,15 @@ export interface Order {
   council: string;
   water: string;
   totalCost: string;
+}
+
+export type OrderHistory = (Order & { lastViewed: number; })[]
+
+export interface KanbanOrder {
+  [key: string]: any;
+  reference: string;
+  date: string;
+  details: string;
 }
 
 export interface Planning {

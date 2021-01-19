@@ -17,7 +17,7 @@ const styles = (theme: Theme) => ({
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    maxHeight: "50vh",
+    height: theme.spacing(45) - theme.spacing(4) - 51,
     overflow: "auto"
   },
   entryToolbar: {
@@ -43,7 +43,7 @@ const styles = (theme: Theme) => ({
     marginRight: 30 + theme.spacing(1)
   },
   divider: {
-    marginTop: theme.spacing(0.5),
+    marginTop: theme.spacing(1),
     marginRight: theme.spacing(8),
     marginLeft: theme.spacing(8),
     marginBottom: theme.spacing(2)
@@ -67,12 +67,6 @@ class Products extends Component<Props, State> {
 
   }
 
-  openLink(url: string) {
-    return (event: MouseEvent<HTMLButtonElement>) => {
-      window.open(url);
-    }
-  }
-
   render() {
     const { classes } = this.props;
     const { settings, order } = this.context as GlobalContext;
@@ -85,16 +79,16 @@ class Products extends Component<Props, State> {
             component="h2"
             align="center"
           >No Products to Show</Typography>
+          <Divider className={classes.divider} />
+          <Typography
+            variant="subtitle2"
+            component="p"
+            align="center"
+          >
+            Load up an Order on the CMS and this section<br/>
+            will display all products on the order.
+          </Typography>
         </Container>
-        <Divider className={classes.divider} />
-        <Typography
-          variant="subtitle2"
-          component="p"
-          align="center"
-        >
-          Load up an Order on the CMS and this section<br/>
-          will display all products on the order.
-        </Typography>
       </>
     )
 
@@ -112,42 +106,41 @@ class Products extends Component<Props, State> {
               component="div"
             >
               {
-                (order != null) ?
-                  order.products.map(product => {
-                    const productUrl = getProductLink(product.name)?.url;
-                    const tooltip = (product.returned == null) ?
-                      "Not returned"
-                    : `Returned: ${product.returned}`
-                    return (
-                      <Tooltip title={tooltip} PopperProps={{ disablePortal: true }} key={product.name}>
-                        <Toolbar disableGutters className={classes.entryToolbar} key={product.name} >
-                          <Box flexGrow={1}>
-                            <b className={classes.entryTitle}>{product.name}</b><br />
-                          </Box>
-                          <Box>
-                            £{product.cost}
-                          </Box>
-                          <Box>
-                            <IconButton
-                              size="small"
-                              className={classes.openLinkButton}
-                              onClick={this.openLink((productUrl != null) ? productUrl : "")}
-                              disabled={productUrl == null}
-                            >
-                              <Tooltip title="Order Product" PopperProps={{ disablePortal: true }} >
-                                <ArrowRightAltIcon 
-                                  style={{
-                                    transform: (productUrl == null) ? "rotate(90deg)" : "rotate(-45deg)"
-                                  }}
-                                />
-                              </Tooltip>
-                            </IconButton>
-                          </Box>
-                        </Toolbar>
-                      </Tooltip>
-                    )
-                  })
-                : <></>
+                order.products.map(product => {
+                  const productUrl = getProductLink(product.name)?.url;
+                  const tooltip = (product.returned == null) ?
+                    "Not returned"
+                  : `Returned: ${product.returned}`
+                  return (
+                    <Tooltip title={tooltip} PopperProps={{ disablePortal: true }} key={product.name}>
+                      <Toolbar disableGutters className={classes.entryToolbar} >
+                        <Box flexGrow={1}>
+                          <b className={classes.entryTitle}>{product.name}</b><br />
+                        </Box>
+                        <Box>
+                          £{product.cost}
+                        </Box>
+                        <Box>
+                          <IconButton
+                            size="small"
+                            className={classes.openLinkButton}
+                            href={productUrl || ""}
+                            target="_blank"
+                            disabled={productUrl == null}
+                          >
+                            <Tooltip title="Order Product" PopperProps={{ disablePortal: true }} >
+                              <ArrowRightAltIcon 
+                                style={{
+                                  transform: (productUrl == null) ? "rotate(90deg)" : "rotate(-45deg)"
+                                }}
+                              />
+                            </Tooltip>
+                          </IconButton>
+                        </Box>
+                      </Toolbar>
+                    </Tooltip>
+                  )
+                })
               }
               <Divider className={classes.totalCostDivider} />
               <Toolbar disableGutters className={classes.entryToolbar} key="totalCost" >

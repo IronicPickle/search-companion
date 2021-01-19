@@ -2,12 +2,17 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Container, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
+import { Container, Divider, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const styles = (theme: Theme) => ({
-  
+  divider: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(8),
+    marginLeft: theme.spacing(8),
+    marginBottom: theme.spacing(1)
+  }
 });
 
 interface Props {
@@ -48,6 +53,7 @@ class Header extends Component<Props, State> {
             align="center"
           >Load an order on the CMS to populate this section</Typography>
         </Container>
+        <Divider className={classes.divider} />
       </>
     )
 
@@ -65,6 +71,7 @@ class Header extends Component<Props, State> {
             align="center"
           >{council}</Typography>
         </Container>
+        <Divider className={classes.divider} />
       </>
     )
 

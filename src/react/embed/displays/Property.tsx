@@ -17,7 +17,7 @@ const styles = (theme: Theme) => ({
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    maxHeight: "50vh",
+    maxHeight: theme.spacing(45) - theme.spacing(4) - 51,
     overflow: "auto"
   },
   entryToolbar: {
@@ -32,7 +32,7 @@ const styles = (theme: Theme) => ({
     width: theme.spacing(24)
   },
   divider: {
-    marginTop: theme.spacing(0.5),
+    marginTop: theme.spacing(1),
     marginRight: theme.spacing(8),
     marginLeft: theme.spacing(8),
     marginBottom: theme.spacing(2)

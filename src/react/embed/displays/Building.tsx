@@ -19,7 +19,7 @@ const styles = (theme: Theme) => ({
     width: theme.spacing(64)
   },
   divider: {
-    marginTop: theme.spacing(0.5),
+    marginTop: theme.spacing(1),
     marginRight: theme.spacing(8),
     marginLeft: theme.spacing(8),
     marginBottom: theme.spacing(2)
@@ -98,16 +98,16 @@ class Building extends Component<Props, State> {
             component="h2"
             align="center"
           >No Building Info to Show</Typography>
+          <Divider className={classes.divider} />
+          <Typography
+            variant="subtitle2"
+            component="p"
+            align="center"
+          >
+            Load up a Building Regulation on a council's website<br/>
+            and this section will format the information.
+          </Typography>
         </Container>
-        <Divider className={classes.divider} />
-        <Typography
-          variant="subtitle2"
-          component="p"
-          align="center"
-        >
-          Load up a Building Regulation on a council's website<br/>
-          and this section will format the information.
-        </Typography>
       </>
     )
 
@@ -128,7 +128,7 @@ class Building extends Component<Props, State> {
                 value={buildingString.toUpperCase()}
                 className={classes.field}
                 multiline={true}
-                rows={10}
+                rows={12}
                 variant="outlined"
               />
             </Typography>

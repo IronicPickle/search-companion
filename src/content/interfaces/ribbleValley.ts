@@ -16,7 +16,7 @@ function checkSignature() {
     "id:ctl00_DefaultContent_PageHeaderLabel"
   ]);
   if(spanElement != null) {
-    //updateBuildingInfo();
+    updateBuildingInfo();
   } else if(h1Element != null) {
     if(h1Element.innerText.includes("Application")) updatePlanningInfo();
   }
@@ -48,7 +48,7 @@ async function updatePlanningInfo() {
 }
 
 function extractPlanningInfo() {
-  const tbodyElement = queryElement([
+  const tbodyElement = <HTMLTableElement> queryElement([
     "class:download_box", "class:planningTable", "tbody"
   ]);
   if(tbodyElement == null) return;
@@ -92,7 +92,6 @@ function extractPlanningInfo() {
     });
   });
 
-
   return planning;
 }
 
@@ -101,13 +100,19 @@ async function updateBuildingInfo() {
 
   let building = extractBuildingInfo();
   if(building == null) return;
+  building.reference = extractBuildingReference();
 
+  if(building.decisionDate != null &&
+    typeof(building.decisionDate) === "string") {
 
-  if(building.decisionDate != null)
-    building.decisionDate = new Date(building.decisionDate).getTime();
+    building.decisionDate = parseDate(building.decisionDate, true).getTime();
+  }
 
-  if(building.applicationReceivedDate != null)
-    building.applicationReceivedDate = new Date(building.applicationReceivedDate).getTime();
+  if(building.applicationReceivedDate != null &&
+    typeof(building.applicationReceivedDate) === "string") {
+
+    building.applicationReceivedDate = parseDate(building.applicationReceivedDate, true).getTime();
+  }
   
   if(!_.isEqual(building, storage.building)) {
     const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);
@@ -116,37 +121,49 @@ async function updateBuildingInfo() {
   }
 }
 
+function extractBuildingReference() {
+  const spanElement = <HTMLSpanElement> queryElement(
+    [ "id:ctl00_DefaultContent_PageHeaderLabel" ]);
+  if(spanElement == null) return;
+
+  const reference = spanElement.innerText.replace("Details for Building Control Application - ", "");
+  return reference;
+}
+
 function extractBuildingInfo() {
-  const ulElement = queryElement(
-    [ "id:ctl00_DefaultContent_DetailsView1", "class:AspNet-DetailsView-Data", "ul" ])
+  const ulElement = <HTMLUListElement> queryElement(
+    [ "id:ctl00_DefaultContent_DetailsView1", "class:AspNet-DetailsView-Data", "ul" ]);
   if(ulElement == null) return;
 
   const building = <Building> {}
 
   Array.from(ulElement.getElementsByTagName("li"))
     .map((liElement: HTMLLIElement) => {
-      console.log(liElement)
-      /*const tdElement0 = <HTMLTableHeaderCellElement> trElement.children.item(0);
-      const tdElement1 = <HTMLTableDataCellElement> trElement.children.item(1);
+      const spanElement0 = <HTMLSpanElement> liElement.children.item(0);
+      const spanElement1 = <HTMLSpanElement> liElement.children.item(1);
 
-      const name = tdElement0.innerText;
-      const value = tdElement1.innerText;
+      const name = spanElement0.innerText;
+      const value = spanElement1.innerText;
       if(name == null || value == null) return;
 
       buildingFields.map(buildingField => {
         if(buildingField.documentId === name)
         building[buildingField.actualId] = value;
-      });*/
+      });
     });
 
   return building;
 }
 
-function parseDate(dateString: string) {
+function parseDate(dateString: string, reverse?: boolean) {
 
   const dateArray = dateString
     .split("/")
     .map((dateItem: string) => parseInt(dateItem));
-  return new Date(dateArray[2], dateArray[1], dateArray[0]);
+  if(reverse) {
+    return new Date(dateArray[2], dateArray[0] - 1, dateArray[1]);
+  } else {
+    return new Date(dateArray[2], dateArray[1] - 1, dateArray[0]);
+  }
   
 }

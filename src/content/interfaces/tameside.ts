@@ -70,6 +70,6 @@ function parseDate(dateString: string) {
   const dateArray = dateString
     .split("/")
     .map((dateItem: string) => parseInt(dateItem));
-  return new Date(dateArray[2], dateArray[1], dateArray[0]);
+  return new Date(dateArray[2], dateArray[1] - 1, dateArray[0]);
   
 }

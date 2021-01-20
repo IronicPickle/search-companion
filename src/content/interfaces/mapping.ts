@@ -1,16 +1,14 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
 import { Mapping} from "../../lib/interfaces";
-import { injectIndicator, queryElement } from "../../lib/utils";
+import { queryElement } from "../../lib/utils";
 
-const indicatorElement = injectIndicator();
 checkSignature();
 
 function checkSignature() {
   if(queryElement(["embed"]) != null) {
-    indicatorElement.style.display = "block";
     updateMappingInfo();
-  } else { indicatorElement.style.display = "none"; }
+  }
 }
 
 async function updateMappingInfo() {

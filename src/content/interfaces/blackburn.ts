@@ -35,7 +35,7 @@ async function updatePlanningInfo() {
     planning.applicationReceivedDate = parseDate(planning.applicationReceivedDate).getTime();
   }
 
-  planning = (!await checkIfNewPage(storage)) ? { ...storage.planning, ...planning } : planning;
+  planning = (!await checkIfNewPage()) ? { ...storage.planning, ...planning } : planning;
   
   if(!_.isEqual(planning, storage.planning)) {
     const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
@@ -91,11 +91,11 @@ function parseDate(dateString: string) {
   const dateArray = dateString
     .split("-")
     .map((dateItem: string) => parseInt(dateItem));
-  return new Date(dateArray[2], dateArray[1], dateArray[0]);
+  return new Date(dateArray[2], dateArray[1] - 1, dateArray[0]);
   
 }
 
-async function checkIfNewPage(storage: Storage) {
+async function checkIfNewPage() {
   let isNewPage = false;
 
   const spanElement = <HTMLSpanElement> queryElement([

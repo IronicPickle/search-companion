@@ -18,6 +18,8 @@ module.exports = {
     "js/content/interfaces/warrington": path.join(__dirname, "src/content/interfaces/warrington.ts"), // Warrington interface
     "js/content/interfaces/blackburn": path.join(__dirname, "src/content/interfaces/blackburn.ts"), // Warrington interface
     "js/content/interfaces/ribbleValley": path.join(__dirname, "src/content/interfaces/ribbleValley.ts"), // Ribble Valley interface
+    "js/content/interfaces/preston": path.join(__dirname, "src/content/interfaces/preston.ts"), // Preston interface
+    "js/content/interfaces/cheshireEast": path.join(__dirname, "src/content/interfaces/cheshireEast.ts"), // Cheshire East interface
     "js/react/popup": path.join(__dirname, "src/react/popup.tsx"), // Popup react root
     "js/react/embed": path.join(__dirname, "src/react/embed.tsx") // Embed react root
   },

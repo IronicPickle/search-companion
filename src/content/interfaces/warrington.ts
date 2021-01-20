@@ -1,8 +1,8 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
-import { Planning } from "../../lib/interfaces";
-import { createNotification, queryElement } from "../../lib/utils";
-import { monthStringToNumber, planningFields } from "../../lib/vars";
+import { Building, Planning, Storage } from "../../lib/interfaces";
+import { createNotification, queryElement, sanitizeNbsp, sanitizeNewLine } from "../../lib/utils";
+import { buildingFields, monthStringToNumber, planningFields } from "../../lib/vars";
 
 setTimeout(() => {
   checkSignature();
@@ -14,6 +14,8 @@ function checkSignature() {
   );
   if(h1Element.innerText === "Planning Application Details") {
     updatePlanningInfo();
+  } else if(h1Element.innerText === "Building Control Details") {
+    updateBuildingInfo();
   }
 }
 
@@ -87,6 +89,62 @@ function extractPlanningInfo() {
     });
 
   return planning;
+}
+
+async function updateBuildingInfo() {
+  const storage = <Storage> await chromep.storage.local.get();
+
+  let building = <Building> extractBuildingInfo();
+  if(building == null) return;
+
+  if(building.decisionDate != null &&
+    typeof(building.decisionDate) === "string"
+  ) {
+
+    building.decisionDate = parseDate(building.decisionDate).getTime();
+  }
+
+  if(building.receieved != null &&
+    typeof(building.applicationReceivedDate) === "string"
+  ) {
+    building.applicationReceivedDate = parseDate(building.applicationReceivedDate).getTime();
+  }
+  
+  if(!_.isEqual(building, storage.building)) {
+    const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);
+    console.log("Building Info Extracted");
+    chrome.storage.local.set({ building, notification });
+  }
+}
+
+function extractBuildingInfo() {
+  const formElement = <HTMLFormElement> queryElement(
+    [ "id:content", "class:row", "class:columns", "class:editor", "form" ]
+  );
+
+  const building = <Building> {}
+
+  let pElementArray = Array.from(formElement.getElementsByTagName("p"));
+
+  pElementArray.map((pElement: HTMLParagraphElement) => {
+      let textArray = sanitizeNewLine(sanitizeNbsp(pElement.innerText)).split(":")
+      if(textArray[0] === "Decision") {
+        building.decision = textArray[1].replace("Decision Date", "") || undefined;
+        building.decisionDate = textArray[2].replace("Conditions", "") || undefined;
+        return;
+      }
+      if(textArray.length !== 2) return;
+
+      if(textArray[0] == null || textArray[1] == null) return;
+      const name = textArray[0];
+      const value = textArray[1];
+
+      buildingFields.map(buildingField => {
+        if(buildingField.documentId === name) building[buildingField.actualId] = value;
+      });
+    });
+
+  return building;
 }
 
 function parseDate(dateString: string) {

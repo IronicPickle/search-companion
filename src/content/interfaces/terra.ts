@@ -1,7 +1,7 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
 import { Order, Product } from "../../lib/interfaces";
-import { createNotification, injectIndicator, queryElement } from "../../lib/utils";
+import { createNotification, queryElement } from "../../lib/utils";
 
 setTimeout(() => checkSignature(), 500);
 

@@ -30,14 +30,17 @@ export const orderFields = [
 export const planningFields = [
   { documentId: "Reference", actualId: "reference" },
   { documentId: "Application Number", actualId: "reference" },
+  { documentId: "Application number", actualId: "reference" },
+  { documentId: "Reference Number", actualId: "reference" },
 
   { documentId: "Proposal", actualId: "descripton" },
-  { documentId: "Proposal", actualId: "descripton" },
+  { documentId: "Description", actualId: "descripton" },
 
   { documentId: "Address", actualId: "address" },
   { documentId: "Main Location", actualId: "address" },
   { documentId: "Site Address", actualId: "address" },
   { documentId: "Development address", actualId: "address" },
+  { documentId: "Location", actualId: "address" },
 
   { documentId: "Status", actualId: "status" },
 
@@ -46,30 +49,37 @@ export const planningFields = [
   { documentId: "Decision Issued Date", actualId: "decisionIssuedDate" },
   { documentId: "Decision Made Date", actualId: "decisionMadeDate" },
   { documentId: "Decision Date", actualId: "decisionMadeDate" },
+  { documentId: "Decision date", actualId: "decisionMadeDate" },
 
   { documentId: "Application Received", actualId: "applicationReceivedDate" },
   { documentId: "Application Received Date", actualId: "applicationReceivedDate" },
   { documentId: "Application Date", actualId: "applicationReceivedDate" },
   { documentId: "Received", actualId: "applicationReceivedDate" },
-  { documentId: "Key dates", actualId: "applicationReceivedDate" }
+  { documentId: "Key dates", actualId: "applicationReceivedDate" },
+  { documentId: "Registration date", actualId: "applicationReceivedDate" }
 ]
 
 export const buildingFields = [
   { documentId: "Application Reference Number", actualId: "reference" },
   { documentId: "Case Reference", actualId: "reference" },
+  { documentId: "Bulding Control Reference", actualId: "reference" },
 
   { documentId: "Description Of Works", actualId: "descripton" },
   { documentId: "Description", actualId: "descripton" },
+  { documentId: "Description of Work", actualId: "descripton" },
+  { documentId: "Proposal", actualId: "descripton" },
 
   { documentId: "Site Address", actualId: "address" },
   { documentId: "Address", actualId: "address" },
+  { documentId: "Location", actualId: "address" },
   
   { documentId: "Decision", actualId: "decision" },
 
   { documentId: "Decision Date", actualId: "decisionDate" },
   
   { documentId: "Application Received", actualId: "applicationReceivedDate" },
-  { documentId: "Date Received", actualId: "applicationReceivedDate" }
+  { documentId: "Date Received", actualId: "applicationReceivedDate" },
+  { documentId: "Application Received Date", actualId: "applicationReceivedDate" }
 ]
 
 export const monthStringToNumber = [

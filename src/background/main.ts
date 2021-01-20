@@ -144,7 +144,10 @@ const interfaces: InterfaceInfo[] = [
     scripts: [ "js/content/interfaces/tameside.js" ],
     restrictToOneTab: false
   }, {
-    urls: [ "https://planning.warrington.gov.uk/swiftlg/apas/run/WPHAPPDETAIL.DisplayUrl" ],
+    urls: [
+      "https://planning.warrington.gov.uk/swiftlg/apas/run/WPHAPPDETAIL.DisplayUrl",
+      "https://planning.warrington.gov.uk/swiftlg/apas/run/WBHAPPDETAIL.DisplayUrl"
+    ],
     scripts: [ "js/content/interfaces/warrington.js" ],
     restrictToOneTab: false
   }, {
@@ -157,6 +160,14 @@ const interfaces: InterfaceInfo[] = [
       "http://5.61.123.171/Northgate/BC/BCExplorer/BC/ApplicationDetails.aspx"
   ],
     scripts: [ "js/content/interfaces/ribbleValley.js" ],
+    restrictToOneTab: false
+  }, {
+    urls: [ "https://selfservice.preston.gov.uk/service/planning/ApplicationView.aspx" ],
+    scripts: [ "js/content/interfaces/preston.js" ],
+    restrictToOneTab: false
+  }, {
+    urls: [ "https://planning.cheshireeast.gov.uk/applicationdetails.aspx" ],
+    scripts: [ "js/content/interfaces/cheshireEast.js" ],
     restrictToOneTab: false
   }
 ]

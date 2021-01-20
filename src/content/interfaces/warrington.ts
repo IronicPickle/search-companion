@@ -104,7 +104,7 @@ async function updateBuildingInfo() {
     building.decisionDate = parseDate(building.decisionDate).getTime();
   }
 
-  if(building.receieved != null &&
+  if(building.applicationReceivedDate != null &&
     typeof(building.applicationReceivedDate) === "string"
   ) {
     building.applicationReceivedDate = parseDate(building.applicationReceivedDate).getTime();

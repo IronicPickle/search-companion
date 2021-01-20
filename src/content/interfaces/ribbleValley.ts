@@ -75,7 +75,7 @@ function extractPlanningInfo() {
     if(name == null || value == null) return;
 
     planningFields.map(planningField => {
-      if(planningField.documentId === name) {
+      if(planningField.documentId === name.toLowerCase()) {
         if(name === "Development address") {
           planning.address = value.split("\nWard :")[0];
         } else if(name === "Decision") {
@@ -147,8 +147,9 @@ function extractBuildingInfo() {
       if(name == null || value == null) return;
 
       buildingFields.map(buildingField => {
-        if(buildingField.documentId === name)
-        building[buildingField.actualId] = value;
+        if(buildingField.documentId === name.toLowerCase()) {
+          building[buildingField.actualId] = value;
+        }
       });
     });
 

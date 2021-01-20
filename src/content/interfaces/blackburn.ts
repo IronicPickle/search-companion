@@ -2,7 +2,7 @@ import chromep from "chrome-promise";
 import _ from "lodash";
 import { Planning, Storage } from "../../lib/interfaces";
 import { createNotification, queryElement } from "../../lib/utils";
-import { monthStringToNumber, planningFields } from "../../lib/vars";
+import { planningFields } from "../../lib/vars";
 
 setTimeout(() => {
   checkSignature();
@@ -77,8 +77,9 @@ function extractPlanningInfo() {
       planning.decisionMadeDate = decisionDate;
     } else {
       planningFields.map(planningField => {
-        if(planningField.documentId === name)
+        if(planningField.documentId === name.toLowerCase()) {
           planning[planningField.actualId] = value;
+        }
       });
     }
   });

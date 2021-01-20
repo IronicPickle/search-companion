@@ -58,8 +58,9 @@ function extractPlanningInfo() {
       if(name == null || value == null) return;
 
       planningFields.map(planningField => {
-        if(planningField.documentId === name)
+        if(planningField.documentId === name.toLowerCase()) {
           planning[planningField.actualId] = value;
+        }
       });
     });
 

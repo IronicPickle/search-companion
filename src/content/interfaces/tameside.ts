@@ -56,7 +56,7 @@ function extractBuildingInfo() {
       if(name == null || value == null) return;
 
       buildingFields.map(buildingField => {
-        if(buildingField.documentId === name) {
+        if(buildingField.documentId === name.toLowerCase()) {
           building[buildingField.actualId] = value;
         }
       });

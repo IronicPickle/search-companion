@@ -12,6 +12,7 @@ module.exports = {
     "js/content/interfaces/terra": path.join(__dirname, "src/content/interfaces/terra.ts"), // TerraFirma interface
     "js/content/interfaces/coalAuthority": path.join(__dirname, "src/content/interfaces/coalAuthority.ts"), // Coal Authority interface
     "js/content/interfaces/unitedUtilities": path.join(__dirname, "src/content/interfaces/unitedUtilities.ts"), // United Utilities interface
+    "js/content/interfaces/utilitySearch": path.join(__dirname, "src/content/interfaces/utilitySearch.ts"), // Utility Search interface
     
     "js/content/interfaces/simpleSearch": path.join(__dirname, "src/content/interfaces/simpleSearch.ts"), // Simple Search interface
     "js/content/interfaces/tameside": path.join(__dirname, "src/content/interfaces/tameside.ts"), // Tameside interface

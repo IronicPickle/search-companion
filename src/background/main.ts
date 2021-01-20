@@ -166,8 +166,20 @@ const interfaces: InterfaceInfo[] = [
     scripts: [ "js/content/interfaces/preston.js" ],
     restrictToOneTab: false
   }, {
-    urls: [ "https://planning.cheshireeast.gov.uk/applicationdetails.aspx" ],
+    urls: [
+      "https://planning.cheshireeast.gov.uk/applicationdetails.aspx",
+      "https://planning.cheshireeast.gov.uk/applicationdetailsBC.aspx",
+      "http://planning.cheshireeast.gov.uk/applicationdetails.aspx",
+      "http://planning.cheshireeast.gov.uk/applicationdetailsBC.aspx"
+    ],
     scripts: [ "js/content/interfaces/cheshireEast.js" ],
+    restrictToOneTab: false
+  }, {
+    urls: [
+      "https://www.utilitysearch.com/PostcodeServiceChecker.asp",
+      "https://www.utilitysearch.com/DraftRequest.asp"
+    ],
+    scripts: [ "js/content/interfaces/utilitySearch.js" ],
     restrictToOneTab: false
   }
 ]

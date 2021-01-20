@@ -83,8 +83,9 @@ function extractPlanningInfo() {
       if(name == null || value == null) return;
 
       planningFields.map(planningField => {
-        if(planningField.documentId === name)
+        if(planningField.documentId === name.toLowerCase()) {
           planning[planningField.actualId] = value;
+        }
       });
     });
 
@@ -140,7 +141,9 @@ function extractBuildingInfo() {
       const value = textArray[1];
 
       buildingFields.map(buildingField => {
-        if(buildingField.documentId === name) building[buildingField.actualId] = value;
+        if(buildingField.documentId === name.toLowerCase()){
+          building[buildingField.actualId] = value;
+        }
       });
     });
 

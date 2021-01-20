@@ -127,6 +127,13 @@ const interfaces: InterfaceInfo[] = [
     scripts: [ "js/content/interfaces/coalAuthority.js" ],
     restrictToOneTab: true
   }, {
+    urls: [
+      "https://www.utilitysearch.com/PostcodeServiceChecker.asp",
+      "https://www.utilitysearch.com/DraftRequest.asp"
+    ],
+    scripts: [ "js/content/interfaces/utilitySearch.js" ],
+    restrictToOneTab: true
+  }, {
     urls: [ "https://propertysearches.unitedutilities.com/homeloggedin/order/" ],
     scripts: [ "js/content/interfaces/unitedUtilities.js" ],
     restrictToOneTab: true
@@ -173,13 +180,6 @@ const interfaces: InterfaceInfo[] = [
       "http://planning.cheshireeast.gov.uk/applicationdetailsBC.aspx"
     ],
     scripts: [ "js/content/interfaces/cheshireEast.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [
-      "https://www.utilitysearch.com/PostcodeServiceChecker.asp",
-      "https://www.utilitysearch.com/DraftRequest.asp"
-    ],
-    scripts: [ "js/content/interfaces/utilitySearch.js" ],
     restrictToOneTab: false
   }
 ]

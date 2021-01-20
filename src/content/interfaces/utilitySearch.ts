@@ -20,7 +20,7 @@ async function checkSignature() {
   if(bElement.innerText === "Network Boundaries & Area Check") {
     if(await injectAreaCheckData() == null) return;
     console.log("Area Check Info Injected");
-    const notification = createNotification({ severity: "info", text: "Order Info Injected" }, 0);
+    const notification = createNotification({ severity: "info", text: "Area Check Info Injected" }, 0);
     chrome.storage.local.set({ notification });
 
   } else if(bElement.innerText === "Submit Search Request") {

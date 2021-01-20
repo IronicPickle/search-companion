@@ -210,6 +210,8 @@ const productLinks = [
     url: "https://www.wessexsearches.co.uk/CON29DW-Drainage-and-Water-Enquiries/" },
   { matches: [ "(con29 dw) - yorkshire" ],
     url: "https://www.safe-move.co.uk/residential-searches/residential-con29dw/" },
+  { matches: [ "gas distributions", "gas and electric" ],
+    url: "https://www.utilitysearch.com/main.asp" },
 ]
 
 export default withStyles(styles, { withTheme: true })(Products);

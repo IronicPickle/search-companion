@@ -59,7 +59,7 @@ function extractPlanningInfo() {
       if(name == null || value == null) return;
 
       planningFields.map(planningField => {
-        if(planningField.documentId === name)
+        if(planningField.documentId === name.toLowerCase())
           planning[planningField.actualId] = value;
       });
     });
@@ -106,7 +106,7 @@ function extractBuildingInfo() {
       if(name == null || value == null) return;
 
       buildingFields.map(buildingField => {
-        if(buildingField.documentId === name)
+        if(buildingField.documentId === name.toLowerCase())
         building[buildingField.actualId] = value;
       });
     });

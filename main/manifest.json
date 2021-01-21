@@ -1,14 +1,15 @@
 {
   "name": "Search Companion",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Search Companion",
-  "permissions": [ "webNavigation", "tabs", "storage", "<all_urls>" ],
+  "permissions": [ "webNavigation", "tabs", "storage",
+    "http://*/*", "https://*/*" ],
   "background": {
     "scripts": [ "js/background/main.js" ],
     "persistent": false
   },
   "content_scripts": [{
-    "matches": [ "<all_urls>" ],
+    "matches": [ "http://*/*", "https://*/*" ],
     "js": [ "js/react/embed.js" ]
   }],
   "options_page": "html/options.html",

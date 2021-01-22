@@ -115,7 +115,7 @@ function extractProducts() {
       product.name = tdElement0.innerText.replace(/(&[A-Za-z]+;)+/g, "").replace("     - ", "");
       if(tdElement4.innerHTML !== "") {
         let dateArray = tdElement4.innerHTML.split("-").map(dateItem => parseInt(dateItem));
-        product.returned = new Date(dateArray[2], dateArray[1], dateArray[0]).toDateString();
+        product.returned = new Date(dateArray[2], dateArray[1] - 1, dateArray[0]).toDateString();
       }
       product.cost = (<HTMLInputElement> tdElement8.firstChild)?.value;
 

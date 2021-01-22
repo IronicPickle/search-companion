@@ -20,7 +20,7 @@ function checkSignature() {
 }
 
 async function updatePlanningInfo() {
-  const storage = await chromep.storage.local.get();
+  const storage = <Storage> await chromep.storage.local.get();
 
   let planning = extractPlanningInfo();
   if(planning == null) return;
@@ -36,6 +36,8 @@ async function updatePlanningInfo() {
 
     planning.applicationReceivedDate = parseDate(planning.applicationReceivedDate).getTime();
   }
+
+  planning = (isNewPlanningPage()) ? planning : { ...storage.planning, ...planning  };
   
   if(!_.isEqual(planning, storage.planning)) {
     const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
@@ -77,6 +79,8 @@ function extractPlanningInfo() {
         textArray[1] = pElemenetArr[i + 1].innerText.replace(":", "");
       }
       if(textArray.length !== 2) return;
+
+      if(!isNewPlanningPage() && textArray[0] === "Proposal") return;
 
       const name = textArray[0].replace(/\u00a0/g, " ");
       const value = textArray[1];
@@ -162,4 +166,8 @@ function parseDate(dateString: string) {
 
   return new Date(parseInt(dateArray[2]), monthNumber, parseInt(dateArray[0]));
   
+}
+
+function isNewPlanningPage() {
+  return queryElement([ "class:tabContent", "h2" ]) != null;
 }

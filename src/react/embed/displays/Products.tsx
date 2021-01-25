@@ -185,7 +185,7 @@ const productLinks = [
   { matches: [ "fci", "cls" ],
     url: "https://www.clsl.co.uk/" },
   { matches: [ "landmark"],
-    url: "" },
+    url: "https://www.landmarklegalreports.co.uk/Welcome.do?articleId1=47701&articleId2=47698&activePage=home" },
 
   // Water Report Companies
   { matches: [ "(con29 dw) - anglian" ],
@@ -212,6 +212,10 @@ const productLinks = [
     url: "https://www.safe-move.co.uk/residential-searches/residential-con29dw/" },
   { matches: [ "gas distributions", "gas and electric" ],
     url: "https://www.utilitysearch.com/main.asp" },
+
+  // Other
+  { matches: [ "smartsearch" ],
+    url: "https://www.smartsearchsecure.com/" }
 ]
 
 export default withStyles(styles, { withTheme: true })(Products);

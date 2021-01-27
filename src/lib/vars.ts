@@ -61,6 +61,7 @@ export const buildingFields = [
   { documentId: "application reference number", actualId: "reference" },
   { documentId: "case reference", actualId: "reference" },
   { documentId: "building control reference", actualId: "reference" },
+  { documentId: "bulding control reference", actualId: "reference" },
 
   { documentId: "description of works", actualId: "descripton" },
   { documentId: "description", actualId: "descripton" },

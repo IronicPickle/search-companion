@@ -29,26 +29,31 @@ export const orderFields = [
 
 export const planningFields = [
   { documentId: "reference", actualId: "reference" },
+  { documentId: "reference:", actualId: "reference" },
   { documentId: "application number", actualId: "reference" },
   { documentId: "reference number", actualId: "reference" },
 
   { documentId: "proposal", actualId: "descripton" },
   { documentId: "description", actualId: "descripton" },
-  { documentId: "nature", actualId: "descripton" },
+  { documentId: "nature:", actualId: "descripton" },
 
   { documentId: "address", actualId: "address" },
+  { documentId: "address:", actualId: "address" },
   { documentId: "main location", actualId: "address" },
   { documentId: "site address", actualId: "address" },
   { documentId: "development address", actualId: "address" },
   { documentId: "location", actualId: "address" },
 
   { documentId: "status", actualId: "status" },
+  { documentId: "status:", actualId: "status" },
 
   { documentId: "decision", actualId: "decision" },
+  { documentId: "decision:", actualId: "decision" },
 
   { documentId: "decision issued date", actualId: "decisionIssuedDate" },
   { documentId: "decision made date", actualId: "decisionMadeDate" },
   { documentId: "decision date", actualId: "decisionMadeDate" },
+  { documentId: "decision date:", actualId: "decisionMadeDate" },
 
   { documentId: "application received", actualId: "applicationReceivedDate" },
   { documentId: "application received date", actualId: "applicationReceivedDate" },

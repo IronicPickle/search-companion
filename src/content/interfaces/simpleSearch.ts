@@ -60,7 +60,7 @@ function extractPlanningInfo() {
       if(name == null || value == null) return;
 
       planningFields.map(planningField => {
-        if(name.toLowerCase().includes(planningField.documentId)) {
+        if(name.toLowerCase() === planningField.documentId) {
           planning[planningField.actualId] = value;
         }
       });
@@ -108,7 +108,7 @@ function extractBuildingInfo() {
       if(name == null || value == null) return;
 
       buildingFields.map(buildingField => {
-        if(name.toLowerCase().includes(buildingField.documentId)) {
+        if(name.toLowerCase() === buildingField.documentId) {
           building[buildingField.actualId] = value;
         }
       });

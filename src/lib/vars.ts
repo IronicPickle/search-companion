@@ -34,6 +34,7 @@ export const planningFields = [
 
   { documentId: "proposal", actualId: "descripton" },
   { documentId: "description", actualId: "descripton" },
+  { documentId: "nature", actualId: "descripton" },
 
   { documentId: "address", actualId: "address" },
   { documentId: "main location", actualId: "address" },

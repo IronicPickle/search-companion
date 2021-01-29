@@ -44,7 +44,8 @@ async function updatePlanningInfo() {
 
 function extractPlanningInfo() {
   const tbodyElement = queryElement(["id:simpleDetailsTable", "tbody"]) || 
-    queryElement(["id:applicationDetails", "tbody"]);
+    queryElement(["id:applicationDetails", "tbody"]) ||
+    queryElement(["id:appealDetails", "tbody"]);
   if(tbodyElement == null) return;
 
   const planning = <Planning> {}
@@ -59,8 +60,9 @@ function extractPlanningInfo() {
       if(name == null || value == null) return;
 
       planningFields.map(planningField => {
-        if(planningField.documentId === name.toLowerCase())
+        if(name.toLowerCase().includes(planningField.documentId)) {
           planning[planningField.actualId] = value;
+        }
       });
     });
 
@@ -106,8 +108,9 @@ function extractBuildingInfo() {
       if(name == null || value == null) return;
 
       buildingFields.map(buildingField => {
-        if(buildingField.documentId === name.toLowerCase())
-        building[buildingField.actualId] = value;
+        if(name.toLowerCase().includes(buildingField.documentId)) {
+          building[buildingField.actualId] = value;
+        }
       });
     });
 

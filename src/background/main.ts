@@ -139,6 +139,7 @@ const interfaces: InterfaceInfo[] = [
     restrictToOneTab: true
   }, {
     urls: [ "/applicationDetails.do",
+      "/appealDetails.do",
       "/buildingControlDetails.do",
       "/simpleSearchResults.do",
       "/shortUrlResults.do?action=firstPage&searchType=Application",

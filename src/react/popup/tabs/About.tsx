@@ -71,6 +71,7 @@ class About extends Component<Props, State> {
                   - Automatic formatting of Planning Applications and Building Regulations.<br/>
                   <br/><b>Convenience:</b><br/>
                   - Displays your current order's information on all tabs for easy access.<br/>
+                  - Keeps a history of all the orders you have visited.<br/>
                   - Opens directly to a property on Google Maps.<br/>
                   - Sends Online Mapping directly to Duct.
                 </Typography>

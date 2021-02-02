@@ -1,6 +1,6 @@
 {
   "name": "search-compaion",
-  "version": "1.0.0",
+  "version": "0.1.9",
   "description": "Search Companion",
   "main": "background.js",
   "dependencies": {

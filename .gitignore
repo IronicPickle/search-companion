@@ -1,6 +1,5 @@
 # Dependency directories
 node_modules/*
-!node_modules/react-frame-component/
 
 package-lock.json
 

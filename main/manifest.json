@@ -6,7 +6,7 @@
     "http://*/*", "https://*/*" ],
   "background": {
     "scripts": [ "js/background/main.js" ],
-    "persistent": false
+    "persistent": true
   },
   "content_scripts": [{
     "matches": [ "http://*/*", "https://*/*" ],

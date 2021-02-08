@@ -181,7 +181,7 @@ const productLinks = [
 
   // Environmental Report Companies
   { matches: [ "groundsure" ],
-    url: "https://www.groundsure.com/login-register/" },
+    url: "https://orders.groundsure.com/Account/Logon?ReturnUrl=%2f#quotes" },
   { matches: [ "fci", "cls" ],
     url: "https://www.clsl.co.uk/" },
   { matches: [ "landmark"],
@@ -194,14 +194,14 @@ const productLinks = [
     url: "https://account.dwrcymru.com/en/Forms/Standard-Drainage-and-Water-Enquiries.aspx" },
   { matches: [ "(con29 dw) - hafren dyfrdwy" ],
     url: "https://account.dwrcymru.com/en/Forms/Standard-Drainage-and-Water-Enquiries.aspx" },
-  { matches: [ "(con29 dw) - northumbrian" ],
-    url: "" },
+  /*{ matches: [ "(con29 dw) - northumbrian" ],
+    url: "" },*/
   { matches: [ "(con29 dw) - severn trent" ],
     url: "https://my-account.severntrentsearches.com/login" },
   { matches: [ "(con29 dw) - south west" ],
-    url: "" },
+    url: "https://www.southernwater.co.uk/account-login" },
   { matches: [ "(con29 dw) - southern" ],
-    url: "" },
+    url: "https://www.southernwater.co.uk/account-login" },
   { matches: [ "(con29 dw) - thames" ],
     url: "https://www.thameswater-propertysearches.co.uk/" },
   { matches: [ "(con29 dw) - united utilities" ],

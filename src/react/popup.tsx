@@ -37,7 +37,7 @@ class Popup extends Component<Props, State> {
   componentDidMount() {
     this.syncStorage();
     chrome.storage.onChanged.addListener(async (changes) => {
-      console.log("Syncing new storage to state");
+      console.log("[Popup] Syncing new storage to state");
       this.syncStorage();
     });
   }

@@ -91,7 +91,7 @@ class Embed extends Component<Props, State> {
   componentDidMount() {
     this.syncStorage();
     chrome.storage.onChanged.addListener(async (changes) => {
-      console.log("Syncing new storage to state");
+      console.log(`[Embed] Syncing new storage to state, changes: | ${Object.keys(changes).join(" | ").toUpperCase()} |`);
       this.syncStorage();
     });
   }

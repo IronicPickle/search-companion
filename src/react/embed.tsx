@@ -50,12 +50,12 @@ const initialContent = `
       window.onload = () => sendPostMessage(true);
       window.document = () => sendPostMessage();
       const resizeObserver = new ResizeObserver(() => sendPostMessage());
-      resizeObserver.observe(document.getElementById("mountHere"));
+      const frameContentWrapper = document.getElementById("mountHere");
+      resizeObserver.observe(frameContentWrapper);
 
       let height;
       let width;
       function sendPostMessage(force) {
-        const frameContentWrapper = document.getElementById("mountHere");
         if(frameContentWrapper == null) return;
         if((height !== frameContentWrapper.offsetHeight ||
             width !== frameContentWrapper.offsetWidth) || force) {
@@ -165,6 +165,16 @@ function injectEmbed() {
       iframeElement.style.height = event.data.frameHeight + "px";
     if(event.data.hasOwnProperty("frameWidth"))
       iframeElement.style.width = event.data.frameWidth + "px";
+
+    if(event.data.hasOwnProperty("position") && event.data.hasOwnProperty("dragOffset")) {
+      const position = event.data.position;
+      const offset = event.data.dragOffset;
+      console.log(position)
+      console.log(offset)
+      embeddedRoot.style.right = ((document.body.clientWidth - position.x) - (embeddedRoot.clientWidth - offset.x)) + "px"
+      embeddedRoot.style.top = (position.y - offset.y) + "px"
+    }
+
   }
 
 }

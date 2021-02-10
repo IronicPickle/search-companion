@@ -6,21 +6,21 @@ module.exports = {
   entry: {
     "js/background/main": path.join(__dirname, "src/background/main.ts"), // Handles interface script injection
 
-    "js/content/interfaces/cms": path.join(__dirname, "src/content/interfaces/cms.ts"), // CMS interface
-    "js/content/interfaces/kanban": path.join(__dirname, "src/content/interfaces/kanban.ts"), // KanBan interface
+    "js/content/interfaces/CMS": path.join(__dirname, "src/content/interfaces/CMS.ts"), // CMS interface
+    "js/content/interfaces/KanBan": path.join(__dirname, "src/content/interfaces/KanBan.ts"), // KanBan interface
 
-    "js/content/interfaces/terra": path.join(__dirname, "src/content/interfaces/terra.ts"), // TerraFirma interface
-    "js/content/interfaces/coalAuthority": path.join(__dirname, "src/content/interfaces/coalAuthority.ts"), // Coal Authority interface
-    "js/content/interfaces/unitedUtilities": path.join(__dirname, "src/content/interfaces/unitedUtilities.ts"), // United Utilities interface
-    "js/content/interfaces/utilitySearch": path.join(__dirname, "src/content/interfaces/utilitySearch.ts"), // Utility Search interface
+    "js/content/interfaces/Terra": path.join(__dirname, "src/content/interfaces/Terra.ts"), // TerraFirma interface
+    "js/content/interfaces/CoalAuthority": path.join(__dirname, "src/content/interfaces/CoalAuthority.ts"), // Coal Authority interface
+    "js/content/interfaces/UnitedUtilities": path.join(__dirname, "src/content/interfaces/UnitedUtilities.ts"), // United Utilities interface
+    "js/content/interfaces/UtilitySearch": path.join(__dirname, "src/content/interfaces/UtilitySearch.ts"), // Utility Search interface
     
-    "js/content/interfaces/simpleSearch": path.join(__dirname, "src/content/interfaces/simpleSearch.ts"), // Simple Search interface
-    "js/content/interfaces/tameside": path.join(__dirname, "src/content/interfaces/tameside.ts"), // Tameside interface
-    "js/content/interfaces/warrington": path.join(__dirname, "src/content/interfaces/warrington.ts"), // Warrington interface
-    "js/content/interfaces/blackburn": path.join(__dirname, "src/content/interfaces/blackburn.ts"), // Warrington interface
-    "js/content/interfaces/ribbleValley": path.join(__dirname, "src/content/interfaces/ribbleValley.ts"), // Ribble Valley interface
-    "js/content/interfaces/preston": path.join(__dirname, "src/content/interfaces/preston.ts"), // Preston interface
-    "js/content/interfaces/cheshireEast": path.join(__dirname, "src/content/interfaces/cheshireEast.ts"), // Cheshire East interface
+    "js/content/interfaces/SimpleSearch": path.join(__dirname, "src/content/interfaces/SimpleSearch.ts"), // Simple Search interface
+    "js/content/interfaces/Tameside": path.join(__dirname, "src/content/interfaces/Tameside.ts"), // Tameside interface
+    "js/content/interfaces/Warrington": path.join(__dirname, "src/content/interfaces/Warrington.ts"), // Warrington interface
+    "js/content/interfaces/Blackburn": path.join(__dirname, "src/content/interfaces/Blackburn.ts"), // Warrington interface
+    "js/content/interfaces/RibbleValley": path.join(__dirname, "src/content/interfaces/RibbleValley.ts"), // Ribble Valley interface
+    "js/content/interfaces/Preston": path.join(__dirname, "src/content/interfaces/Preston.ts"), // Preston interface
+    "js/content/interfaces/CheshireEast": path.join(__dirname, "src/content/interfaces/cheshireEast.ts"), // Cheshire East interface
     "js/react/popup": path.join(__dirname, "src/react/popup.tsx"), // Popup react root
     "js/react/embed": path.join(__dirname, "src/react/embed.tsx") // Embed react root
   },

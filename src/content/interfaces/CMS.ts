@@ -4,35 +4,23 @@ import { Order, Product, Property } from "../../lib/interfaces";
 import { orderFields } from "../../lib/vars";
 import { createNotification, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval } from "../../lib/vars";
-import moment from "moment";
+import Interface from "../Interface";
 
-
-class CMS {
-  interval?: number;
+class CMS extends Interface {
   constructor() {
-    this.startInterval();
-  }
-
-  startInterval() {
-    this.interval = window.setInterval(() => {
-      const signature = this.checkSignature();
-      this.handleSignature(signature);
-    }, interfaceCheckInterval);
-    console.log(`[Interface] ${moment(interfaceCheckInterval).format("s")} second(s) interval started - ID: ${this.interval}`);
-  }
-
-  checkSignature() {
-    if(queryElement(["id:view2"]) != null) return "orderInfo";
-    return null;
-  }
-
-  handleSignature(signature: "orderInfo" | null) {
-    switch(signature) {
-      case "orderInfo":
-        const order = this.extractOrderInfo();
-        this.saveOrderInfo(order);
-        break;
+    const signatures = {
+      orderInfo: {
+        signature: () => queryElement(["id:view2"]) != null,
+        handler: () => {
+          const order = this.extractOrderInfo();
+          this.saveOrderInfo(order);
+        }
+      }
     }
+
+    super(signatures);
+    this.startInterval(interfaceCheckInterval);
+    console.log(`[${this.name}] Interface ready`);
   }
 
   extractOrderInfo() {
@@ -54,7 +42,7 @@ class CMS {
 
     if(!_.isEqual(order, storage.order)) {
       const notification = createNotification({ severity: "info", text: "Order Info Extracted" }, 0);
-      console.log("[Interface] Saved order info to storage");
+      console.log("[${this.name}] Saved order info to storage");
       chrome.storage.local.set({ order, notification });
       chrome.storage.local.remove([ "planning", "building" ]);
     }
@@ -158,10 +146,4 @@ class CMS {
 
 }
 
-function start() {
-  console.log(`[Interface] Launching interface...`);
-  const inter = new CMS();
-  console.log(`[Interface] Interface launched`);
-}
-
-start();
+new CMS();

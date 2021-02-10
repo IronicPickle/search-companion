@@ -35,7 +35,7 @@ export interface Product {
   cost: string;
 }
 
-export interface Mapping {
+export interface Location {
   [key: string]: any;
   northing: string;
   easting: string;
@@ -46,7 +46,7 @@ export interface Order {
   reference: string;
   property: Property;
   products: Product[];
-  mapping: Mapping;
+  location: Location;
   type: string;
   council: string;
   water: string;

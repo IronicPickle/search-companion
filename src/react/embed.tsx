@@ -148,33 +148,83 @@ class Embed extends Component<Props, State> {
 }
 
 function injectEmbed() {
-  const embeddedRoot = document.createElement("div") as HTMLIFrameElement;
+  const embeddedRoot = document.createElement("div") as HTMLDivElement;
   embeddedRoot.setAttribute("style", 
     `position: fixed;
     right: 10px;
     top: 10px;
-    z-index: 2147483647;`
+    z-index: 2147483647;
+    padding: 5px;
+    cursor: all-scroll;`
   );
   document.body.prepend(embeddedRoot);
-  
+
   ReactDOM.render(<Embed/>, embeddedRoot);
+  
+  const iframeCover = document.createElement("div") as HTMLDivElement;
+  iframeCover.setAttribute("style",
+    `position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -100`
+  )
+  embeddedRoot.prepend(iframeCover);
 
   const iframeElement = document.getElementById("embeddedIframe") as HTMLIFrameElement;
-  window.onmessage = (event: MessageEvent<any>) => {
-    if(event.data.hasOwnProperty("frameHeight"))
-      iframeElement.style.height = event.data.frameHeight + "px";
-    if(event.data.hasOwnProperty("frameWidth"))
-      iframeElement.style.width = event.data.frameWidth + "px";
 
-    if(event.data.hasOwnProperty("position") && event.data.hasOwnProperty("dragOffset")) {
-      const position = event.data.position;
-      const offset = event.data.dragOffset;
-      console.log(position)
-      console.log(offset)
-      embeddedRoot.style.right = ((document.body.clientWidth - position.x) - (embeddedRoot.clientWidth - offset.x)) + "px"
-      embeddedRoot.style.top = (position.y - offset.y) + "px"
+  let dragging = false;
+  let mouseOffset = { x: 0, y: 0 }
+  let mousePosition = { x: 0, y: 0 }
+  embeddedRoot.onmousedown = (event: MouseEvent) => {
+    event.stopPropagation()
+    event.preventDefault();
+    dragging = true;
+    mouseOffset = { x: event.offsetX, y: event.offsetY }
+    iframeCover.style.zIndex = "100";
+    iframeCover.style.boxShadow = "0 0 2px black";
+  }
+  window.onmousemove = (event: MouseEvent) => {
+    if(!dragging) return;
+    mousePosition = { x: event.clientX, y: event.clientY };
+    iframeReposition(mousePosition, mouseOffset);
+  }
+  window.onmouseup = (event: MouseEvent) => {
+    if(!dragging) return;
+    dragging = false
+    iframeCover.style.zIndex = "-100";
+    iframeCover.style.boxShadow = "0 0 0 black";
+  }
+  window.onmessage = (event: MessageEvent<any>) => {
+    if(event.data.hasOwnProperty("frameHeight")) {
+      iframeElement.style.height = event.data.frameHeight + "px";
+      iframeCheckPosition()
+    }
+    if(event.data.hasOwnProperty("frameWidth")) {
+      iframeElement.style.width = event.data.frameWidth + "px";
+      iframeCheckPosition()
     }
 
+  }
+
+  function iframeCheckPosition() {
+    const x = document.body.clientWidth - parseInt(embeddedRoot.style.right) - embeddedRoot.clientWidth;
+    const y = parseInt(embeddedRoot.style.top);
+    iframeReposition({ x, y }, { x: 0, y: 0 });
+  }
+
+  function iframeReposition(position: any, offset: any) {
+    let x = (document.body.clientWidth - position.x) - (embeddedRoot.clientWidth - offset.x);
+    let y = position.y - offset.y;
+    if(x < 0) x = 0;
+    if(y < 0) y = 0;
+    const xMax = document.body.clientWidth - embeddedRoot.clientWidth;
+    const yMax = document.body.clientHeight - embeddedRoot.clientHeight;
+    if(x > xMax) x = xMax;
+    if(y > yMax) y = yMax;
+    embeddedRoot.style.right = x + "px"
+    embeddedRoot.style.top = y + "px"
   }
 
 }

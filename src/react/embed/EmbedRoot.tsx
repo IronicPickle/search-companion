@@ -13,8 +13,7 @@ const styles = (theme: Theme) => ({
   },
   innerContainer: {
     padding: theme.spacing(1),
-    whiteSpace: "nowrap" as "nowrap",
-    cursor: "all-scroll"
+    whiteSpace: "nowrap" as "nowrap"
   },
   "@global": {
     "*::-webkit-scrollbar": {
@@ -36,7 +35,7 @@ interface Props {
 }
 
 interface State {
-  dragOffset: { x: number, y: number }
+
 }
 
 class EmbedRoot extends Component<Props, State> {
@@ -44,24 +43,8 @@ class EmbedRoot extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.state = {
-      dragOffset: { x: 0, y: 0 }
-    }
-
-    this.iframeDragStart = this.iframeDragStart.bind(this);
-    this.iframeDragEnd = this.iframeDragEnd.bind(this);
+    this.state = {}
     
-  }
-
-  iframeDragStart(event: DragEvent<HTMLDivElement>) {
-    this.setState({ dragOffset: { x: event.clientX, y: event.clientY } })
-  }
-
-  iframeDragEnd(event: DragEvent<HTMLDivElement>) {
-    const dragOffset = this.state.dragOffset;
-    window.parent.postMessage({ position: {
-      x: event.clientX, y: event.clientY
-    }, dragOffset }, "*");
   }
 
 
@@ -74,7 +57,7 @@ class EmbedRoot extends Component<Props, State> {
         {
           (settings.embeddedState && settings.extensionState) ?
             <Container className={classes.outerContainer}>
-              <Paper className={classes.innerContainer} draggable onDragStart={this.iframeDragStart} onDragEnd={this.iframeDragEnd}>
+              <Paper className={classes.innerContainer}>
                 <TabController />
               </Paper>
             </Container>

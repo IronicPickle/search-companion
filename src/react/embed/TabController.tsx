@@ -4,7 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Box, Collapse, Divider, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, Collapse, Divider, IconButton, Slide, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
@@ -113,7 +113,7 @@ class TabController extends Component<Props, State> {
         </Box>
         <Collapse in={tabBarState}>
           <Box display="flex" >
-            <Box flexGrow={1} hidden={currentDisplay == null}>
+            <Box flexGrow={1}>
               <TabDisplay currentTab={currentTab} />
             </Box>
             <Box hidden={currentDisplay == null}>

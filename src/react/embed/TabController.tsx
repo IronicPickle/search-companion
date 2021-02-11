@@ -5,11 +5,12 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Box, Collapse, Dialog, DialogTitle, Divider, IconButton, List, ListItem, ListItemText, Menu, MenuItem, Slide, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, Collapse, Divider, IconButton, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
 import TabBar from "./TabBar";
+import { kanbanGetMenuData, kanbanInsertProducts, kanbanInsertSearch } from "../../lib/kanban";
 
 const styles = (theme: Theme) => ({
   header: {
@@ -49,7 +50,7 @@ interface State {
   menuData?: MenuData;
 }
 
-interface MenuData {
+export interface MenuData {
   title: string;
   options: {
     title: string;
@@ -72,8 +73,6 @@ class TabController extends Component<Props, State> {
     this.toggleTabBar = this.toggleTabBar.bind(this);
     this.menuOpen = this.menuOpen.bind(this);
     this.menuClose = this.menuClose.bind(this);
-    this.kanbanInsertSearch = this.kanbanInsertSearch.bind(this);
-    this.kanbanInsertProducts = this.kanbanInsertProducts.bind(this);
   }
   
   menuClose() {
@@ -84,82 +83,13 @@ class TabController extends Component<Props, State> {
   menuOpen(event: MouseEvent<HTMLButtonElement>) {
     const menuData: MenuData = { title: "KanBan Options", options: [
       { title: "Insert Search", onClick: () => this.setState({
-        menuData: this.kanbanGetMenuData(this.kanbanInsertSearch)
+        menuData: kanbanGetMenuData(kanbanInsertSearch)
       }) },
       { title: "Insert Products", onClick: () => this.setState({
-        menuData: this.kanbanGetMenuData(this.kanbanInsertProducts)
+        menuData: kanbanGetMenuData(kanbanInsertProducts)
       }) }
     ] }
     this.setState({ anchorElement: event.currentTarget, menuData });
-  }
-
-  kanbanGetMenuData(onClickFunction: (id: string) => any) {
-    const columnHeaders = Array.from(document.getElementsByClassName("columnHeader"));
-    const menuData: MenuData = { title: "Select a Column", options: [] };
-
-    for(const i in columnHeaders) {
-      const columnHeader = columnHeaders[i];
-
-      const id = columnHeader.getAttribute("data-columnid");
-      const title = columnHeader.getElementsByTagName("h2").item(0)?.innerText;
-      if(id == null || title == null) continue;
-
-      menuData.options.push({ title, onClick: () => { onClickFunction(id); } })
-
-    }
-
-    return menuData;
-    
-  }
-  
-  kanbanInsertSearch(id: string) {
-    this.menuClose();
-
-    const products = (this.context as GlobalContext).order?.products;
-    if(products == null) return;
-    products.filter(product => product.name.includes("Index Regulated Drainage & Water Report"))
-    
-    const columnHeaders = Array.from(document.getElementsByClassName("columnHeader"));
-    const columnTaskLists = Array.from(document.getElementsByClassName("board-taskListCell"));
-
-    const columnHeader = columnHeaders.find(columnHeader => columnHeader.getAttribute("data-columnid") === id);
-    const columnTaskList = columnTaskLists.find(columnTaskList => columnTaskList.getAttribute("data-columnid") === id);
-
-    if(columnHeader == null || columnTaskList == null) return;
-
-    const addTaskButton = columnHeader.getElementsByClassName("columnHeader-addTask").item(0) as HTMLButtonElement | null;
-    if(addTaskButton == null) return;
-    addTaskButton.click();
-
-    const taskNameTextArea = document.getElementsByClassName("addTaskDialog-name").item(0) as HTMLTextAreaElement | null;
-    if(taskNameTextArea == null) return;
-    taskNameTextArea.value = "test";
-    taskNameTextArea.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
-
-    const addLabelButton = document.getElementsByClassName("addTaskDialog-iconButton").item(1) as HTMLButtonElement | null;
-    if(addLabelButton == null) return;
-    addLabelButton.click();
-    
-    const labelNameTextArea = document.getElementsByClassName("taskLabelInput-input").item(0) as HTMLTextAreaElement | null;
-    if(labelNameTextArea == null) return;
-    labelNameTextArea.value = "test";
-    labelNameTextArea.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
-    labelNameTextArea.dispatchEvent(new KeyboardEvent("keydown", {
-      key: "Enter", code: "Enter"
-    }))
-
-    const closeLabelButton = document.getElementsByClassName("popoverDialog-close").item(0) as HTMLButtonElement | null;
-    if(closeLabelButton == null) return;
-    closeLabelButton.click();
-    
-    const closeTaskButton = document.getElementsByClassName("addTaskDialog-button").item(2) as HTMLButtonElement | null;
-    if(closeTaskButton == null) return;
-    closeTaskButton.click();
-
-  }
-
-  kanbanInsertProducts(id: string) {
-    console.log(id)
   }
 
   componentDidMount() {

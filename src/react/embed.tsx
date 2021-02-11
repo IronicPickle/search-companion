@@ -248,7 +248,7 @@ async function injectEmbed() {
     let y = position.y - offset.y;
     if(x < 0) x = 0;
     if(y < 0) y = 0;
-    const xMax = (document.body.clientWidth / 2) - embeddedRoot.clientWidth;
+    const xMax = (document.body.clientWidth / 1.25) - embeddedRoot.clientWidth;
     const yMax = (document.body.clientHeight) - embeddedRoot.clientHeight;
     if(x > xMax) x = xMax;
     if(y > yMax) y = yMax;

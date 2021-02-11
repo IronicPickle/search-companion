@@ -4,7 +4,8 @@ export const settingsDefaults: Settings = {
   darkThemeState: false,
   embeddedState: true,
   notificationsState: true,
-  extensionState: true
+  extensionState: true,
+  embedPosition: { x: 0, y: 0 }
 }
 
 export const interfaceCheckInterval = 2500;

@@ -147,12 +147,18 @@ class Embed extends Component<Props, State> {
   }
 }
 
-function injectEmbed() {
+async function injectEmbed() {
+  const settings = (await chromep.storage.local.get() as Storage).settings;
+  chrome.storage.onChanged.addListener((changes) => {
+    if(changes.settings == null) return;
+    iframeReposition(changes.settings.newValue.embedPosition);
+  });
+
   const embeddedRoot = document.createElement("div") as HTMLDivElement;
   embeddedRoot.setAttribute("style", 
     `position: fixed;
-    right: 10px;
-    top: 10px;
+    right: ${settings.embedPosition.x}px;
+    top: ${settings.embedPosition.y}px;
     z-index: 2147483647;
     padding: 5px;
     cursor: all-scroll;`
@@ -188,43 +194,70 @@ function injectEmbed() {
   window.onmousemove = (event: MouseEvent) => {
     if(!dragging) return;
     mousePosition = { x: event.clientX, y: event.clientY };
-    iframeReposition(mousePosition, mouseOffset);
+    iframeReposition(iframeCalcPosition(mousePosition, mouseOffset));
   }
-  window.onmouseup = (event: MouseEvent) => {
+  window.onmouseup = async (event: MouseEvent) => {
     if(!dragging) return;
     dragging = false
     iframeCover.style.zIndex = "-100";
     iframeCover.style.boxShadow = "0 0 0 black";
+    const settings = (await chromep.storage.local.get() as Storage).settings;
+    settings.embedPosition = iframeCalcPosition(mousePosition, mouseOffset);
+    chrome.storage.local.set({ settings });
   }
   window.onmessage = (event: MessageEvent<any>) => {
+    const frameDataOld = { frameWidth: iframeElement.clientWidth, frameHeight: iframeElement.clientHeight };
     if(event.data.hasOwnProperty("frameHeight")) {
       iframeElement.style.height = event.data.frameHeight + "px";
-      iframeCheckPosition()
+      iframeCheckPosition(event.data, frameDataOld)
     }
     if(event.data.hasOwnProperty("frameWidth")) {
       iframeElement.style.width = event.data.frameWidth + "px";
-      iframeCheckPosition()
+      iframeCheckPosition(event.data, frameDataOld)
     }
-
+    if(event.data === "closePopover") {
+      const popoverElement = document.getElementsByClassName("MuiPopover-root").item(0) as HTMLDivElement | null;
+      if(popoverElement != null) popoverElement.style.visibility = "hidden";
+    }
+  }
+  window.onresize = async () => {
+    const rect = embeddedRoot.getBoundingClientRect();
+    iframeReposition(iframeCalcPosition({ x: rect.x, y: rect.y }, { x: 0, y: 0 }));
   }
 
-  function iframeCheckPosition() {
+  async function iframeCheckPosition(frameData: any, frameDataOld: any) {
     const x = document.body.clientWidth - parseInt(embeddedRoot.style.right) - embeddedRoot.clientWidth;
     const y = parseInt(embeddedRoot.style.top);
-    iframeReposition({ x, y }, { x: 0, y: 0 });
+
+    const embedPosition = (await chromep.storage.local.get() as Storage).settings.embedPosition;
+    const calculatedPosition = iframeCalcPosition({ x, y }, { x: 0, y: 0 });
+    let newPosition = embedPosition;
+    const isBigger = frameData.frameWidth > frameDataOld.frameWidth || frameData.frameHeight > frameDataOld.frameHeight;
+
+    if(isBigger) {
+      newPosition = calculatedPosition;
+    } else {
+      if(frameData.frameWidth === frameDataOld.frameWidth) newPosition.x = calculatedPosition.x
+      if(frameData.frameHeight === frameDataOld.frameHeight) newPosition.y = calculatedPosition.y;
+    }
+    iframeReposition(newPosition);
   }
 
-  function iframeReposition(position: any, offset: any) {
+  function iframeCalcPosition(position: any, offset: any) {
     let x = (document.body.clientWidth - position.x) - (embeddedRoot.clientWidth - offset.x);
     let y = position.y - offset.y;
     if(x < 0) x = 0;
     if(y < 0) y = 0;
-    const xMax = document.body.clientWidth - embeddedRoot.clientWidth;
-    const yMax = document.body.clientHeight - embeddedRoot.clientHeight;
+    const xMax = (document.body.clientWidth / 2) - embeddedRoot.clientWidth;
+    const yMax = (document.body.clientHeight) - embeddedRoot.clientHeight;
     if(x > xMax) x = xMax;
     if(y > yMax) y = yMax;
-    embeddedRoot.style.right = x + "px"
-    embeddedRoot.style.top = y + "px"
+    return { x, y };
+  }
+
+  function iframeReposition(position: any) {
+    embeddedRoot.style.right = position.x + "px"
+    embeddedRoot.style.top = position.y + "px"
   }
 
 }

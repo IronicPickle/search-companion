@@ -107,6 +107,7 @@ export interface Settings {
   darkThemeState: boolean;
   notificationsState: boolean;
   extensionState: boolean;
+  embedPosition: { x: number, y: number }
 }
 
 export interface InterfaceInfo {

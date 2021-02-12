@@ -164,6 +164,18 @@ async function injectEmbed() {
     cursor: all-scroll;`
   );
   document.body.prepend(embeddedRoot);
+    
+  const pageCover = document.createElement("div") as HTMLDivElement;
+  pageCover.setAttribute("style",
+    `position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2147483646`
+  )
+  pageCover.hidden = true;
+  document.body.prepend(pageCover);
 
   ReactDOM.render(<Embed/>, embeddedRoot);
   
@@ -190,12 +202,15 @@ async function injectEmbed() {
     mouseOffset = { x: event.offsetX, y: event.offsetY }
     iframeCover.style.zIndex = "100";
     iframeCover.style.boxShadow = "0 0 2px black";
+    pageCover.hidden = false;
   }
-  window.onmousemove = (event: MouseEvent) => {
+  function onMouseMove(event: MouseEvent) {
     if(!dragging) return;
     mousePosition = { x: event.clientX, y: event.clientY };
     iframeReposition(iframeCalcPosition(mousePosition, mouseOffset));
   }
+  window.onmousemove = onMouseMove;
+  pageCover.onmousemove = onMouseMove;
   window.onmouseup = async (event: MouseEvent) => {
     if(!dragging) return;
     dragging = false
@@ -204,6 +219,7 @@ async function injectEmbed() {
     const settings = (await chromep.storage.local.get() as Storage).settings;
     settings.embedPosition = iframeCalcPosition(mousePosition, mouseOffset);
     chrome.storage.local.set({ settings });
+    pageCover.hidden = true;
   }
   window.onmessage = (event: MessageEvent<any>) => {
     const frameDataOld = { frameWidth: iframeElement.clientWidth, frameHeight: iframeElement.clientHeight };
@@ -226,7 +242,7 @@ async function injectEmbed() {
   }
 
   async function iframeCheckPosition(frameData: any, frameDataOld: any) {
-    const x = document.body.clientWidth - parseInt(embeddedRoot.style.right) - embeddedRoot.clientWidth;
+    const x = window.innerWidth - parseInt(embeddedRoot.style.right) - embeddedRoot.clientWidth;
     const y = parseInt(embeddedRoot.style.top);
 
     const embedPosition = (await chromep.storage.local.get() as Storage).settings.embedPosition;
@@ -244,16 +260,13 @@ async function injectEmbed() {
   }
 
   function iframeCalcPosition(position: any, offset: any) {
-    let x = (document.body.clientWidth - position.x) - (embeddedRoot.clientWidth - offset.x);
+    let x = (window.innerWidth - position.x) - (embeddedRoot.clientWidth - offset.x);
     let y = position.y - offset.y;
     if(x < 0) x = 0;
     if(y < 0) y = 0;
 
-    let documentHeight = document.body.clientHeight;
-    if(documentHeight === 0) documentHeight = document.embeds.item(0)?.clientHeight || 0;
-
-    const xMax = (document.body.clientWidth / 1.25) - embeddedRoot.clientWidth;
-    const yMax = (documentHeight) - embeddedRoot.clientHeight;
+    const xMax = (window.innerWidth / 1.25) - embeddedRoot.clientWidth;
+    const yMax = (window.innerHeight) - embeddedRoot.clientHeight;
     if(x > xMax) x = xMax;
     if(y > yMax) y = yMax;
     return { x, y };

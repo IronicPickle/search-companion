@@ -1,6 +1,6 @@
 import { createMuiTheme, Theme, ThemeOptions } from "@material-ui/core";
 
-const shared:ThemeOptions = {
+const shared: ThemeOptions = {
 }
 
 export const lightTheme: Theme = createMuiTheme({

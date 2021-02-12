@@ -82,12 +82,20 @@ class TabController extends Component<Props, State> {
 
   menuOpen(event: MouseEvent<HTMLButtonElement>) {
     const menuData: MenuData = { title: "KanBan Options", options: [
-      { title: "Insert Search", onClick: () => this.setState({
-        menuData: kanbanGetMenuData(kanbanInsertSearch)
-      }) },
-      { title: "Insert Products", onClick: () => this.setState({
-        menuData: kanbanGetMenuData(kanbanInsertProducts)
-      }) }
+      { title: "Insert Search", onClick: () => {
+        this.setState({
+          menuData: kanbanGetMenuData((id: string) => {
+            kanbanInsertSearch(id); this.menuClose();
+          })
+        });
+      }},
+      { title: "Insert Products", onClick: () => {
+          this.setState({
+            menuData: kanbanGetMenuData((id: string) => {
+              kanbanInsertProducts(id); this.menuClose();
+            })
+        });;
+      }}
     ] }
     this.setState({ anchorElement: event.currentTarget, menuData });
   }

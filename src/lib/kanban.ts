@@ -2,6 +2,7 @@ import chromep from "chrome-promise";
 import moment from "moment";
 import { MenuData } from "../react/embed/TabController";
 import { Product } from "./interfaces";
+import { createNotification } from "./utils";
 
 export function kanbanGetMenuData(onClickFunction: (id: string) => any) {
     const columnHeaders = Array.from(document.getElementsByClassName("columnHeader"));
@@ -35,6 +36,10 @@ export async function kanbanInsertSearch(id: string) {
   kanbanInsertTitle(kanbanTitle);
   kanbanInsertLabels([ council ]);
   kanbanCloseTaskDialog();
+
+  const notification = createNotification({ severity: "success", text: "Created Search Card" });
+  console.log(`[KanBan] Created Search Card`);
+  chrome.storage.local.set({ notification });
 }
 
 const productAbbreviations = [
@@ -86,6 +91,10 @@ export async function kanbanInsertProducts(id: string) {
   const color = (labels.includes("DW")) ? (labels.length > 1) ? 4 : 2 : 4;
   kanbanSetColor(color);
   setTimeout(() => kanbanCloseTaskDialog(), 50);
+  
+  const notification = createNotification({ severity: "success", text: "Created Products Card" });
+  console.log(`[KanBan] Created Products Card`);
+  chrome.storage.local.set({ notification });
 }
 
 function kanbanOpenTaskDialog(id: string) {

@@ -36,6 +36,9 @@ const styles = (theme: Theme) => ({
   moreOptionsIcon: {
     position: "absolute" as "absolute",
     right: theme.spacing(2)
+  },
+  menuItem: {
+    minHeight: 0
   }
 });
 
@@ -47,7 +50,7 @@ interface State {
   currentTab: number;
   tabBarState: boolean;
   anchorElement: HTMLElement | null;
-  menuData?: MenuData;
+  menuData?: MenuData[];
 }
 
 export interface MenuData {
@@ -81,23 +84,29 @@ class TabController extends Component<Props, State> {
   }
 
   menuOpen(event: MouseEvent<HTMLButtonElement>) {
-    const menuData: MenuData = { title: "KanBan Options", options: [
-      { title: "Insert Search", onClick: () => {
-        this.setState({
-          menuData: kanbanGetMenuData((id: string) => {
-            kanbanInsertSearch(id); this.menuClose();
-          })
-        });
-      }},
-      { title: "Insert Products", onClick: () => {
-          this.setState({
-            menuData: kanbanGetMenuData((id: string) => {
-              kanbanInsertProducts(id); this.menuClose();
-            })
-        });;
-      }}
-    ] }
-    this.setState({ anchorElement: event.currentTarget, menuData });
+    const menuData: MenuData[] = [];
+    const kanbanActive = window.location.href.includes("https://kanbanflow.com/board");
+    if(kanbanActive) {
+      menuData.push(
+        { title: "KanBan Options", options: [
+          { title: "Insert Search", onClick: () => {
+            this.setState({
+              menuData: kanbanGetMenuData((id: string) => {
+                kanbanInsertSearch(id); this.menuClose();
+              })
+            });
+          }}, { title: "Insert Products", onClick: () => {
+              this.setState({
+                menuData: kanbanGetMenuData((id: string) => {
+                  kanbanInsertProducts(id); this.menuClose();
+                })
+            });;
+          }}
+        ] }
+      )
+    }
+    if(menuData.length === 0) menuData.push({ title: "No Options Available", options: [] } );
+    this.setState({ anchorElement: event.currentTarget, menuData: menuData});
   }
 
   componentDidMount() {
@@ -130,8 +139,6 @@ class TabController extends Component<Props, State> {
 
     const currentDisplay = displays[currentTab];
 
-    const kanbanActive = window.location.href.includes("https://kanbanflow.com/board");
-
     return (
       <>
         <Box display="flex">
@@ -142,11 +149,12 @@ class TabController extends Component<Props, State> {
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="More Options" PopperProps={{ disablePortal: true }} >
-                <IconButton onClick={this.menuOpen} className={classes.moreOptionsIcon} >
-                  <MoreHorizIcon />
-                </IconButton>
-              </Tooltip>
+              { (order != null) &&
+                <Tooltip title="More Options" PopperProps={{ disablePortal: true }} >
+                  <IconButton onClick={this.menuOpen} className={classes.moreOptionsIcon} >
+                    <MoreHorizIcon />
+                  </IconButton>
+                </Tooltip> }
               <Menu
                 anchorEl={anchorElement}
                 keepMounted
@@ -158,17 +166,21 @@ class TabController extends Component<Props, State> {
               >
                 {
                   (menuData != null) ?
-                    <span>
-                      <MenuItem key={-1} disabled><b>{menuData.title}</b></MenuItem>
-                      <Divider key={-2} />
-                      {
-                        menuData.options.map((option, i) => {
-                          return <MenuItem key={i} onClick={() => { option.onClick(); }}>{option.title}</MenuItem>
-                        })
-                      }
-                      <Divider key={-3} />
-                      <MenuItem key={-4} onClick={this.menuClose}>Cancel</MenuItem>
-                    </span>
+                    menuData.map((menu, i) => {
+                      return (
+                        <span key={i}>
+                          <MenuItem key={-1} disabled className={classes.menuItem}><b>{menu.title}</b></MenuItem>
+                          <Divider key={-2} />
+                          {
+                            menu.options.map((option, i) => {
+                              return <MenuItem key={i} onClick={() => { option.onClick(); }} className={classes.menuItem}>{option.title}</MenuItem>
+                            })
+                          }
+                          { menu.options.length > 0 && <Divider key={-3} /> }
+                          <MenuItem key={-4} onClick={this.menuClose} className={classes.menuItem}>Cancel</MenuItem>
+                        </span>
+                      )
+                    })
                   : null
                 }
               </Menu>
@@ -190,7 +202,7 @@ class TabController extends Component<Props, State> {
             </IconButton>
           </Box>
         </Box>
-        <Collapse in={tabBarState}>
+        <Collapse in={tabBarState} style={{ position: "relative" as "relative" }}>
           <Box display="flex" >
             <Box flexGrow={1}>
               <TabDisplay currentTab={currentTab} />

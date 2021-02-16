@@ -19,7 +19,7 @@ export function kanbanGetMenuData(onClickFunction: (id: string) => any) {
 
     }
 
-    return menuData;
+    return [ menuData ];
     
   }
   
@@ -34,7 +34,7 @@ export async function kanbanInsertSearch(id: string) {
   
   kanbanOpenTaskDialog(id);
   kanbanInsertTitle(kanbanTitle);
-  kanbanInsertLabels([ council ]);
+  await kanbanInsertLabels([ council ]);
   kanbanCloseTaskDialog();
 
   const notification = createNotification({ severity: "success", text: "Created Search Card" });
@@ -87,7 +87,7 @@ export async function kanbanInsertProducts(id: string) {
 
   kanbanOpenTaskDialog(id);
   kanbanInsertTitle(kanbanTitle);
-  kanbanInsertLabels(labels);
+  await kanbanInsertLabels(labels);
   const color = (labels.includes("DW")) ? (labels.length > 1) ? 4 : 2 : 4;
   kanbanSetColor(color);
   setTimeout(() => kanbanCloseTaskDialog(), 50);
@@ -155,7 +155,7 @@ function kanbanInsertTitle(title: string) {
   taskNameTextArea.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
 }
 
-function kanbanInsertLabels(labels: string[]) {
+async function kanbanInsertLabels(labels: string[]) {
   const addLabelButton = document.getElementsByClassName("addTaskDialog-iconButton").item(1) as HTMLButtonElement | null;
   if(addLabelButton == null) return;
   addLabelButton.click();
@@ -168,12 +168,15 @@ function kanbanInsertLabels(labels: string[]) {
     labelNameTextArea.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
     labelNameTextArea.dispatchEvent(new KeyboardEvent("keydown", {
       key: "Enter", code: "Enter"
-    }))
+    }));
+    await new Promise(resolve => setTimeout(resolve, 50));
   }
 
   const closeLabelButton = document.getElementsByClassName("popoverDialog-close").item(0) as HTMLButtonElement | null;
   if(closeLabelButton == null) return;
   closeLabelButton.click();
+
+  Promise.resolve();
 }
 
 function kanbanSetColor(color: number) {

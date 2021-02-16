@@ -105,9 +105,10 @@ export interface Settings {
   [key: string]: any;
   embeddedState: boolean;
   darkThemeState: boolean;
+  backgroundImage?: string;
   notificationsState: boolean;
   extensionState: boolean;
-  embedPosition: { x: number, y: number }
+  embedPosition: { x: number, y: number };
 }
 
 export interface InterfaceInfo {

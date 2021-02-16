@@ -12,8 +12,20 @@ const styles = (theme: Theme) => ({
     whiteSpace: "nowrap" as "nowrap"
   },
   innerContainer: {
+    position: "relative" as "relative",
     padding: theme.spacing(1),
-    whiteSpace: "nowrap" as "nowrap"
+    whiteSpace: "nowrap" as "nowrap",
+    overflow: "hidden"
+  },
+  backgroundImage: {
+    position: "absolute" as "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    minWidth: "100%",
+    minHeight: "100%",
+    opacity: 0.40
   },
   "@global": {
     "*::-webkit-scrollbar": {
@@ -58,6 +70,11 @@ class EmbedRoot extends Component<Props, State> {
           (settings.embeddedState && settings.extensionState) ?
             <Container className={classes.outerContainer}>
               <Paper className={classes.innerContainer}>
+                <img
+                  src={settings.backgroundImage}
+                  className={classes.backgroundImage}
+                  alt=""
+                />
                 <TabController />
               </Paper>
             </Container>

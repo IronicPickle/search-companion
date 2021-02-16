@@ -23,9 +23,11 @@ const styles = (theme: Theme) => ({
     right: 0,
     bottom: 0,
     left: 0,
-    minWidth: "100%",
-    minHeight: "100%",
-    opacity: 0.40
+    width: "100%",
+    height: "100%",
+    opacity: 0.40,
+    backgroundSize: "cover",
+    backgroundPosition: "center"
   },
   "@global": {
     "*::-webkit-scrollbar": {
@@ -70,10 +72,9 @@ class EmbedRoot extends Component<Props, State> {
           (settings.embeddedState && settings.extensionState) ?
             <Container className={classes.outerContainer}>
               <Paper className={classes.innerContainer}>
-                <img
-                  src={settings.backgroundImage}
+                <div
                   className={classes.backgroundImage}
-                  alt=""
+                  style={{ backgroundImage: `url(${settings.backgroundImage})` }}
                 />
                 <TabController />
               </Paper>

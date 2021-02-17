@@ -11,6 +11,7 @@ import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
 import TabBar from "./TabBar";
 import { kanbanGetMenuData, kanbanInsertProducts, kanbanInsertSearch } from "../../lib/kanban";
+import { formToDuct } from "../../lib/form";
 
 const styles = (theme: Theme) => ({
   header: {
@@ -86,6 +87,21 @@ class TabController extends Component<Props, State> {
   menuOpen(event: MouseEvent<HTMLButtonElement>) {
     const menuData: MenuData[] = [];
     const kanbanActive = window.location.href.includes("https://kanbanflow.com/board");
+
+    menuData.push(
+      { title: "Generate Forms", options: [
+        { title: "LLC", onClick: () => {
+          formToDuct("llc"), this.menuClose();
+        } },
+        { title: "Con29R", onClick: () => {
+          formToDuct("con29r"), this.menuClose();
+        } },
+        { title: "Con29O", onClick: () => {
+          formToDuct("con29o"), this.menuClose();
+        } }
+      ] }
+    )
+
     if(kanbanActive) {
       menuData.push(
         { title: "KanBan Options", options: [
@@ -105,6 +121,7 @@ class TabController extends Component<Props, State> {
         ] }
       )
     }
+
     if(menuData.length === 0) menuData.push({ title: "No Options Available", options: [] } );
     this.setState({ anchorElement: event.currentTarget, menuData: menuData});
   }

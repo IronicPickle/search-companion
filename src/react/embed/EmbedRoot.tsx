@@ -1,5 +1,5 @@
 // Main Imports
-import React, { DragEvent } from "react";
+import React from "react";
 import { Container, Paper, Theme } from "@material-ui/core";
 import withStyles, { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { Component } from "react";

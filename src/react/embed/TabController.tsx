@@ -194,12 +194,12 @@ class TabController extends Component<Props, State> {
                             })
                           }
                           { menu.options.length > 0 && <Divider key={-3} /> }
-                          <MenuItem key={-4} onClick={this.menuClose} className={classes.menuItem}>Cancel</MenuItem>
                         </span>
                       )
                     })
                   : null
                 }
+                <MenuItem key={-4} onClick={this.menuClose} className={classes.menuItem}>Cancel</MenuItem>
               </Menu>
               <Typography
                 variant="h6"

@@ -90,14 +90,14 @@ class TabController extends Component<Props, State> {
 
     menuData.push(
       { title: "Generate Forms", options: [
-        { title: "LLC", onClick: () => {
-          formToDuct("llc"), this.menuClose();
+        { title: "LLC1", onClick: () => {
+          formToDuct("llc1"); this.menuClose();
         } },
         { title: "Con29R", onClick: () => {
-          formToDuct("con29r"), this.menuClose();
+          formToDuct("con29r"); this.menuClose();
         } },
         { title: "Con29O", onClick: () => {
-          formToDuct("con29o"), this.menuClose();
+          formToDuct("con29o"); this.menuClose();
         } }
       ] }
     )

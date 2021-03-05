@@ -42,7 +42,7 @@ class CMS extends Interface {
 
     if(!_.isEqual(order, storage.order)) {
       const notification = createNotification({ severity: "info", text: "Order Info Extracted" }, 0);
-      console.log("[${this.name}] Saved order info to storage");
+      console.log(`[${this.name}] Saved order info to storage`);
       chrome.storage.local.set({ order, notification });
       chrome.storage.local.remove([ "planning", "building" ]);
     }

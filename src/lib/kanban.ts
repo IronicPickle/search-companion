@@ -1,7 +1,8 @@
 import chromep from "chrome-promise";
+import { indexOf } from "lodash";
 import moment from "moment";
 import { MenuData } from "../react/embed/TabController";
-import { Product } from "./interfaces";
+import { Product, Storage } from "./interfaces";
 import { createNotification } from "./utils";
 
 export function kanbanGetMenuData(onClickFunction: (id: string) => any) {
@@ -26,9 +27,10 @@ export function kanbanGetMenuData(onClickFunction: (id: string) => any) {
 export async function kanbanInsertSearch(id: string) {
   const storage = <Storage> await chromep.storage.local.get();
   const order = storage.order;
-  const products = storage.order.products;
+  if(order == null) return;
+  const products = order.products;
 
-  const council = kanbanGetCouncil(products);
+  const council = kanbanParseCouncil(products, order.council);
   if(council == null) return;
   const kanbanTitle = `${order.reference} | ${council} | ${moment(new Date()).format("DD/MM")}`;
   
@@ -43,44 +45,55 @@ export async function kanbanInsertSearch(id: string) {
 }
 
 const productAbbreviations = [
-  { name: "Index Regulated Drainage & Water Report - United Utilities Water",
+  { matches: [ "Index Regulated Drainage & Water Report - United Utilities Water" ],
     abbreviation: "DW" },
+  { matches: [ "Drainage Plan", "Water Plan" ],
+  abbreviation: "DW Inter" },
     
-  { name: "(con29 dw) - anglian",
+  { matches: [ "(con29 dw) - anglian" ],
   abbreviation: "Con29DW (Anglian)" },
-  { name: "(con29 dw) - welsh water",
+  { matches: [ "(con29 dw) - welsh water" ],
   abbreviation: "Con29DW (Welsh)" },
-  { name: "(con29 dw) - hafren dyfrdwy",
+  { matches: [ "(con29 dw) - hafren dyfrdwy" ],
   abbreviation: "Con29DW (Hafren Dyfrdwy)" },
-  { name: "(con29 dw) - northumbrian",
+  { matches: [ "(con29 dw) - northumbrian" ],
   abbreviation: "Con29DW (Northumbrian)" },
-  { name: "(con29 dw) - severn trent",
+  { matches: [ "(con29 dw) - severn trent" ],
   abbreviation: "Con29DW (Severn Trent)" },
-  { name: "(con29 dw) - south west",
+  { matches: [ "(con29 dw) - south west" ],
   abbreviation: "Con29DW (South West)" },
-  { name: "(con29 dw) - southern",
+  { matches: [ "(con29 dw) - southern" ],
   abbreviation: "Con29DW (Southern)" },
-  { name: "(con29 dw) - thames",
+  { matches: [ "(con29 dw) - thames" ],
   abbreviation: "Con29DW (Thames)" },
-  { name: "(con29 dw) - united utilities",
+  { matches: [ "(con29 dw) - united utilities" ],
   abbreviation: "Con29DW (UU)" },
-  { name: "(con29 dw) - wessex",
+  { matches: [ "(con29 dw) - wessex" ],
   abbreviation: "Con29DW (Wessex)" },
-  { name: "(con29 dw) - yorkshire",
+  { matches: [ "(con29 dw) - yorkshire" ],
   abbreviation: "Con29DW (Yorkshire)" },
 
-  { name: "terra",
+  { matches: [ "terra" ],
     abbreviation: "Terra" },
-  { name: "coal authority",
+  { matches: [ "coal authority" ],
     abbreviation: "Coal Authority" }
 ]
+
+function drainageOnly(labels: string[]) {
+  const signatures = [ "DW", "DW Inter"];
+  for(const i in signatures) {
+    if(labels.includes(signatures[i])) return true;
+  }
+  return false;
+}
 
 export async function kanbanInsertProducts(id: string) {
   const storage = <Storage> await chromep.storage.local.get();
   const order = storage.order;
-  const products = storage.order.products;
+  if(order == null) return;
+  const products = order.products;
   
-  const labels = kanbanGetProducts(products, productAbbreviations);
+  const labels = kanbanGetProducts(products);
   if(labels.length === 0) return;
   const productString = labels.join(" / ");
   const kanbanTitle = `${order.reference} | ${productString} | ${moment(new Date()).format("DD/MM")}`;
@@ -88,7 +101,7 @@ export async function kanbanInsertProducts(id: string) {
   kanbanOpenTaskDialog(id);
   kanbanInsertTitle(kanbanTitle);
   await kanbanInsertLabels(labels);
-  const color = (labels.includes("DW")) ? (labels.length > 1) ? 4 : 2 : 4;
+  const color = (drainageOnly(labels)) ? (labels.length > 1) ? 4 : 2 : 4;
   kanbanSetColor(color);
   setTimeout(() => kanbanCloseTaskDialog(), 50);
   
@@ -112,39 +125,44 @@ function kanbanCloseTaskDialog() {
   closeTaskButton.click();
 }
 
-function kanbanGetProducts(products: Product[], abbreviations: { name: string, abbreviation: string }[]) {
+function kanbanGetProducts(products: Product[]) {
   const labels: string[] = [];
   
-  abbreviations.map(abbreviation => {
+  productAbbreviations.map(abbreviation => {
     products.map(product => {
-      if(product.name.toLowerCase().includes(abbreviation.name.toLowerCase())) {
+      const name = product.name.toLowerCase();
+      const matches = abbreviation.matches;
+      if(matches.find(match => name.includes(match.toLowerCase())) != null) {
+        if(labels.includes(abbreviation.abbreviation)) return;
         labels.push(abbreviation.abbreviation);
       }
     });
   });
 
+  if(labels.includes("DW Inter") && products.find(product => product.name.toLowerCase().includes(
+    "index regulated drainage & water report"
+  ))) {
+    labels.splice(labels.indexOf("DW Inter"), 1);
+  }
+
   return labels;
 }
 
-function kanbanGetCouncil(products: Product[]) {
+function kanbanParseCouncil(products: Product[], council: string) {
   for(const i in products) {
-    const name = products[i].name;
-    if(!name.includes("Index Regulated Local Authority Search - ")) return;
-    const councilStart = name.indexOf("Index Regulated Local Authority Search - ") + 41;
+    if(!products[i].name.includes("Index Regulated Local Authority Search")) continue;
     const matches = [
       "City Council", "District Council", "Metropolitan Borough Council",
       "Borough Council", "Unitary Council", "Council"
     ]
     for(const i in matches) {
       const match = matches[i];
-      if(name.includes(match)) {
-        return name.slice(councilStart, name.indexOf(` ${match}`));
+      if(council.includes(match)) {
+        return council.slice(0, council.indexOf(` ${match}`));
       }
         
     }
-    if(name.includes("")) {
-      return name.slice(councilStart, name.indexOf(" Borough of")) + " - " + name.slice(name.indexOf("Borough of") + 11);
-    }
+    return council.slice(0, council.indexOf(" Borough of")) + " - " + council.slice(council.indexOf("Borough of") + 11);
   }
 }
 

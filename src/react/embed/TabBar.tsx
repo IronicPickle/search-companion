@@ -9,7 +9,7 @@ import OpacityIcon from "@material-ui/icons/Opacity";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Divider, Grid, IconButton, Theme, Tooltip, withStyles } from "@material-ui/core";
+import { Divider, Grid, IconButton, SvgIconTypeMap, Theme, Tooltip, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { createNotification } from "../../lib/utils";
@@ -42,8 +42,18 @@ class TabBar extends Component<Props, State> {
     this.openDuct = this.openDuct.bind(this);
   }
 
+  tabs: { name: string; icon: JSX.Element; }[] = [
+    { name:"Property", icon: <InfoIcon/> },
+    { name:"Products", icon: <AttachMoneyIcon/> },
+    { name:"Planning", icon: <ListIcon/> },
+    { name:"Building", icon: <HomeIcon/> },
+    { name:"History", icon: <HistoryIcon/> }
+  ]
+
   tabSelect(index: number) {
     return (event: MouseEvent<HTMLButtonElement>) => {
+      const { currentTab } = this.props;
+      if(currentTab === index) index = -1;
       this.props.onSelect(index);
     }
   }
@@ -57,47 +67,21 @@ class TabBar extends Component<Props, State> {
 
   render() {
     const { classes, currentTab } = this.props;
-    const { settings, order } = this.context as GlobalContext;
+    const { order } = this.context as GlobalContext;
 
     return (
       <>
         <Grid container direction="column" style={{ height: "100%" }} >
           <Divider className={classes.divider} />
-          <Grid item>
-            <IconButton onClick={this.tabSelect(0)} >
-              <Tooltip title="Property" PopperProps={{ disablePortal: true }} >
-                <InfoIcon />
-              </Tooltip>
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <IconButton onClick={this.tabSelect(1)} >
-              <Tooltip title="Products" PopperProps={{ disablePortal: true }} >
-                <AttachMoneyIcon />
-             </Tooltip>
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <IconButton onClick={this.tabSelect(2)} >
-              <Tooltip title="Planning" PopperProps={{ disablePortal: true }} >
-                <ListIcon />
-              </Tooltip>
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <IconButton onClick={this.tabSelect(3)} >
-              <Tooltip title="Building" PopperProps={{ disablePortal: true }} >
-                <HomeIcon />
-              </Tooltip>
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <IconButton onClick={this.tabSelect(4)} >
-              <Tooltip title="History" PopperProps={{ disablePortal: true }} >
-                <HistoryIcon />
-              </Tooltip>
-            </IconButton>
-          </Grid>
+          { this.tabs.map((tab, i) => {
+              return <Grid item key={i}>
+                <IconButton onClick={this.tabSelect(i)} color={(currentTab === i) ? "secondary" : "default"} >
+                  <Tooltip title={tab.name} PopperProps={{ disablePortal: true }} >
+                    {tab.icon}
+                  </Tooltip>
+                </IconButton>
+              </Grid>
+            }) }
           <Divider className={classes.divider} />
           <Grid item>
             <IconButton

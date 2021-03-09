@@ -82,8 +82,8 @@ class History extends Component<Props, State> {
             component="p"
             align="center"
           >
-            As you visit use the, this section will populate<br/>
-            with the last 10 orders you have visited.
+            This section will populate with the last 10 orders you<br/>
+            have visited.
           </Typography>
         </Container>
       </>

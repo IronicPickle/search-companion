@@ -18,7 +18,7 @@ interface State {
   order?: Order;
   planning?: Planning;
   building?: Building;
-  settings: Settings;
+  settings?: Settings;
   notification?: Notification;
   orderHistory?: OrderHistory;
   kanbanOrder?: KanbanOrder;
@@ -72,9 +72,7 @@ class Embed extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.state = {
-      settings: globalContextDefaults.settings
-    }
+    this.state = {}
 
     this.syncStorage = this.syncStorage.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
@@ -104,8 +102,10 @@ class Embed extends Component<Props, State> {
 
   sendNotification(notification: Notification) {
     const { settings } = this.state;
-    if(notification.href === window.location.href &&
-      settings.notificationsState && settings.extensionState) this.setState({ notification });
+    if(notification.href !== window.location.href) return;
+
+    if(settings == null) return;
+    if(settings.notificationsState && settings.extensionState) this.setState({ notification });
   }
 
   render() {
@@ -129,6 +129,7 @@ class Embed extends Component<Props, State> {
                 plugins: [...jssPreset().plugins],
                 insertionPoint: document.head
               });
+              if(settings == null) return <></>;
               return (
                 <StylesProvider jss={jss}>
                   <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>

@@ -12,6 +12,7 @@ import TabDisplay, { displays } from "./TabDisplay";
 import TabBar from "./TabBar";
 import { kanbanGetMenuData, kanbanInsertProducts, kanbanInsertSearch } from "../../lib/kanban";
 import { formToDuct } from "../../lib/form";
+import { shortcodesGetMenuData } from "../../lib/shortcodes";
 
 const styles = (theme: Theme) => ({
   header: {
@@ -87,6 +88,18 @@ class TabController extends Component<Props, State> {
   menuOpen(event: MouseEvent<HTMLButtonElement>) {
     const menuData: MenuData[] = [];
     const kanbanActive = window.location.href.includes("https://kanbanflow.com/board");
+    
+    menuData.push(
+      { title: "Tools", options: [
+        { title: "Shortcodes", onClick: () => {
+          this.setState({
+            menuData: shortcodesGetMenuData(() => {
+              this.menuClose();
+            })
+          });
+        } }
+      ] }
+    )
 
     menuData.push(
       { title: "Generate Forms", options: [
@@ -112,11 +125,11 @@ class TabController extends Component<Props, State> {
               })
             });
           }}, { title: "Insert Products", onClick: () => {
-              this.setState({
-                menuData: kanbanGetMenuData((id: string) => {
-                  kanbanInsertProducts(id); this.menuClose();
-                })
-            });;
+            this.setState({
+              menuData: kanbanGetMenuData((id: string) => {
+                kanbanInsertProducts(id); this.menuClose();
+              })
+            });
           }}
         ] }
       )
@@ -127,14 +140,17 @@ class TabController extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { settings } = this.context;
     chrome.storage.onChanged.addListener(async (changes) => {
+      const { settings } = this.context;
       if(changes.notification != null) {
+
         const notification = changes.notification.newValue;
         if(notification.href !== window.location.href) return;
+
         const tabOverride = notification.tabOverride;
-        if(tabOverride != null && settings.notificationsState &&
-          settings.extensionState) this.changeTab(tabOverride);
+        if(tabOverride == null) return;
+
+        if(settings.notificationsState && settings.extensionState) this.changeTab(tabOverride);
       }
     });
 
@@ -181,24 +197,21 @@ class TabController extends Component<Props, State> {
                   style: { padding: 0 }
                 }}
               >
-                {
-                  (menuData != null) ?
-                    menuData.map((menu, i) => {
-                      return (
-                        <span key={i}>
-                          <MenuItem key={-1} disabled className={classes.menuItem}><b>{menu.title}</b></MenuItem>
-                          <Divider key={-2} />
-                          {
-                            menu.options.map((option, i) => {
-                              return <MenuItem key={i} onClick={() => { option.onClick(); }} className={classes.menuItem}>{option.title}</MenuItem>
-                            })
-                          }
-                          { menu.options.length > 0 && <Divider key={-3} /> }
-                        </span>
-                      )
-                    })
-                  : null
-                }
+                { menuData != null &&
+                  menuData.map((menu, i) => {
+                    return (
+                      <span key={i}>
+                        <MenuItem key={-1} disabled className={classes.menuItem}><b>{menu.title}</b></MenuItem>
+                        <Divider key={-2} />
+                        {
+                          menu.options.map((option, i) => {
+                            return <MenuItem key={i} onClick={() => { option.onClick(); }} className={classes.menuItem}>{option.title}</MenuItem>
+                          })
+                        }
+                        { menu.options.length > 0 && <Divider key={-3} /> }
+                      </span>
+                    )
+                  }) }
                 <MenuItem key={-4} onClick={this.menuClose} className={classes.menuItem}>Cancel</MenuItem>
               </Menu>
               <Typography

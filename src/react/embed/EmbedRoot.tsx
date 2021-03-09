@@ -64,24 +64,20 @@ class EmbedRoot extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { settings, order } = this.context as GlobalContext;
-
+    const { settings } = this.context as GlobalContext;
+    
     return (
       <>
-        {
-          (settings.embeddedState && settings.extensionState) ?
-            <Container className={classes.outerContainer}>
-              <Paper className={classes.innerContainer}>
-                <div
-                  className={classes.backgroundImage}
-                  style={{ backgroundImage: `url(${settings.backgroundImage})` }}
-                />
-                <TabController />
-              </Paper>
-            </Container>
-          : <></>
-        }
-        
+        { (settings.embeddedState && settings.extensionState) &&
+          <Container className={classes.outerContainer}>
+            <Paper className={classes.innerContainer}>
+              <div
+                className={classes.backgroundImage}
+                style={{ backgroundImage: `url(${settings.backgroundImage})` }}
+              />
+              <TabController />
+            </Paper>
+          </Container> }
       </>
     )
   }

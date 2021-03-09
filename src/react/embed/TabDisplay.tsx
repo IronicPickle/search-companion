@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Divider, Theme, withStyles, Snackbar } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import Order from "./displays/Property";
 import Planning from "./displays/Planning";
 import Products from "./displays/Products";
 import Alert from "@material-ui/lab/Alert";
@@ -53,7 +52,7 @@ class TabDisplay extends Component<Props, State> {
   render() {
     const { classes, currentTab } = this.props;
     const { prevNotification } = this.state;
-    const { settings, order, notification } = this.context as GlobalContext;
+    const { notification } = this.context as GlobalContext;
 
     if(displays[currentTab] == null) return <></>;
 

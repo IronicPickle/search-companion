@@ -1,14 +1,15 @@
 import chromep from "chrome-promise";
 import { MenuData } from "../react/embed/TabController";
-import { Storage } from "./interfaces";
+import { Property, Storage } from "./interfaces";
+import { createNotification } from "./utils";
 
 const shortcodes = [
-  { name: "Address (Single Line)", function: () => {} },
-  { name: "Address (Multi Line)", function: () => {} },
-  { name: "Postcode", function: async () => inject(await generateShortcode("postcode")) },
-  { name: "Reference", function: () => {} },
-  { name: "Local Authority", function: () => {} },
-  { name: "Water Authority", function: () => {} }
+  "Address (Single Line)",
+  "Address (Multi Line)",
+  "Postcode",
+  "Reference",
+  "Local Authority",
+  "Water Authority",
 ]
 
 export function shortcodesGetMenuData(onClickFunction: () => any) {
@@ -16,8 +17,8 @@ export function shortcodesGetMenuData(onClickFunction: () => any) {
 
   for(const i in shortcodes) {
     const shortcode = shortcodes[i];
-    menuData.options.push({ title: shortcode.name, onClick: () => {
-      shortcode.function(); onClickFunction();
+    menuData.options.push({ title: shortcode, onClick: async () => {
+      copyToClipboard(await generateShortcode(shortcode.toLowerCase())); onClickFunction();
     } })
   }
 
@@ -25,73 +26,67 @@ export function shortcodesGetMenuData(onClickFunction: () => any) {
   
 }
 
+const addressKeys = [
+  "flatNumber", "houseName", "houseNumber", "street", "addressLine2", "locality", "town", "county", "postCode"
+]
+
 async function generateShortcode(shortcode: string) {
   const storage = <Storage> await chromep.storage.local.get();
   const order = storage.order;
   if(order == null) return "Unknown";
 
   switch(shortcode) {
+    
+    case "address (single line)":
+      return generateAddress(order.property, ", ");
+    case "address (multi line)":
+      return generateAddress(order.property, ",\n");
     case "postcode":
       return order.property.postCode;
-  }
-
-  return "Unknown";
-}
-
-function inject(data: string) {
-
-  removeFocusEvents();
-  bindFocusEvents((element) => {
-    if(element.tagName !== "INPUT" && element.tagName !== "TEXTAREA") return;
-    const activeElement = <HTMLInputElement | HTMLTextAreaElement> element;
-
-    const value = activeElement.value;
-    const selectionStart = activeElement.selectionStart;
-    const selectionEnd = activeElement.selectionEnd;
-    if(selectionStart == null || selectionEnd == null) return;
-    console.log(selectionStart)
-    console.log(selectionEnd)
-
-    const beforeSelection = value.slice(0, selectionStart);
-    const afterSelection = value.slice(selectionEnd);
-    activeElement.value = `${beforeSelection}${data}${afterSelection}`;
-
-    removeFocusEvents();
-    
-  });
-
-}
-
-function bindFocusEvents(onFocus: (element: HTMLElement) => any) {
-
-  const inputs = Array.from(document.getElementsByTagName("input"));
-  const textareas = Array.from(document.getElementsByTagName("textarea"));
-
-  for(const i in inputs) {
-    inputs[i].addEventListener("focus", function(ev) {
-      onFocus(this);
-    });
-  }
-  for(const i in textareas) {
-    textareas[i].addEventListener("focus", function(ev) {
-      onFocus(this);
-    });
+    case "reference":
+      return order.reference;
+    case "local authority":
+      return order.council;
+    case "water authority":
+      return order.water;
+    default:
+      return "Unknown";
   }
 
 }
 
-function removeFocusEvents() {
-
-  const inputs = Array.from(document.getElementsByTagName("input"));
-  const textareas = Array.from(document.getElementsByTagName("textarea"));
-
-  for(const i in inputs) {
-    const input = inputs[i];
-    input.parentNode?.replaceChild(input.cloneNode(), input)
+function generateAddress(property: Property, joiner?: string) {
+  joiner = joiner || ", ";
+  let address = "";
+  for(const i in addressKeys) {
+    const addressKey = addressKeys[i];
+    const value = property[addressKey];
+    if(value.length > 0) {
+      if([ "flatNumber", "houseName", "houseNumber" ].includes(addressKey)) {
+        address += `${value} `
+      } else {
+        address += `${value}${joiner}`
+      }
+    }
   }
-  for(const i in textareas) {
-    const textarea = textareas[i];
-    textarea.parentNode?.replaceChild(textarea.cloneNode(), textarea)
-  }
+
+  return address.slice(0, -3);
+}
+
+function copyToClipboard(data: string) {
+
+  const inputElement = document.createElement("textarea");
+  inputElement.style.position = "absolute";
+  inputElement.style.opacity = "0";
+  document.body.prepend(inputElement);
+  
+  inputElement.value = data;
+  inputElement.select();
+  inputElement.setSelectionRange(0, data.length);
+  document.execCommand("copy");
+
+  
+  const notification = createNotification({ severity: "info", text: "Copied Shortcode to Clipboard" });
+  chrome.storage.local.set({ notification });
 
 }

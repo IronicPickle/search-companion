@@ -39,6 +39,9 @@ const styles = (theme: Theme) => ({
     position: "absolute" as "absolute",
     right: theme.spacing(2)
   },
+  menuTitle: {
+    fontWeight: 600
+  },
   menuItem: {
     minHeight: 0
   }
@@ -201,8 +204,8 @@ class TabController extends Component<Props, State> {
                   menuData.map((menu, i) => {
                     return (
                       <span key={i}>
-                        <MenuItem key={-1} disabled className={classes.menuItem}><b>{menu.title}</b></MenuItem>
-                        <Divider key={-2} />
+                        <MenuItem key={-1} disabled className={classes.menuTitle}>{menu.title}</MenuItem>
+                        <Divider />
                         {
                           menu.options.map((option, i) => {
                             return <MenuItem key={i} onClick={() => { option.onClick(); }} className={classes.menuItem}>{option.title}</MenuItem>
@@ -212,7 +215,7 @@ class TabController extends Component<Props, State> {
                       </span>
                     )
                   }) }
-                <MenuItem key={-4} onClick={this.menuClose} className={classes.menuItem}>Cancel</MenuItem>
+                <MenuItem key={-2} onClick={this.menuClose} className={classes.menuItem}><b>Cancel</b></MenuItem>
               </Menu>
               <Typography
                 variant="h6"

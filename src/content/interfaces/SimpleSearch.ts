@@ -71,7 +71,7 @@ class SimpleSearch extends Interface {
     planning = (!this.checkIfNewPage()) ? { ...storage.planning, ...planning } : planning;
     
     if(!_.isEqual(planning, storage.planning)) {
-      const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
+      const notification = createNotification({ severity: "success", text: "Planning Info Extracted" }, 2);
       console.log(`[${this.name}] Planning Info Extracted`);
       chrome.storage.local.set({ planning, notification });
     }
@@ -115,7 +115,7 @@ class SimpleSearch extends Interface {
     building = (!this.checkIfNewPage()) ? { ...storage.building, ...building } : building;
     
     if(!_.isEqual(building, storage.building)) {
-      const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);
+      const notification = createNotification({ severity: "success", text: "Building Info Extracted" }, 3);
       console.log(`[${this.name}] Building Info Extracted`);
       chrome.storage.local.set({ building, notification });
     }

@@ -79,6 +79,8 @@ export interface Building {
   reference?: string;
   descripton?: string;
   address?: string;
+  extra?: string;
+  extraDate?: number | string;
   decision?: string;
   decisionDate?: number | string;
   applicationReceivedDate?: number | string;

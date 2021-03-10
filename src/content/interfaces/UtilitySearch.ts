@@ -17,7 +17,7 @@ class UtilitySearch extends Interface {
         handler: async () => {
           if(await this.injectAreaCheckData() == null) return;
           console.log(`[${this.name}] Area Check Info Injected`);
-          const notification = createNotification({ severity: "info", text: "Area Check Info Injected" }, 0);
+          const notification = createNotification({ severity: "success", text: "Area Check Info Injected" }, 0);
           chrome.storage.local.set({ notification });
         }
       },
@@ -31,7 +31,7 @@ class UtilitySearch extends Interface {
         handler: async () => {
           if(await this.injectSearchRequestData() == null) return;
           console.log(`[${this.name}] Order Info Injected`);
-          const notification = createNotification({ severity: "info", text: "Order Info Injected" }, 0);
+          const notification = createNotification({ severity: "success", text: "Order Info Injected" }, 0);
           chrome.storage.local.set({ notification });
         }
       }

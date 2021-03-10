@@ -15,6 +15,7 @@ module.exports = {
     "js/content/interfaces/UtilitySearch": path.join(__dirname, "src/content/interfaces/UtilitySearch.ts"), // Utility Search interface
     
     "js/content/interfaces/SimpleSearch": path.join(__dirname, "src/content/interfaces/SimpleSearch.ts"), // Simple Search interface
+    "js/content/interfaces/Fensa": path.join(__dirname, "src/content/interfaces/Fensa.ts"), // Fensa interface
     "js/content/interfaces/Tameside": path.join(__dirname, "src/content/interfaces/Tameside.ts"), // Tameside interface
     "js/content/interfaces/Warrington": path.join(__dirname, "src/content/interfaces/Warrington.ts"), // Warrington interface
     "js/content/interfaces/Blackburn": path.join(__dirname, "src/content/interfaces/Blackburn.ts"), // Warrington interface

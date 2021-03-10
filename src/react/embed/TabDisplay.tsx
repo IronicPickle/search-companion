@@ -13,6 +13,7 @@ import Building from "./displays/Building";
 import History from "./displays/History";
 import Property from "./displays/Property";
 import Kanban from "./displays/Kanban";
+import Header from "./displays/Header";
 
 const styles = (theme: Theme) => ({
   divider: {
@@ -52,13 +53,19 @@ class TabDisplay extends Component<Props, State> {
   render() {
     const { classes, currentTab } = this.props;
     const { prevNotification } = this.state;
-    const { notification } = this.context as GlobalContext;
+    const { notification, order } = this.context as GlobalContext;
 
     if(displays[currentTab] == null) return <></>;
 
     return (
       <>
         <Divider className={classes.divider} />
+        <Header
+            reference={order?.reference}
+            type={order?.type}
+            council={order?.council}
+            water={order?.water}
+          />
         {displays[currentTab].component}
         {
           (notification != null) ?

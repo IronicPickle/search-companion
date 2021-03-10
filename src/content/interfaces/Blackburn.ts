@@ -83,7 +83,7 @@ class Blackburn extends Interface {
     planning = (!await this.checkIfNewPage()) ? { ...storage.planning, ...planning } : planning;
     
     if(!_.isEqual(planning, storage.planning)) {
-      const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
+      const notification = createNotification({ severity: "success", text: "Planning Info Extracted" }, 2);
       console.log(`[${this.name}] Planning Info Extracted`);
       chrome.storage.local.set({ planning, notification });
     }

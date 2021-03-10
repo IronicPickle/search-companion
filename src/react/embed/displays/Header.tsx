@@ -2,16 +2,26 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Container, Divider, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
-import { globalContext, GlobalContext } from "../../contexts";
+import { Container, Divider, Grid, Theme, Typography, withStyles } from "@material-ui/core";
+import { globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const styles = (theme: Theme) => ({
-  divider: {
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(8),
-    marginLeft: theme.spacing(8),
+  gridContainer: {
     marginBottom: theme.spacing(1)
+  },
+  gridItem: {
+    overflow: "hidden",
+    textOverflow: "ellipses",
+    padding: theme.spacing(0.5)
+  },
+  logo: {
+    height: "50%",
+    width: "100%",
+    backgroundSize: "contain",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundColor: theme.palette.common.white
   }
 });
 
@@ -20,6 +30,7 @@ interface Props {
   reference?: string;
   type?: string;
   council?: string;
+  water?: string;
 }
 
 interface State {
@@ -36,8 +47,10 @@ class Header extends Component<Props, State> {
   }
 
   render() {
-    const { classes, reference, type, council } = this.props;
-    const { settings } = this.context as GlobalContext;
+    const { classes, reference, type, council, water } = this.props;
+
+    const councilUrl = chrome.runtime.getURL(`images/councils/${(council || "").replace(/ /g, "")}.png`);
+    const waterUrl = chrome.runtime.getURL(`images/waters/${(water || "").replace(/ /g, "")}.png`);
 
     let display = (
       <>
@@ -53,25 +66,33 @@ class Header extends Component<Props, State> {
             align="center"
           >Load an order on the CMS to populate this section</Typography>
         </Container>
-        <Divider className={classes.divider} />
+        <Divider />
       </>
     )
 
-    if(reference != null || type != null || council != null) display =  (
+    if(reference != null || type != null || council != null || water != null) display =  (
       <>
-        <Container>
-          <Typography
-            variant="subtitle1"
-            component="h2"
-            align="center"
-          ><b>{reference} - {type}</b></Typography>
-          <Typography
-            variant="subtitle2"
-            component="h3"
-            align="center"
-          >{council}</Typography>
-        </Container>
-        <Divider className={classes.divider} />
+        <Grid container direction="row" wrap="nowrap" className={classes.gridContainer}>
+          <Grid item xs={8} spacing={1} className={classes.gridItem}>
+            <Typography
+              variant="subtitle1"
+              component="h2"
+              align="center"
+              noWrap
+            ><b>{reference} - {type}</b></Typography>
+            <Typography
+              variant="caption"
+              component="h3"
+              align="center"
+              noWrap
+            >{council}<br/>{water}</Typography>
+          </Grid>
+          <Grid item xs={4} spacing={1} className={classes.gridItem}>
+            <div className={classes.logo} style={{ backgroundImage: `url(${councilUrl})` }} />
+            <div className={classes.logo} style={{ backgroundImage: `url(${waterUrl})` }} />
+          </Grid>
+        </Grid>
+        <Divider />
       </>
     )
 

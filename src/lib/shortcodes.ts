@@ -86,7 +86,7 @@ function copyToClipboard(data: string) {
   document.execCommand("copy");
 
   
-  const notification = createNotification({ severity: "info", text: "Copied Shortcode to Clipboard" });
+  const notification = createNotification({ severity: "success", text: "Copied Shortcode to Clipboard" });
   chrome.storage.local.set({ notification });
 
 }

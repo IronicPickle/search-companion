@@ -6,7 +6,6 @@ import { Container, Divider, TextField, Theme, Typography, withStyles } from "@m
 import { GlobalContext, globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
-import Header from "./Header";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -45,10 +44,9 @@ class Building extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { settings, order } = this.context as GlobalContext;
     let { building } = this.context as GlobalContext;
 
-    let buildingString = `{reference}\n{descripton}\n{address}\n{decision} {decisionDate}\nreceived {receivedDate}`;
+    let buildingString = `{reference}\n{descripton}\n{address}\n{extra} {extraDate}\n{decision} {decisionDate}\nreceived {receivedDate}`;
     const buildingArray = buildingString.split("\n");
 
     if(building != null) {
@@ -60,6 +58,13 @@ class Building extends Component<Props, State> {
       if(building.address != null)
         buildingString = buildingString.replace("{address}", building.address);
       
+      if(building.extra != null && building.extraDate != null) {
+        
+        buildingString = buildingString.replace("{extra}", building.extra);
+        buildingString = buildingString.replace("{extraDate}",
+          moment(new Date(building.extraDate)).format("DD/MM/YYYY")
+        );
+      }
       if(building.decision != null &&
         building.decision !== "Not Available" &&
         building.decisionDate != null) {
@@ -77,10 +82,12 @@ class Building extends Component<Props, State> {
 
     }
 
-    if(buildingString.includes("{decisionDate}") &&
-      buildingString.includes("{receivedDate}")) {
-        buildingString += "(no further details)"
-      }
+    if(buildingString.includes("{decisionDate}") && buildingString.includes("{receivedDate}")) {
+      buildingString += "(no further details)"
+    }
+    if(buildingString.includes("{extra} {extraDate}")) {
+      buildingString = buildingString.replace("\n{extra} {extraDate}", "");
+    }
 
     for(const i in buildingArray) {
       buildingString = buildingString.replace(buildingArray[i], ""); 
@@ -93,12 +100,6 @@ class Building extends Component<Props, State> {
     let display = (
       <>
         <Container className={classes.mainContainer}>
-          <Typography
-            variant="subtitle1"
-            component="h2"
-            align="center"
-          >No Building Info to Show</Typography>
-          <Divider className={classes.divider} />
           <Typography
             variant="subtitle2"
             component="p"
@@ -114,11 +115,6 @@ class Building extends Component<Props, State> {
     if(buildingString !== "(no further details)") display = (
       <>
         <Container className={classes.mainContainer}>
-          <Header
-            reference={order?.reference}
-            type={order?.type}
-            council={order?.council} 
-          />
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"

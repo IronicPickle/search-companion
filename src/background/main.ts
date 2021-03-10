@@ -98,7 +98,7 @@ async function storageChange(changes: { [key: string]: chrome.storage.StorageCha
   }
 
   orderHistory.unshift({ ...newOrder, lastViewed: new Date().getTime() });
-  orderHistory = orderHistory.slice(0, 10);
+  orderHistory = orderHistory.slice(0, 25);
 
   chrome.storage.local.set({ orderHistory });
   
@@ -148,6 +148,10 @@ const interfaces: InterfaceInfo[] = [
       "/caseDetails.do"
     ],
     scripts: [ "js/content/interfaces/SimpleSearch.js" ],
+    restrictToOneTab: false
+  }, {
+    urls: [ "https://forms.fensa.org.uk/fensa-certificate" ],
+    scripts: [ "js/content/interfaces/Fensa.js" ],
     restrictToOneTab: false
   }, {
     urls: [ "https://public.tameside.gov.uk/forms/f513buildregcomp385.asp" ],

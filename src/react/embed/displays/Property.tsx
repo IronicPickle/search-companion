@@ -6,7 +6,6 @@ import { Box, Container, Divider, TextField, Theme, Toolbar, Typography, withSty
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { orderFields } from "../../../lib/vars";
-import Header from "./Header";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -84,11 +83,6 @@ class Property extends Component<Props, State> {
     if(order != null) display = (
       <>
         <Container className={classes.mainContainer}>
-          <Header
-            reference={order?.reference}
-            type={order?.type}
-            council={order?.council} 
-          />
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"

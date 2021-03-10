@@ -64,7 +64,7 @@ class Tameside extends Interface {
     }
     
     if(!_.isEqual(building, storage.building)) {
-      const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);
+      const notification = createNotification({ severity: "success", text: "Building Info Extracted" }, 3);
       console.log(`[${this.name}] Building Info Extracted`);
       chrome.storage.local.set({ building, notification });
     }

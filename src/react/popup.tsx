@@ -46,10 +46,12 @@ class Popup extends Component<Props, State> {
 
     const { order, settings } = this.state;
 
+    const theme = (settings?.darkThemeState) ? darkTheme : lightTheme;
+
     return (
       <>
         <globalContext.Provider value={{ order, settings }}>
-          <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
+          <ThemeProvider theme={theme}>
             <Paper style={{ padding: 8, overflow: "auto", maxHeight: 568, width: 284 }}>
               <PopupRoot />
             </Paper>

@@ -12,7 +12,7 @@ class CoalAuthority extends Interface {
         handler: async () => {
           if(await this.injectOrderData() == null) return;
           console.log(`[${this.name}] Order Info Injected`);
-          const notification = createNotification({ severity: "info", text: "Order Info Injected" }, 0);
+          const notification = createNotification({ severity: "success", text: "Order Info Injected" }, 0);
           chrome.storage.local.set({ notification });
         }
       }

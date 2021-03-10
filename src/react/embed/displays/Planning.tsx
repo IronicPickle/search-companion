@@ -6,7 +6,6 @@ import { Container, Divider, TextField, Theme, Typography, withStyles } from "@m
 import { GlobalContext, globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
-import Header from "./Header";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -118,12 +117,6 @@ class Planning extends Component<Props, State> {
       <>
         <Container className={classes.mainContainer}>
           <Typography
-            variant="subtitle1"
-            component="h2"
-            align="center"
-          >No Planning Info to Show</Typography>
-          <Divider className={classes.divider} />
-          <Typography
             variant="subtitle2"
             component="p"
             align="center"
@@ -138,11 +131,6 @@ class Planning extends Component<Props, State> {
     if(planningString !== "(no further details)") display = (
       <>
       <Container className={classes.mainContainer}>
-          <Header
-            reference={order?.reference}
-            type={order?.type}
-            council={order?.council} 
-          />
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"

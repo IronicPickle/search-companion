@@ -6,7 +6,6 @@ import React, { Component } from "react";
 import { Box, Container, Divider, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import Header from "./Header";
 import moment from "moment";
 import { CMSVersion } from "../../../lib/vars";
 
@@ -65,7 +64,7 @@ class History extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { settings, order } = this.context as GlobalContext;
+    const { order } = this.context as GlobalContext;
     const orderHistory = (this.context as GlobalContext).orderHistory || [];
 
     let display = (
@@ -82,7 +81,7 @@ class History extends Component<Props, State> {
             component="p"
             align="center"
           >
-            This section will populate with the last 10 orders you<br/>
+            This section will populate with the last 25 orders you<br/>
             have visited.
           </Typography>
         </Container>
@@ -92,11 +91,6 @@ class History extends Component<Props, State> {
     if(orderHistory.length > 0) display = (
       <>
         <Container className={classes.mainContainer}>
-          <Header
-            reference={order?.reference}
-            type={order?.type}
-            council={order?.council} 
-          />
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"

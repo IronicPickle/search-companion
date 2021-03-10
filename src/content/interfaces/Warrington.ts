@@ -101,7 +101,7 @@ class Warrington extends Interface {
     planning = (this.isNewPlanningPage()) ? planning : { ...storage.planning, ...planning  };
     
     if(!_.isEqual(planning, storage.planning)) {
-      const notification = createNotification({ severity: "info", text: "Planning Info Extracted" }, 2);
+      const notification = createNotification({ severity: "success", text: "Planning Info Extracted" }, 2);
       console.log("Planning Info Extracted");
       chrome.storage.local.set({ planning, notification });
     }
@@ -156,7 +156,7 @@ class Warrington extends Interface {
     }
     
     if(!_.isEqual(building, storage.building)) {
-      const notification = createNotification({ severity: "info", text: "Building Info Extracted" }, 3);
+      const notification = createNotification({ severity: "success", text: "Building Info Extracted" }, 3);
       console.log("Building Info Extracted");
       chrome.storage.local.set({ building, notification });
     }

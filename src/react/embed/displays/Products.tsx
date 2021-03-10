@@ -6,7 +6,6 @@ import React, { Component, MouseEvent } from "react";
 import { Box, Container, Divider, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import Header from "./Header";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -95,11 +94,6 @@ class Products extends Component<Props, State> {
     if(order != null) display = (
       <>
         <Container className={classes.mainContainer}>
-          <Header
-            reference={order?.reference}
-            type={order?.type}
-            council={order?.council} 
-          />
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"

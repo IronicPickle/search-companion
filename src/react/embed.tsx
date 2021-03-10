@@ -6,7 +6,7 @@ import { Building, KanbanOrder, Notification, Order, OrderHistory, Planning, Set
 import { create } from "jss";
 import { jssPreset, NoSsr, StylesProvider, ThemeProvider } from "@material-ui/core";
 import { lightTheme, darkTheme } from "./themes";
-import { globalContext, globalContextDefaults } from "./contexts";
+import { globalContext } from "./contexts";
 import EmbedRoot from "./embed/EmbedRoot";
 import FrameComponent, { FrameContextConsumer } from "react-frame-component";
 
@@ -43,7 +43,6 @@ const initialContent = `
   <!DOCTYPE html>
   <html>
     <head>
-      
     </head>
     <body id='mountHere' style='position: fixed; margin: 0;'></body>
     <script>
@@ -95,9 +94,9 @@ class Embed extends Component<Props, State> {
   }
 
   iframeLoad(event: SyntheticEvent<HTMLIFrameElement>) {
-    const embeddedIframe = document.getElementById("embeddedIframe");
-    if(embeddedIframe == null) return;
-    embeddedIframe.setAttribute("scrolling", "no");
+    const extensionSCIframe = document.getElementById("EXTENSC-iframe");
+    if(extensionSCIframe == null) return;
+    extensionSCIframe.setAttribute("scrolling", "no");
   }
 
   sendNotification(notification: Notification) {
@@ -112,38 +111,56 @@ class Embed extends Component<Props, State> {
 
     const { order, planning, building, settings, notification, orderHistory, kanbanOrder } = this.state;
 
-    return (
+    const theme = (settings?.darkThemeState) ? darkTheme : lightTheme;
 
-      <NoSsr>
-        <FrameComponent
-            head={<CustomHead />}
-            initialContent={initialContent}
-            mountTarget="#mountHere"
-            id="embeddedIframe"
-            onLoad={this.iframeLoad}
-            style={{ width: 68, height: 68, border: 0 }}
-          >
-          <FrameContextConsumer>
-            {({ document, window }) => {
-              const jss = create({
-                plugins: [...jssPreset().plugins],
-                insertionPoint: document.head
-              });
-              if(settings == null) return <></>;
-              return (
-                <StylesProvider jss={jss}>
-                  <ThemeProvider theme={(settings.darkThemeState) ? darkTheme : lightTheme}>
-                    <globalContext.Provider value={{ order, settings, notification, planning, building, orderHistory, kanbanOrder,
-                      sendNotification: this.sendNotification }}>
-                      <EmbedRoot />
-                    </globalContext.Provider>
-                  </ThemeProvider>
-                </StylesProvider>
-              )
-            }}
-          </FrameContextConsumer>
-        </FrameComponent>
-      </NoSsr>
+    return (
+      <>
+        <style id="EXTENSC-styles">{
+          `#EXTENSC-clickable:hover {
+            background-color: ${theme.palette.primary.light};
+            color: ${theme.palette.primary.contrastText};
+            cursor: pointer;
+          }`
+        }</style>
+        <div id="EXTENSC-iframeCover" style={{
+          position: "absolute" as "absolute",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: -100
+        }}/>
+        <NoSsr>
+          <FrameComponent
+              head={<CustomHead />}
+              initialContent={initialContent}
+              mountTarget="#mountHere"
+              id="EXTENSC-iframe"
+              onLoad={this.iframeLoad}
+              style={{ width: 68, height: 68, border: 0 }}
+            >
+            <FrameContextConsumer>
+              {({ document, window }) => {
+                const jss = create({
+                  plugins: [...jssPreset().plugins],
+                  insertionPoint: document.head
+                });
+                if(settings == null) return null;
+                return (
+                  <StylesProvider jss={jss}>
+                    <ThemeProvider theme={theme}>
+                      <globalContext.Provider value={{ order, settings, notification, planning, building, orderHistory, kanbanOrder,
+                        sendNotification: this.sendNotification }}>
+                        <EmbedRoot />
+                      </globalContext.Provider>
+                    </ThemeProvider>
+                  </StylesProvider>
+                )
+              }}
+            </FrameContextConsumer>
+          </FrameComponent>
+        </NoSsr>
+      </>
     )
   }
 }
@@ -156,6 +173,7 @@ async function injectEmbed() {
   });
 
   const embeddedRoot = document.createElement("div") as HTMLDivElement;
+  embeddedRoot.id = "EXTENSC-embeddedRoot";
   embeddedRoot.setAttribute("style", 
     `position: fixed;
     right: ${settings.embedPosition.x}px;
@@ -167,6 +185,7 @@ async function injectEmbed() {
   document.body.prepend(embeddedRoot);
     
   const pageCover = document.createElement("div") as HTMLDivElement;
+  pageCover.id = "EXTENSC-pageCover";
   pageCover.setAttribute("style",
     `position: absolute;
     top: 0;
@@ -180,18 +199,9 @@ async function injectEmbed() {
 
   ReactDOM.render(<Embed/>, embeddedRoot);
   
-  const iframeCover = document.createElement("div") as HTMLDivElement;
-  iframeCover.setAttribute("style",
-    `position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -100`
-  )
-  embeddedRoot.prepend(iframeCover);
+  const iframeCover = document.getElementById("EXTENSC-iframeCover") as HTMLDivElement;
 
-  const iframeElement = document.getElementById("embeddedIframe") as HTMLIFrameElement;
+  const iframeElement = document.getElementById("EXTENSC-iframe") as HTMLIFrameElement;
 
   let dragging = false;
   let mouseOffset = { x: 0, y: 0 }

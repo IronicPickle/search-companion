@@ -8,7 +8,7 @@ import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const styles = (theme: Theme) => ({
   gridContainer: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(0.5)
   },
   gridItem: {
     overflow: "hidden",
@@ -16,12 +16,18 @@ const styles = (theme: Theme) => ({
     padding: theme.spacing(0.5)
   },
   logo: {
-    height: "50%",
+    height: `calc(50% - ${theme.spacing(0.5)}px)`,
     width: "100%",
     backgroundSize: "contain",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundColor: theme.palette.common.white
+  },
+  councilLogo: {
+    marginBottom: theme.spacing(0.5)
+  },
+  waterLogo: {
+    marginTop: theme.spacing(0.5)
   }
 });
 
@@ -47,10 +53,14 @@ class Header extends Component<Props, State> {
   }
 
   render() {
-    const { classes, reference, type, council, water } = this.props;
+    const { classes, reference, type } = this.props;
+    let council = this.props.council || "";
+    let water = this.props.water || "";
 
-    const councilUrl = chrome.runtime.getURL(`images/councils/${(council || "").replace(/ /g, "")}.png`);
-    const waterUrl = chrome.runtime.getURL(`images/waters/${(water || "").replace(/ /g, "")}.png`);
+    if(council.includes("(")) council = council.slice(0, council.indexOf("("));
+
+    const councilUrl = chrome.runtime.getURL(`images/councils/${council.replace(/ /g, "")}.png`);
+    const waterUrl = chrome.runtime.getURL(`images/waters/${water.replace(/ /g, "")}.png`);
 
     let display = (
       <>
@@ -72,8 +82,8 @@ class Header extends Component<Props, State> {
 
     if(reference != null || type != null || council != null || water != null) display =  (
       <>
-        <Grid container direction="row" wrap="nowrap" className={classes.gridContainer}>
-          <Grid item xs={8} spacing={1} className={classes.gridItem}>
+        <Grid container spacing={1} direction="row" wrap="nowrap" className={classes.gridContainer}>
+          <Grid item xs={8} className={classes.gridItem}>
             <Typography
               variant="subtitle1"
               component="h2"
@@ -87,9 +97,18 @@ class Header extends Component<Props, State> {
               noWrap
             >{council}<br/>{water}</Typography>
           </Grid>
-          <Grid item xs={4} spacing={1} className={classes.gridItem}>
-            <div className={classes.logo} style={{ backgroundImage: `url(${councilUrl})` }} />
-            <div className={classes.logo} style={{ backgroundImage: `url(${waterUrl})` }} />
+          <Grid item>
+            <Divider orientation="vertical" style={{ height: "100%" }} />
+          </Grid>
+          <Grid item xs={4} className={classes.gridItem}>
+            <div
+              className={`${classes.logo} ${classes.councilLogo}`}
+              style={{ backgroundImage: `url(${councilUrl})` }}
+            />
+            <div
+              className={`${classes.logo} ${classes.waterLogo}`}
+              style={{ backgroundImage: `url(${waterUrl})` }}
+            />
           </Grid>
         </Grid>
         <Divider />

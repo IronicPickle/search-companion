@@ -171,7 +171,14 @@ class TabController extends Component<Props, State> {
   render() {
     const { classes } = this.props;
     const { currentTab, tabBarState, anchorElement, menuData } = this.state;
-    const { settings, order } = this.context as GlobalContext;
+    const { order } = this.context as GlobalContext;
+
+    if(order?.council) {
+      let council = order?.council.replace(/ /g, "");
+      if(council.includes("(")) council = council.slice(0, council.indexOf("("));
+      console.log(council)
+
+    }
 
     const currentDisplay = displays[currentTab];
 
@@ -211,7 +218,7 @@ class TabController extends Component<Props, State> {
                             return <MenuItem key={i} onClick={() => { option.onClick(); }} className={classes.menuItem}>{option.title}</MenuItem>
                           })
                         }
-                        { menu.options.length > 0 && <Divider key={-3} /> }
+                        { menu.options.length > 0 && <Divider /> }
                       </span>
                     )
                   }) }

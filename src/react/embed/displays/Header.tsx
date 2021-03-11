@@ -15,13 +15,15 @@ const styles = (theme: Theme) => ({
     textOverflow: "ellipses",
     padding: theme.spacing(0.5)
   },
+  gridItemRight: {
+    backgroundColor: theme.palette.common.white
+  },
   logo: {
     height: `calc(50% - ${theme.spacing(0.5)}px)`,
     width: "100%",
     backgroundSize: "contain",
     backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: theme.palette.common.white
+    backgroundRepeat: "no-repeat"
   },
   councilLogo: {
     marginBottom: theme.spacing(0.5)
@@ -100,7 +102,7 @@ class Header extends Component<Props, State> {
           <Grid item>
             <Divider orientation="vertical" style={{ height: "100%" }} />
           </Grid>
-          <Grid item xs={4} className={classes.gridItem}>
+          <Grid item xs={4} className={`${classes.gridItem} ${classes.gridItemRight}`}>
             <div
               className={`${classes.logo} ${classes.councilLogo}`}
               style={{ backgroundImage: `url(${councilUrl})` }}

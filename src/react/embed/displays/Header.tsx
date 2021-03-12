@@ -7,6 +7,9 @@ import { globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const styles = (theme: Theme) => ({
+  mainContainer: {
+    marginBottom: theme.spacing(1)
+  },
   gridContainer: {
     marginBottom: theme.spacing(0.5)
   },
@@ -117,7 +120,7 @@ class Header extends Component<Props, State> {
       </>
     )
 
-    return display;
+    return <div className={classes.mainContainer}>{ display }</div>
   }
 }
 

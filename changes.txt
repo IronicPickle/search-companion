@@ -1,0 +1,28 @@
+0.0.1:
+- Unknown (Historical)
+0.1.0:
+- Unknown (Historical)
+0.1.1:
+- Unknown (Historical)
+0.1.2:
+- Unknown (Historical)
+0.1.3:
+- Unknown (Historical)
+0.1.4:
+- Unknown (Historical)
+0.1.5:
+- Unknown (Historical)
+0.1.9:
+- Unknown (Historical)
+0.10.0:
+- Fixed issue with extension going idle, requiring a full browser restart.
+1.0.0:
+- Official Release
+- Embedded element is now draggable (That's the widget that appears in the top right)
+- Added new menu in top right (three dots), with the following options available:
+  - Shortcodes (Copies formatted data sets to your clipboard)
+  - Kanban Support (Allows the automatic creation of KanBan cards, formatted for both Products and Searches)
+  - Form Generation (Works with Duct to generate Law Society Forms used to order Official Authority Searches)
+- Redesigned header so it now displays the order's Water Company, along side the logos for both the Council and Water Authority
+- History now saves up to 25 orders
+- Added support for the automatic formatting of Fensa Records (Simply click the record you want Search Companion to format)

@@ -26,3 +26,4 @@
 - Redesigned header so it now displays the order's Water Company, along side the logos for both the Council and Water Authority
 - History now saves up to 25 orders
 - Added support for the automatic formatting of Fensa Records (Simply click the record you want Search Companion to format)
+- Added an option to change the embedded element's background via the settings menu

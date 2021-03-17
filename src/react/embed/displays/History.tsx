@@ -14,12 +14,12 @@ const styles = (theme: Theme) => ({
     paddingRight: 0,
     paddingLeft: 0,
     minWidth: theme.spacing(48),
-    height: 252
+    height: 252,
+    overflow: "auto"
   },
   infoContainer: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    overflow: "auto",
+    marginBottom: theme.spacing(1)
   },
   entryToolbar: {
     paddingLeft: theme.spacing(2),

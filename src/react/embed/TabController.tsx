@@ -176,8 +176,6 @@ class TabController extends Component<Props, State> {
     if(order?.council) {
       let council = order?.council.replace(/ /g, "");
       if(council.includes("(")) council = council.slice(0, council.indexOf("("));
-      console.log(council)
-
     }
 
     const currentDisplay = displays[currentTab];

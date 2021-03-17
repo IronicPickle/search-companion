@@ -2,8 +2,8 @@
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 
 // Main imports
-import React, { Component, MouseEvent } from "react";
-import { Box, Container, Divider, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import React, { Component } from "react";
+import { Box, Container, Divider, Grid, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
@@ -11,12 +11,12 @@ const styles = (theme: Theme) => ({
   mainContainer: {
     paddingRight: 0,
     paddingLeft: 0,
-    minWidth: theme.spacing(48)
+    minWidth: theme.spacing(48),
+    height: 252
   },
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    height: theme.spacing(45) - theme.spacing(4) - 51,
     overflow: "auto"
   },
   entryToolbar: {
@@ -68,27 +68,19 @@ class Products extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { settings, order } = this.context as GlobalContext;
+    const { order } = this.context as GlobalContext;
 
     let display = (
-      <>
-        <Container className={classes.mainContainer}>
-          <Typography
-            variant="subtitle1"
-            component="h2"
-            align="center"
-          >No Products to Show</Typography>
-          <Divider className={classes.divider} />
-          <Typography
-            variant="subtitle2"
-            component="p"
-            align="center"
-          >
-            Load up an Order on the CMS and this section<br/>
-            will display all products on the order.
-          </Typography>
-        </Container>
-      </>
+      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+        <Typography
+          variant="subtitle2"
+          component="p"
+          align="center"
+        >
+          Load up an Order on the CMS and this section<br/>
+          will display all products on the order.
+        </Typography>
+      </Grid>
     )
 
     if(order != null) display = (

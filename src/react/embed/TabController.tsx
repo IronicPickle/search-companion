@@ -44,6 +44,10 @@ const styles = (theme: Theme) => ({
   },
   menuItem: {
     minHeight: 0
+  },
+
+  displayContainer: {
+    height: 370
   }
 });
 
@@ -242,7 +246,7 @@ class TabController extends Component<Props, State> {
         </Box>
         <Collapse in={tabBarState} style={{ position: "relative" as "relative" }}>
           <Box display="flex" >
-            <Box flexGrow={1}>
+            <Box flexGrow={1} className={classes.displayContainer}>
               <TabDisplay currentTab={currentTab} />
             </Box>
             <Box hidden={currentDisplay == null}>

@@ -3,7 +3,7 @@ import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 
 // Main imports
 import React, { Component } from "react";
-import { Box, Container, Divider, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, Container, Divider, Grid, IconButton, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
@@ -13,12 +13,12 @@ const styles = (theme: Theme) => ({
   mainContainer: {
     paddingRight: 0,
     paddingLeft: 0,
-    minWidth: theme.spacing(48)
+    minWidth: theme.spacing(48),
+    height: 252
   },
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    height: theme.spacing(45) - theme.spacing(4) - 51,
     overflow: "auto",
   },
   entryToolbar: {
@@ -68,24 +68,16 @@ class History extends Component<Props, State> {
     const orderHistory = (this.context as GlobalContext).orderHistory || [];
 
     let display = (
-      <>
-        <Container className={classes.mainContainer}>
-          <Typography
-            variant="subtitle1"
-            component="h2"
-            align="center"
-          >No Order History Available</Typography>
-          <Divider className={classes.divider} />
-          <Typography
-            variant="subtitle2"
-            component="p"
-            align="center"
-          >
-            This section will populate with the last 25 orders you<br/>
-            have visited.
-          </Typography>
-        </Container>
-      </>
+      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+        <Typography
+          variant="subtitle2"
+          component="p"
+          align="center"
+        >
+          This section will populate with the last 25 orders you<br/>
+          have visited.
+        </Typography>
+      </Grid>
     )
 
     if(orderHistory.length > 0) display = (

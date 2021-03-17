@@ -2,7 +2,7 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Container, Divider, TextField, Theme, Typography, withStyles } from "@material-ui/core";
+import { Container, Divider, Grid, TextField, Theme, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
@@ -11,7 +11,8 @@ const styles = (theme: Theme) => ({
   mainContainer: {
     paddingRight: 0,
     paddingLeft: 0,
-    minWidth: theme.spacing(48)
+    minWidth: theme.spacing(48),
+    height: 252
   },
   field: {
     margin: theme.spacing(2),
@@ -98,18 +99,16 @@ class Building extends Component<Props, State> {
       .join("\n");
 
     let display = (
-      <>
-        <Container className={classes.mainContainer}>
-          <Typography
-            variant="subtitle2"
-            component="p"
-            align="center"
-          >
-            Load up a Building Regulation on a council's website<br/>
-            and this section will format the information.
-          </Typography>
-        </Container>
-      </>
+      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+        <Typography
+          variant="subtitle2"
+          component="p"
+          align="center"
+        >
+          Load up a Building Regulation on a council's website<br/>
+          and this section will format the information.
+        </Typography>
+      </Grid>
     )
 
     if(buildingString !== "(no further details)") display = (
@@ -124,7 +123,7 @@ class Building extends Component<Props, State> {
                 value={buildingString.toUpperCase()}
                 className={classes.field}
                 multiline={true}
-                rows={12}
+                rows={10}
                 variant="outlined"
               />
             </Typography>

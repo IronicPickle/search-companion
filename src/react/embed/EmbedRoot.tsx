@@ -1,10 +1,11 @@
 // Main Imports
 import React from "react";
-import { Container, Paper, Theme } from "@material-ui/core";
+import { Container, LinearProgress, Paper, Theme } from "@material-ui/core";
 import withStyles, { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { Component } from "react";
 import { globalContext, GlobalContext } from "../contexts";
 import TabController from "./TabController";
+import { interfaces } from "../../lib/vars";
 
 const styles = (theme: Theme) => ({
   outerContainer: {
@@ -41,6 +42,17 @@ const styles = (theme: Theme) => ({
       backgroundColor: theme.palette.secondary.main,
       outline: `1px solid ${theme.palette.secondary.main}`
     }
+  },
+
+  progress: {
+    position: "absolute" as "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    borderRadius: theme.spacing(0.5)
   }
 });
 
@@ -65,11 +77,18 @@ class EmbedRoot extends Component<Props, State> {
   render() {
     const { classes } = this.props;
     const { settings } = this.context as GlobalContext;
+
+    const activeInterface = interfaces.find(interface0 => interface0.urls.find(url => window.location.href.includes(url)));
     
     return (
       <>
         { (settings.embeddedState && settings.extensionState) &&
           <Container className={classes.outerContainer}>
+            <LinearProgress
+              color={(activeInterface != null) ? "secondary" : "primary"}
+              variant={(activeInterface?.restrictToOneTab) ? "indeterminate" : "determinate"}
+              className={classes.progress}
+            />
             <Paper className={classes.innerContainer}>
               <div
                 className={classes.backgroundImage}

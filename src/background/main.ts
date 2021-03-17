@@ -1,7 +1,7 @@
 import chromep from "chrome-promise"
 import { InterfaceInfo, Order, Storage } from "../lib/interfaces";
 import { createNotification } from "../lib/utils";
-import { settingsDefaults } from "../lib/vars";
+import { interfaces, settingsDefaults } from "../lib/vars";
 
 chrome.runtime.onConnect.addListener(() => start());
 chrome.runtime.onStartup.addListener(() => start());
@@ -104,89 +104,3 @@ async function storageChange(changes: { [key: string]: chrome.storage.StorageCha
   
 }
 
-const interfaces: InterfaceInfo[] = [
-  {
-    urls: [ "https://indexcms.co.uk/2.7/case-management",
-      "https://indexcms.co.uk/2.7/franchiseemenu.php",
-      "https://indexcms.co.uk/2.8/case-management",
-      "https://indexcms.co.uk/2.8/franchiseemenu.php"
-    ],
-    scripts: [ "js/content/interfaces/CMS.js" ],
-    restrictToOneTab: true
-  }, {
-    urls: [ "https://kanbanflow.com/board/" ],
-    scripts: [ "js/content/interfaces/KanBan.js" ],
-    restrictToOneTab: true
-  }, {
-    urls: [ "https://www.terrafirmaidc.co.uk/order/order_report",
-      "https://www.terrafirmaidc.co.uk/order",
-      "https://www.terrafirmaidc.co.uk/order/render_order_anc"
-    ],
-    scripts: [ "js/content/interfaces/Terra.js" ],
-    restrictToOneTab: true
-  }, {
-    urls: [ "https://www.groundstability.com/public/web/web-portal/log-order?execution" ],
-    scripts: [ "js/content/interfaces/CoalAuthority.js" ],
-    restrictToOneTab: true
-  }, {
-    urls: [
-      "https://www.utilitysearch.com/PostcodeServiceChecker.asp",
-      "https://www.utilitysearch.com/DraftRequest.asp"
-    ],
-    scripts: [ "js/content/interfaces/UtilitySearch.js" ],
-    restrictToOneTab: true
-  }, {
-    urls: [ "https://propertysearches.unitedutilities.com/homeloggedin/order/" ],
-    scripts: [ "js/content/interfaces/UnitedUtilities.js" ],
-    restrictToOneTab: true
-  }, {
-    urls: [ "/applicationDetails.do",
-      "/appealDetails.do",
-      "/buildingControlDetails.do",
-      "/simpleSearchResults.do",
-      "/shortUrlResults.do?action=firstPage&searchType=Application",
-      "/caseDetails.do"
-    ],
-    scripts: [ "js/content/interfaces/SimpleSearch.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [ "https://forms.fensa.org.uk/fensa-certificate" ],
-    scripts: [ "js/content/interfaces/Fensa.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [ "https://public.tameside.gov.uk/forms/f513buildregcomp385.asp" ],
-    scripts: [ "js/content/interfaces/Tameside.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [
-      "https://planning.warrington.gov.uk/swiftlg/apas/run/WPHAPPDETAIL.DisplayUrl",
-      "https://planning.warrington.gov.uk/swiftlg/apas/run/WBHAPPDETAIL.DisplayUrl"
-    ],
-    scripts: [ "js/content/interfaces/Warrington.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [ "https://planning.blackburn.gov.uk/Northgate/PlanningExplorer/Generic/StdDetails.aspx" ],
-    scripts: [ "js/content/interfaces/Blackburn.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [
-      "https://www.ribblevalley.gov.uk/planningApplication/",
-      "http://5.61.123.171/Northgate/BC/BCExplorer/BC/ApplicationDetails.aspx"
-  ],
-    scripts: [ "js/content/interfaces/RibbleValley.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [ "https://selfservice.preston.gov.uk/service/planning/ApplicationView.aspx" ],
-    scripts: [ "js/content/interfaces/Preston.js" ],
-    restrictToOneTab: false
-  }, {
-    urls: [
-      "https://planning.cheshireeast.gov.uk/applicationdetails.aspx",
-      "https://planning.cheshireeast.gov.uk/applicationdetailsBC.aspx",
-      "http://planning.cheshireeast.gov.uk/applicationdetails.aspx",
-      "http://planning.cheshireeast.gov.uk/applicationdetailsBC.aspx"
-    ],
-    scripts: [ "js/content/interfaces/CheshireEast.js" ],
-    restrictToOneTab: false
-  }
-]

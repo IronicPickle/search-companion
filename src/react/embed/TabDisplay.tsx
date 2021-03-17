@@ -1,6 +1,6 @@
 // Main imports
 import React, { Component } from "react";
-import { Divider, Theme, withStyles, Snackbar } from "@material-ui/core";
+import { Divider, Theme, withStyles, Snackbar, Box } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import Planning from "./displays/Planning";
@@ -61,11 +61,12 @@ class TabDisplay extends Component<Props, State> {
       <>
         <Divider className={classes.divider} />
         <Header
-            reference={order?.reference}
-            type={order?.type}
-            council={order?.council}
-            water={order?.water}
-          />
+          reference={order?.reference}
+          type={order?.type}
+          council={order?.council}
+          water={order?.water}
+        />
+        <Divider className={classes.divider} />
         {displays[currentTab].component}
         {
           (notification != null) ?

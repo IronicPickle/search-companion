@@ -11,12 +11,12 @@ const styles = (theme: Theme) => ({
   mainContainer: {
     paddingRight: 0,
     paddingLeft: 0,
-    minWidth: theme.spacing(48)
+    minWidth: theme.spacing(48),
+    height: 252
   },
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    height: theme.spacing(45) - theme.spacing(4) - 51,
     overflow: "auto"
   },
   entryToolbar: {
@@ -60,7 +60,7 @@ class Kanban extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { settings, order, kanbanOrder } = this.context as GlobalContext;
+    const { kanbanOrder } = this.context as GlobalContext;
 
     if(kanbanOrder == null) return <></>;
     return (

@@ -27,3 +27,8 @@
 - History now saves up to 25 orders
 - Added support for the automatic formatting of Fensa Records (Simply click the record you want Search Companion to format)
 - Added an option to change the embedded element's background via the settings menu
+
+1.0.1:
+- Added Image for Manchester City Council
+- Adjusted some formatting on the embedded element
+- Added a status indicator that outlines the embedded element (Blue - Inactive | Red - Listening | Pulsating Red - Monitoring)

@@ -9,7 +9,9 @@ interface OrderTrimmed {
   council: string;
 }
 
-export async function formToDuct(type: "llc1" | "con29r" | "con29o") {
+export type FormType = "llc1" | "con29r" | "con29o";
+
+export async function formToDuct(type: FormType) {
 
   const storage = (<Storage> await chromep.storage.local.get())
   if(storage.order == null) return;
@@ -21,7 +23,7 @@ export async function formToDuct(type: "llc1" | "con29r" | "con29o") {
 
 }
 
-function generateUrl(type: "llc1" | "con29r" | "con29o", data: OrderTrimmed) {
+function generateUrl(type: FormType, data: OrderTrimmed) {
   return `duct://form/?type=${type}&data=${encodeURIComponent(JSON.stringify(data))}`;
 }
 

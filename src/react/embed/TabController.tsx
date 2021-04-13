@@ -11,8 +11,8 @@ import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
 import TabBar from "./TabBar";
 import { kanbanGetMenuData, kanbanInsertProducts, kanbanInsertSearch } from "../../lib/kanban";
-import { formToDuct } from "../../lib/form";
-import { shortcodesGetMenuData } from "../../lib/shortcodes";
+import { formToDuct, FormType } from "../../lib/form";
+import { getShortcodesMenuData, ShortcodeType } from "../../lib/shortcodes";
 
 const styles = (theme: Theme) => ({
   header: {
@@ -95,30 +95,36 @@ class TabController extends Component<Props, State> {
   menuOpen(event: MouseEvent<HTMLButtonElement>) {
     const menuData: MenuData[] = [];
     const kanbanActive = window.location.href.includes("https://kanbanflow.com/board");
+
+    const shortcodeMenuOptions = [
+      "Address (Single Line)", "Address (Multi Line)", "Other"
+    ]
     
     menuData.push(
-      { title: "Tools", options: [
-        { title: "Shortcodes", onClick: () => {
-          this.setState({
-            menuData: shortcodesGetMenuData(() => {
-              this.menuClose();
-            })
-          });
-        } }
-      ] }
-    )
+      { title: "Shortcodes", options: [
+        ...shortcodeMenuOptions.map(option => {
+          return { title: option, onClick: () => {
+            this.setState({
+              menuData: getShortcodesMenuData(option as ShortcodeType, () => 
+                this.menuClose()
+              )
+            });
+          }}
+        })
+      ]}
+    );
+
+    const formMenuOptions = [
+      "LLC1", "Con29R", "Con29O"
+    ]
 
     menuData.push(
       { title: "Generate Forms", options: [
-        { title: "LLC1", onClick: () => {
-          formToDuct("llc1"); this.menuClose();
-        } },
-        { title: "Con29R", onClick: () => {
-          formToDuct("con29r"); this.menuClose();
-        } },
-        { title: "Con29O", onClick: () => {
-          formToDuct("con29o"); this.menuClose();
-        } }
+        ...formMenuOptions.map(option => {
+          return { title: option, onClick: () => {
+            formToDuct(option.toLowerCase() as FormType); this.menuClose();
+          } }
+        })
       ] }
     )
 

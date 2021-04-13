@@ -69,11 +69,13 @@ class About extends Component<Props, State> {
                   <b>Automation:</b><br/>
                   - Auto-filling property information when ordering reports.<br/>
                   - Automatic formatting of Planning Applications and Building Regulations.<br/>
+                  - Automatic creation of KanBan cards for Products and Searches.<br/>
+                  
                   <br/><b>Convenience:</b><br/>
                   - Displays your current order's information on all tabs for easy access.<br/>
                   - Keeps a history of all the orders you have visited.<br/>
                   - Opens directly to a property on Google Maps.<br/>
-                  - Sends Online Mapping directly to Duct.
+                  - Sends Online Mapping directly to Duct and Order Info for the creation of Official Search Forms (LLC1, Con29R & Con29O).
                 </Typography>
               </Typography>
             </Container>

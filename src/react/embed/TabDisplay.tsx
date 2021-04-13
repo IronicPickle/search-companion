@@ -70,14 +70,14 @@ class TabDisplay extends Component<Props, State> {
         {displays[currentTab].component}
         {
           (notification != null) ?
-          <Snackbar
-            open={!_.isEqual(prevNotification, notification)}
-            onClose={this.snackbarClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            autoHideDuration={2000}
-          >
-            <Alert severity={notification.settings.severity}>{notification.settings.text}</Alert>
-          </Snackbar>
+            <Snackbar
+              open={!_.isEqual(prevNotification, notification)}
+              onClose={this.snackbarClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              autoHideDuration={2000}
+            >
+              <Alert severity={notification.settings.severity}>{notification.settings.text}</Alert>
+            </Snackbar>
           : <></>
         }
       </>

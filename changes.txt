@@ -32,3 +32,4 @@
 - Added Image for Manchester City Council
 - Adjusted some formatting on the embedded element
 - Added a status indicator that outlines the embedded element (Blue - Inactive | Red - Listening | Pulsating Red - Monitoring)
+- Fixed issue with address shortcode generation, and added more shortcode options.

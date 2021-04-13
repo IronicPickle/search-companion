@@ -1,5 +1,4 @@
 import chromep from "chrome-promise";
-import { indexOf } from "lodash";
 import moment from "moment";
 import { MenuData } from "../react/embed/TabController";
 import { Product, Storage } from "./interfaces";

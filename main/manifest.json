@@ -1,6 +1,6 @@
 {
   "name": "Search Companion",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A companion extension for web browsers to assist with Authority Searches.",
   "permissions": [ "webNavigation", "tabs", "storage",
     "http://*/*", "https://*/*" ],

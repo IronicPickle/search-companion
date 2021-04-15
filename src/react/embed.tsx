@@ -243,8 +243,10 @@ async function injectEmbed() {
       iframeCheckPosition(event.data, frameDataOld)
     }
     if(event.data === "closePopover") {
-      const popoverElement = document.getElementsByClassName("MuiPopover-root").item(0) as HTMLDivElement | null;
-      if(popoverElement != null) popoverElement.style.visibility = "hidden";
+      const popoverElements = Array.from(
+        document.getElementsByClassName("MuiPopover-root")
+      ) as HTMLDivElement[];
+      popoverElements.forEach(popoverElement => popoverElement.style.visibility = "hidden");
     }
   }
   window.onresize = async () => {

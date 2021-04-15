@@ -2,10 +2,11 @@
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import CloseIcon from "@material-ui/icons/Close";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import SearchIcon from "@material-ui/icons/Search";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Box, Collapse, Divider, IconButton, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, Collapse, Divider, Grid, IconButton, TextField, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
@@ -16,7 +17,8 @@ import { getShortcodesMenuData, ShortcodeType } from "../../lib/shortcodes";
 
 const styles = (theme: Theme) => ({
   header: {
-    minHeight: theme.spacing(6)
+    minHeight: theme.spacing(6),
+    marginRight: theme.spacing(2) + 1
   },
   title: {
     width: "100%",
@@ -33,12 +35,18 @@ const styles = (theme: Theme) => ({
     marginLeft: theme.spacing(1)
   },
   closeIcon: {
-    position: "absolute" as "absolute"
+    float: "left" as "left"
   },
   moreOptionsIcon: {
-    position: "absolute" as "absolute",
-    right: theme.spacing(2)
+    float: "right" as "right"
   },
+  gotoIcon: {
+    float: "right" as "right"
+  },
+  gotoField: {
+    padding: theme.spacing(1)
+  },
+
   menuTitle: {
     fontWeight: 600
   },
@@ -58,8 +66,10 @@ interface Props {
 interface State {
   currentTab: number;
   tabBarState: boolean;
-  anchorElement: HTMLElement | null;
+  moreAnchorElement: HTMLElement | null;
+  gotoAnchorElement: HTMLElement | null;
   menuData?: MenuData[];
+  gotoReference: string;
 }
 
 export interface MenuData {
@@ -78,21 +88,21 @@ class TabController extends Component<Props, State> {
     this.state = {
       currentTab: displays.length,
       tabBarState: false,
-      anchorElement: null
+      moreAnchorElement: null,
+      gotoAnchorElement: null,
+      gotoReference: ""
     }
     
+    this.gotoMenuOpen = this.gotoMenuOpen.bind(this);
+    this.gotoMenuClose = this.gotoMenuClose.bind(this);
+    this.gotoSearch = this.gotoSearch.bind(this);
     this.changeTab = this.changeTab.bind(this);
     this.toggleTabBar = this.toggleTabBar.bind(this);
-    this.menuOpen = this.menuOpen.bind(this);
-    this.menuClose = this.menuClose.bind(this);
-  }
-  
-  menuClose() {
-    this.setState({ anchorElement: null });
-    window.postMessage("closePopover", "*");
+    this.moreMenuOpen = this.moreMenuOpen.bind(this);
+    this.moreMenuClose = this.moreMenuClose.bind(this);
   }
 
-  menuOpen(event: MouseEvent<HTMLButtonElement>) {
+  moreMenuOpen(event: MouseEvent<HTMLButtonElement>) {
     const menuData: MenuData[] = [];
     const kanbanActive = window.location.href.includes("https://kanbanflow.com/board");
 
@@ -106,7 +116,7 @@ class TabController extends Component<Props, State> {
           return { title: option, onClick: () => {
             this.setState({
               menuData: getShortcodesMenuData(option as ShortcodeType, () => 
-                this.menuClose()
+                this.moreMenuClose()
               )
             });
           }}
@@ -122,7 +132,7 @@ class TabController extends Component<Props, State> {
       { title: "Generate Forms", options: [
         ...formMenuOptions.map(option => {
           return { title: option, onClick: () => {
-            formToDuct(option.toLowerCase() as FormType); this.menuClose();
+            formToDuct(option.toLowerCase() as FormType); this.moreMenuClose();
           } }
         })
       ] }
@@ -134,13 +144,13 @@ class TabController extends Component<Props, State> {
           { title: "Insert Search", onClick: () => {
             this.setState({
               menuData: kanbanGetMenuData((id: string) => {
-                kanbanInsertSearch(id); this.menuClose();
+                kanbanInsertSearch(id); this.moreMenuClose();
               })
             });
           }}, { title: "Insert Products", onClick: () => {
             this.setState({
               menuData: kanbanGetMenuData((id: string) => {
-                kanbanInsertProducts(id); this.menuClose();
+                kanbanInsertProducts(id); this.moreMenuClose();
               })
             });
           }}
@@ -149,7 +159,37 @@ class TabController extends Component<Props, State> {
     }
 
     if(menuData.length === 0) menuData.push({ title: "No Options Available", options: [] } );
-    this.setState({ anchorElement: event.currentTarget, menuData: menuData});
+    this.setState({ moreAnchorElement: event.currentTarget, menuData: menuData });
+  }
+  
+  moreMenuClose() {
+    this.setState({ moreAnchorElement: null });
+    window.postMessage("closePopover", "*");
+  }
+
+  gotoMenuOpen(event: MouseEvent<HTMLButtonElement>) {
+    this.setState({ gotoAnchorElement: event.currentTarget, gotoReference: "" });
+  }
+  
+  gotoMenuClose() {
+    this.setState({ gotoAnchorElement: null });
+    window.postMessage("closePopover", "*");
+  }
+
+  gotoSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.stopPropagation();
+    event.preventDefault();
+    const { gotoReference } = this.state;
+    window.open(`https://indexcms.co.uk/2.8/case-management?goto=${gotoReference}`);
+    this.gotoMenuClose();
+  }
+
+  changeTab(index: number) {
+    this.setState({ tabBarState: true, currentTab: index });
+  }
+
+  toggleTabBar(event: MouseEvent<HTMLButtonElement>) {
+    this.setState({ tabBarState: !this.state.tabBarState, currentTab: displays.length });
   }
 
   componentDidMount() {
@@ -170,17 +210,9 @@ class TabController extends Component<Props, State> {
     this.context.openTab = this.changeTab;
   }
 
-  changeTab(index: number) {
-    this.setState({ tabBarState: true, currentTab: index });
-  }
-
-  toggleTabBar(event: MouseEvent<HTMLButtonElement>) {
-    this.setState({ tabBarState: !this.state.tabBarState, currentTab: displays.length });
-  }
-
   render() {
     const { classes } = this.props;
-    const { currentTab, tabBarState, anchorElement, menuData } = this.state;
+    const { currentTab, tabBarState, menuData, moreAnchorElement, gotoAnchorElement, gotoReference } = this.state;
     const { order } = this.context as GlobalContext;
 
     if(order?.council) {
@@ -195,22 +227,61 @@ class TabController extends Component<Props, State> {
         <Box display="flex">
           <Box flexGrow={1} hidden={currentDisplay == null}>
             <Toolbar disableGutters={true} className={classes.header} hidden={currentDisplay == null} >
-              <Tooltip title="Close" PopperProps={{ disablePortal: true }} >
-                <IconButton onClick={() => { this.changeTab(displays.length) }} className={classes.closeIcon} >
-                  <CloseIcon />
-                </IconButton>
-              </Tooltip>
-              { (order != null) &&
-                <Tooltip title="More Options" PopperProps={{ disablePortal: true }} >
-                  <IconButton onClick={this.menuOpen} className={classes.moreOptionsIcon} >
-                    <MoreHorizIcon />
+              <Grid container justify="flex-start">
+                <Tooltip title="Close" PopperProps={{ disablePortal: true }} >
+                  <IconButton onClick={() => { this.changeTab(displays.length) }} className={classes.closeIcon} >
+                    <CloseIcon />
                   </IconButton>
-                </Tooltip> }
+                </Tooltip>
+              </Grid>
+              <Grid container justify="center">
+                <Typography
+                  variant="h6"
+                    component="h1"
+                    align="center"
+                    className={classes.title}
+                  >{currentDisplay?.name}</Typography>
+              </Grid>
+              <Grid container justify="flex-end">
+                <Toolbar disableGutters={true} style={{ minWidth: 0 }} >
+                  { (order != null) &&
+                    <Tooltip title="More Options" PopperProps={{ disablePortal: true }} >
+                      <IconButton onClick={this.moreMenuOpen} className={classes.moreOptionsIcon} >
+                        <MoreHorizIcon />
+                      </IconButton>
+                    </Tooltip> }
+                    <Tooltip title="Goto Search" PopperProps={{ disablePortal: true }} >
+                      <IconButton onClick={this.gotoMenuOpen} className={classes.gotoIcon} >
+                        <SearchIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Toolbar>
+                </Grid>
+              </Toolbar>
               <Menu
-                anchorEl={anchorElement}
+                anchorEl={gotoAnchorElement}
                 keepMounted
-                open={anchorElement != null}
-                onClose={this.menuClose}
+                open={gotoAnchorElement != null}
+                onClose={this.gotoMenuClose}
+                MenuListProps={{
+                  style: { padding: 0 }
+                }}
+              >
+                <form onSubmit={this.gotoSearch}>
+                  <TextField
+                    autoFocus
+                    placeholder="Order Reference"
+                    value={gotoReference}
+                    onChange={event => this.setState({ gotoReference: event.target.value })}
+                    className={classes.gotoField}
+                  />
+                </form>
+              </Menu>
+              <Menu
+                anchorEl={moreAnchorElement}
+                keepMounted
+                open={moreAnchorElement != null}
+                onClose={this.moreMenuClose}
                 MenuListProps={{
                   style: { padding: 0 }
                 }}
@@ -230,15 +301,8 @@ class TabController extends Component<Props, State> {
                       </span>
                     )
                   }) }
-                <MenuItem key={-2} onClick={this.menuClose} className={classes.menuItem}><b>Cancel</b></MenuItem>
+                <MenuItem key={-2} onClick={this.moreMenuClose} className={classes.menuItem}><b>Cancel</b></MenuItem>
               </Menu>
-              <Typography
-                variant="h6"
-                component="h1"
-                align="center"
-                className={classes.title}
-              >{currentDisplay?.name}</Typography>
-            </Toolbar>
           </Box>
           <Box>
             <IconButton

@@ -10,7 +10,7 @@ export const settingsDefaults: Settings = {
 
 export const interfaceCheckInterval = 2500;
 
-export const CMSVersion = "2.8";
+export const cmsVersion = "2.8";
 
 export const orderFields = [
   { documentId: "CompanyName", actualId: "companyName", name: "Company Name" },

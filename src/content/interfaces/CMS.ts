@@ -1,6 +1,6 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
-import { Order, Product, Property } from "../../lib/interfaces";
+import { Order, Product, Property, Storage } from "../../lib/interfaces";
 import { orderFields } from "../../lib/vars";
 import { createNotification, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval } from "../../lib/vars";
@@ -38,7 +38,16 @@ class CMS extends Interface {
   }
 
   async saveOrderInfo(order: Order) {
-    const storage = await chromep.storage.local.get();
+    const storage = <Storage> await chromep.storage.local.get();
+
+    if(storage.order?.reference === order.reference) {
+      order.property.location = storage.order.property.location;
+    } else {
+      order.property.location = {
+        osGridRef: { easting: 0, northing: 0 },
+        latLon: { latitude: 0, longitude: 0 }
+      }
+    }
 
     if(!_.isEqual(order, storage.order)) {
       const notification = createNotification({ severity: "success", text: "Order Info Extracted" }, 0);

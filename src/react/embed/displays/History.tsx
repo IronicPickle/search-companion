@@ -7,7 +7,7 @@ import { Box, Container, Divider, Grid, IconButton, Theme, Toolbar, Tooltip, Typ
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
-import { CMSVersion } from "../../../lib/vars";
+import { cmsVersion } from "../../../lib/vars";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -108,7 +108,7 @@ class History extends Component<Props, State> {
                           <IconButton
                             size="small"
                             className={classes.openLinkButton}
-                            href={`https://indexcms.co.uk/${CMSVersion}/case-management?goto=${order.reference}`}
+                            href={`https://indexcms.co.uk/${cmsVersion}/case-management?goto=${order.reference}`}
                           >
                             <Tooltip title="Go to Order" PopperProps={{ disablePortal: true }} >
                               <ArrowRightAltIcon style={{ transform: "rotate(-45deg)" }} />

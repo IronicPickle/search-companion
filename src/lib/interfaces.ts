@@ -26,6 +26,21 @@ export interface Property {
   postCode: string;
   titleNumber: string;
   uprn: string;
+  location: Location;
+}
+
+export interface Location {
+  [key: string]: any;
+  osGridRef: {
+    [key: string]: any;
+    easting: number;
+    northing: number;
+  },
+  latLon: { 
+    [key: string]: any;
+    latitude: number;
+    longitude: number;
+  }
 }
 
 export interface Product {
@@ -35,18 +50,11 @@ export interface Product {
   cost: string;
 }
 
-export interface Location {
-  [key: string]: any;
-  northing: string;
-  easting: string;
-}
-
 export interface Order {
   [key: string]: any;
   reference: string;
   property: Property;
   products: Product[];
-  location: Location;
   type: string;
   council: string;
   water: string;

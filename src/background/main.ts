@@ -1,5 +1,5 @@
 import chromep from "chrome-promise"
-import { InterfaceInfo, Order, Storage } from "../lib/interfaces";
+import { Order, Storage } from "../lib/interfaces";
 import { createNotification } from "../lib/utils";
 import { interfaces, settingsDefaults } from "../lib/vars";
 

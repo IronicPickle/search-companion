@@ -43,11 +43,12 @@ class TabBar extends Component<Props, State> {
   }
 
   tabs: { name: string; icon: JSX.Element; }[] = [
-    { name:"Property", icon: <InfoIcon/> },
-    { name:"Products", icon: <AttachMoneyIcon/> },
-    { name:"Planning", icon: <ListIcon/> },
-    { name:"Building", icon: <HomeIcon/> },
-    { name:"History", icon: <HistoryIcon/> }
+    { name: "Property", icon: <InfoIcon/> },
+    { name: "Products", icon: <AttachMoneyIcon/> },
+    { name: "Planning", icon: <ListIcon/> },
+    { name: "Building", icon: <HomeIcon/> },
+    { name: "History", icon: <HistoryIcon/> },
+    { name: "Mapping", icon: <MapIcon /> }
   ]
 
   tabSelect(index: number) {
@@ -83,17 +84,6 @@ class TabBar extends Component<Props, State> {
               </Grid>
             }) }
           <Divider className={classes.divider} />
-          <Grid item>
-            <IconButton
-              href={`https://www.google.com/maps/place/${order?.property.postCode || ""}`}
-              target="_blank"
-              disabled={order?.property.postCode == null}
-            >
-              <Tooltip title="Maps" PopperProps={{ disablePortal: true }} >
-                <MapIcon />
-              </Tooltip>
-            </IconButton>
-          </Grid>
           <Grid item>
             <IconButton onClick={this.openDuct} disabled={order?.reference == null || !isOnlineMapping()} >
               <Tooltip title="Duct" PopperProps={{ disablePortal: true }} >

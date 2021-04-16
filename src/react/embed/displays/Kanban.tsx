@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { Box, Button, Container, Divider, Grid, TextField, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
-import { CMSVersion } from "../../../lib/vars";
+import { cmsVersion } from "../../../lib/vars";
 
 const styles = (theme: Theme) => ({
   mainContainer: {
@@ -101,7 +101,7 @@ class Kanban extends Component<Props, State> {
               >
                 <Grid item>
                   <Button
-                    href={`https://indexcms.co.uk/${CMSVersion}/case-management?goto=${kanbanOrder.reference}`}
+                    href={`https://indexcms.co.uk/${cmsVersion}/case-management?goto=${kanbanOrder.reference}`}
                     target="_blank"
                     variant="contained"
                     color="primary"

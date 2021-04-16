@@ -39,7 +39,7 @@ class KanBan extends Interface {
     const storage = await chromep.storage.local.get();
 
     if(!_.isEqual(kanbanOrder, storage.kanbanOrder)) {
-      const notification = createNotification({ severity: "success", text: "Extracted Order from KanBan" }, 5);
+      const notification = createNotification({ severity: "success", text: "Extracted Order from KanBan" }, 6);
       console.log("[Interface] Saved kanban order info to storage");
       chrome.storage.local.set({ kanbanOrder, notification });
     }

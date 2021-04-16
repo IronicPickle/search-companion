@@ -1,3 +1,4 @@
+import axios from "axios";
 import chromep from "chrome-promise"
 import { Order, Storage } from "../lib/interfaces";
 import { createNotification } from "../lib/utils";
@@ -103,4 +104,3 @@ async function storageChange(changes: { [key: string]: chrome.storage.StorageCha
   chrome.storage.local.set({ orderHistory });
   
 }
-

@@ -1,5 +1,5 @@
 import { Context, createContext } from "react";
-import { Building, KanbanOrder, Notification, Order, OrderHistory, Planning, Settings } from "../lib/interfaces";
+import { Building, HigherLevelFunctions, KanbanOrder, Notification, Order, OrderHistory, Planning, Settings } from "../lib/interfaces";
 import { settingsDefaults } from "../lib/vars"
 
 export interface GlobalContext {

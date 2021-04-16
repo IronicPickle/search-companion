@@ -7,6 +7,11 @@ export interface Storage {
   building?: Building;
   orderHistory?: OrderHistory;
   kanbanOrder?: KanbanOrder;
+  higherLevelFunctions?: HigherLevelFunctions;
+}
+
+export interface HigherLevelFunctions {
+  postCodeToLatLon?: (postcode: string) => any
 }
 
 export interface Property {

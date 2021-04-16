@@ -8,7 +8,7 @@ import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import _, { round } from "lodash";
 import OsGridRef, { LatLon } from "geodesy/osgridref";
 import { createNotification } from "../../../lib/utils";
-import { Location } from "../../../lib/interfaces";
+import { Location, Storage } from "../../../lib/interfaces";
 
 const styles = (theme: Theme) => ({
   mainContainer: {

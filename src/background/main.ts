@@ -34,6 +34,15 @@ async function start() {
 
   console.log("Extension Started - Listening for Interface Compatible URLs");
 
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if(message.type === "PostCodeLookup") {
+      lookupPostCode(message.postCode).then(data => sendResponse({ data })).catch(err => console.log(err));
+      return true;
+    }
+
+  });
+
   chrome.storage.onChanged.addListener(changes => storageChange(changes));
 
   chrome.storage.local.remove([ "notification" ]);
@@ -103,4 +112,10 @@ async function storageChange(changes: { [key: string]: chrome.storage.StorageCha
 
   chrome.storage.local.set({ orderHistory });
   
+}
+
+async function lookupPostCode(postcode: string) {
+  const res = await axios.get(`http://postcodes.io/postcodes/${postcode}`)
+  if(res.status === 200) return res.data;
+  return null;
 }

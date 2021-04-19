@@ -2,9 +2,9 @@
 
 // Main imports
 import React, { Component } from "react";
-import { Container, Grid, TextField, Theme, Typography, withStyles } from "@material-ui/core";
+import { Button, Container, Grid, TextField, Theme, Toolbar, Typography, withStyles, WithTheme } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../../contexts";
-import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { ClassNameMap, WithStyles } from "@material-ui/core/styles/withStyles";
 import _, { round } from "lodash";
 import OsGridRef, { LatLon } from "geodesy/osgridref";
 import { createNotification } from "../../../lib/utils";
@@ -19,7 +19,7 @@ const styles = (theme: Theme) => ({
   },
 
   title: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
   },
   fieldContainer: {
@@ -31,8 +31,8 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface Props {
-  classes: ClassNameMap;
+interface Props extends WithStyles<typeof styles>, WithTheme {
+
 }
 
 interface State {
@@ -42,12 +42,12 @@ interface State {
       [key: string]: any;
       easting: string;
       northing: string;
-    };
+    }
     latLon: {
       [key: string]: any;
       latitude: string;
       longitude: string;
-    };
+    }
   }
 }
 
@@ -67,6 +67,7 @@ class Mapping extends Component<Props, State> {
     this.fieldSave = this.fieldSave.bind(this);
 
     this.locationToState = this.locationToState.bind(this);
+    this.lookupPostCode = this.lookupPostCode.bind(this);
   }
 
   fieldChange(type: "osGridRef" | "latLon", key: string, value: string) {
@@ -133,6 +134,24 @@ class Mapping extends Component<Props, State> {
     } })
   }
 
+  lookupPostCode() {
+    const notification = createNotification({ severity: "error", text: "Postcode Lookup Failed" });
+    const { order } = this.context as GlobalContext;
+    if(order == null) return chrome.storage.local.set({ notification });
+    const postCode = order.property.postCode.replace(/ /g, "");
+    if(postCode.length === 0) return chrome.storage.local.set({ notification });
+
+    chrome.runtime.sendMessage({ type: "PostCodeLookup", postCode }, (message => {
+      const data = message?.data?.result;
+      if(data == null) return chrome.storage.local.set({ notification });
+      if(data.latitude != null) this.fieldSave("latLon", "latitude", data.latitude);
+      if(data.longitude != null) this.fieldSave("latLon", "longitude", data.longitude);
+      chrome.storage.local.set({
+        notification: createNotification({ severity: "success", text: "Postcode Lookup Successful" })
+      });
+    }));
+  }
+
   componentDidMount() {
     const { order } = this.context as GlobalContext;
     if(order == null) return;
@@ -141,7 +160,7 @@ class Mapping extends Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
     const { location } = this.state;
     const { order } = this.context as GlobalContext;
 
@@ -163,11 +182,11 @@ class Mapping extends Component<Props, State> {
       display = (
         <Container className={classes.mainContainer}>
           <Typography
-            variant="body1"
+            variant="subtitle1"
             component="h2"
             align="center"
             className={classes.title}
-          >Grid References</Typography>
+          ><b>Grid References</b></Typography>
           <Grid
             container
             spacing={2}
@@ -198,11 +217,11 @@ class Mapping extends Component<Props, State> {
             </Grid>
           </Grid>
           <Typography
-            variant="body1"
+            variant="subtitle1"
             component="h2"
             align="center"
             className={classes.title}
-          >Coordinates</Typography>
+          ><b>Coordinates</b></Typography>
           <Grid
             container
             spacing={2}
@@ -231,6 +250,33 @@ class Mapping extends Component<Props, State> {
                 onBlur={event => this.fieldSave("latLon", event.target.name, event.target.value)}
               />
             </Grid>
+          </Grid>
+          <Grid container justify="center" className={classes.buttonContainer}>
+            <Toolbar disableGutters>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.lookupPostCode}
+                  >From Postcode</Button>
+                  <Typography
+                    variant="caption"
+                    component="p"
+                    align="center"
+                    style={{ marginTop: theme.spacing(0.5) }}
+                  ><b>Not 100% Accurate</b></Typography>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    href={`https://www.google.co.uk/maps/place/${order.property.postCode}`}
+                    target="_blank"
+                  >Google Maps</Button>
+                </Grid>
+              </Grid>
+            </Toolbar>
           </Grid>
         </Container>
       )

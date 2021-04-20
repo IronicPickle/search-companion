@@ -44,3 +44,6 @@
   - Displays the files on the order extracted from the Documents tab
   - Allows files to be directly opened
   - Allows Online Mapping to be send to Duct, in place of old button
+
+1.2.1:
+- Fixed issued with CMs interface not picking up all files

@@ -172,13 +172,15 @@ class CMS extends Interface {
         if(tdElements.length < 2) return;
 
         const inputElement = tdElements[0].getElementsByTagName("input").item(0);
-        if(inputElement == null) return;
-        const name = inputElement.value;
+        let name = inputElement?.value;
+        if(name == null) {
+          name = tdElements[0].innerText;
+          if(name == null) return;
+        }
 
         const aElement = tdElements[1].getElementsByTagName("a").item(0);
-        if(aElement == null) return;
-        const url = aElement.href;
-
+        const url = aElement?.href;
+        if(url == null) return;
 
         files[files.length - 1].files.push({ name, url });
 

@@ -1,7 +1,6 @@
 // Icon Imports
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import OpacityIcon from "@material-ui/icons/Opacity";
-import GetAppIcon from "@material-ui/icons/GetApp";
 
 // Main imports
 import React, { Component } from "react";

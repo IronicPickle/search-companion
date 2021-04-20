@@ -19,7 +19,7 @@ const styles = (theme: Theme) => ({
   },
 
   title: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1)
   },
   fieldContainer: {
@@ -182,7 +182,7 @@ class Mapping extends Component<Props, State> {
       display = (
         <Container className={classes.mainContainer}>
           <Typography
-            variant="subtitle1"
+            variant="subtitle2"
             component="h2"
             align="center"
             className={classes.title}
@@ -217,7 +217,7 @@ class Mapping extends Component<Props, State> {
             </Grid>
           </Grid>
           <Typography
-            variant="subtitle1"
+            variant="subtitle2"
             component="h2"
             align="center"
             className={classes.title}

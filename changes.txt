@@ -34,5 +34,13 @@
 - Added a status indicator that outlines the embedded element (Blue - Inactive | Red - Listening | Pulsating Red - Monitoring)
 - Fixed issue with address shortcode generation, and added more shortcode options.
 
-1.1.1:
+1.2.0:
 - Added goto option on header aside the more options button
+- Added new Mapping tab in place of Google Maps button
+  - Stores Latitude and Longitude, and Easting and Northings for the specific order
+  - Contains old Google Maps buttoon
+  - Can also calculate coords from postcode via an external API (postcodes.io)
+- Added a new tab in place of old Duct button
+  - Displays the files on the order extracted from the Documents tab
+  - Allows files to be directly opened
+  - Allows Online Mapping to be send to Duct, in place of old button

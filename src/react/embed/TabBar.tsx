@@ -5,11 +5,11 @@ import ListIcon from "@material-ui/icons/List";
 import HomeIcon from "@material-ui/icons/Home";
 import HistoryIcon from "@material-ui/icons/History";
 import MapIcon from "@material-ui/icons/Map";
-import OpacityIcon from "@material-ui/icons/Opacity";
+import FolderIcon from "@material-ui/icons/Folder";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Divider, Grid, IconButton, SvgIconTypeMap, Theme, Tooltip, withStyles } from "@material-ui/core";
+import { Divider, Grid, IconButton, Theme, Tooltip, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { createNotification } from "../../lib/utils";
@@ -39,7 +39,6 @@ class TabBar extends Component<Props, State> {
     this.state = {}
 
     this.tabSelect = this.tabSelect.bind(this);
-    this.openDuct = this.openDuct.bind(this);
   }
 
   tabs: { name: string; icon: JSX.Element; }[] = [
@@ -48,7 +47,8 @@ class TabBar extends Component<Props, State> {
     { name: "Planning", icon: <ListIcon/> },
     { name: "Building", icon: <HomeIcon/> },
     { name: "History", icon: <HistoryIcon/> },
-    { name: "Mapping", icon: <MapIcon /> }
+    { name: "Mapping", icon: <MapIcon /> },
+    { name: "Files", icon: <FolderIcon /> }
   ]
 
   tabSelect(index: number) {
@@ -57,13 +57,6 @@ class TabBar extends Component<Props, State> {
       if(currentTab === index) index = -1;
       this.props.onSelect(index);
     }
-  }
-
-  openDuct() {
-    const { order } = this.context as GlobalContext;
-    window.open(`duct://upload/?ref=${order?.reference}&url=${encodeURIComponent(location.href)}`);
-    const notification = createNotification({ severity: "success", text: "Sent PDF to Duct" }, 0);
-    chrome.storage.local.set({ notification });
   }
 
   render() {
@@ -84,13 +77,6 @@ class TabBar extends Component<Props, State> {
               </Grid>
             }) }
           <Divider className={classes.divider} />
-          <Grid item>
-            <IconButton onClick={this.openDuct} disabled={order?.reference == null || !isOnlineMapping()} >
-              <Tooltip title="Duct" PopperProps={{ disablePortal: true }} >
-                <OpacityIcon />
-              </Tooltip>
-            </IconButton>
-          </Grid>
         </Grid>
       </> 
     )

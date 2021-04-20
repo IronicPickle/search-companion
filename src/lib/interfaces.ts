@@ -55,6 +55,18 @@ export interface Product {
   cost: string;
 }
 
+export interface File {
+  [key: string]: any;
+  name: string;
+  url: string;
+}
+
+export interface Files {
+  [key: string]: any;
+  title: string;
+  files: File[];
+}
+
 export interface Order {
   [key: string]: any;
   reference: string;
@@ -64,6 +76,7 @@ export interface Order {
   council: string;
   water: string;
   totalCost: string;
+  files: Files[];
 }
 
 export type OrderHistory = (Order & { lastViewed: number; })[]

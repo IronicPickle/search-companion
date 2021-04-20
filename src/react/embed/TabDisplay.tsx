@@ -15,6 +15,7 @@ import Property from "./displays/Property";
 import Kanban from "./displays/Kanban";
 import Header from "./displays/Header";
 import Mapping from "./displays/Mapping";
+import Files from "./displays/Files";
 
 const styles = (theme: Theme) => ({
   divider: {
@@ -94,6 +95,7 @@ export const displays: any[] = [
   { name: "Building Regulation Info", component: <Building/> },
   { name: "Order History", component: <History/> },
   { name: "Mapping", component: <Mapping /> },
+  { name: "Files", component: <Files/> },
   { name: "KanBan", component: <Kanban/> }
 ]
 

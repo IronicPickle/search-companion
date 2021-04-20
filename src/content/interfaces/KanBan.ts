@@ -3,6 +3,7 @@ import _ from "lodash";
 import { KanbanOrder } from "../../lib/interfaces";
 import { createNotification, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval } from "../../lib/vars";
+import { displays } from "../../react/embed/TabDisplay";
 import Interface from "../Interface";
 
 class KanBan extends Interface {
@@ -39,7 +40,7 @@ class KanBan extends Interface {
     const storage = await chromep.storage.local.get();
 
     if(!_.isEqual(kanbanOrder, storage.kanbanOrder)) {
-      const notification = createNotification({ severity: "success", text: "Extracted Order from KanBan" }, 6);
+      const notification = createNotification({ severity: "success", text: "Extracted Order from KanBan" }, displays.length - 1);
       console.log("[Interface] Saved kanban order info to storage");
       chrome.storage.local.set({ kanbanOrder, notification });
     }

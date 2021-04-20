@@ -1,6 +1,6 @@
 import chromep from "chrome-promise";
 import _ from "lodash";
-import { Order, Product, Property, Storage } from "../../lib/interfaces";
+import { Files, Order, Product, Property, Storage } from "../../lib/interfaces";
 import { orderFields } from "../../lib/vars";
 import { createNotification, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval } from "../../lib/vars";
@@ -33,6 +33,7 @@ class CMS extends Interface {
     order.council = this.extractCouncil();
     order.water = this.extractWater();
     order.totalCost = this.extractTotalCost();
+    order.files = this.extractFiles() || [];
     
     return order;
   }
@@ -151,6 +152,41 @@ class CMS extends Interface {
       });
   
     return products
+  }
+
+  extractFiles() {
+
+    const files: Files[] = [];
+
+    const documentStoreElement = document.getElementById("documentstore");
+    if(documentStoreElement == null) return;
+    const trElements = Array.from(documentStoreElement?.getElementsByTagName("tr"));
+
+    trElements.forEach(trElement => {
+      const thElements = Array.from(trElement.getElementsByTagName("th"));
+      if(thElements.length > 0) {
+        const title = thElements[0].innerText;
+        files.push({ title, files: [] });
+      } else {
+        const tdElements = Array.from(trElement.getElementsByTagName("td"));
+        if(tdElements.length < 2) return;
+
+        const inputElement = tdElements[0].getElementsByTagName("input").item(0);
+        if(inputElement == null) return;
+        const name = inputElement.value;
+
+        const aElement = tdElements[1].getElementsByTagName("a").item(0);
+        if(aElement == null) return;
+        const url = aElement.href;
+
+
+        files[files.length - 1].files.push({ name, url });
+
+      }
+    });
+
+    return files;
+
   }
 
 }

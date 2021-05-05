@@ -76,17 +76,20 @@ class EmbedRoot extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { settings } = this.context as GlobalContext;
+    const { settings, order } = this.context as GlobalContext;
 
-    const activeInterface = interfaces.find(interface0 => interface0.urls.find(url => window.location.href.includes(url)));
+    const { originalReturnDate, latestReturnDate, status } = order || {};
+    const returnDate = latestReturnDate || originalReturnDate;
+
+    const isOverdue = (returnDate == null) ? false : returnDate < new Date().getTime();
     
     return (
       <>
         { (settings.embeddedState && settings.extensionState) &&
           <Container className={classes.outerContainer}>
             <LinearProgress
-              color={(activeInterface != null) ? "secondary" : "primary"}
-              variant={(activeInterface?.restrictToOneTab) ? "indeterminate" : "determinate"}
+              color={(isOverdue && status) ? "secondary" : "primary"}
+              variant={(status) ? "indeterminate" : "determinate"}
               className={classes.progress}
             />
             <Paper className={classes.innerContainer}>

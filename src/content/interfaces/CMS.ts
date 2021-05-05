@@ -6,6 +6,8 @@ import { createNotification, queryElement } from "../../lib/utils";
 import { interfaceCheckInterval } from "../../lib/vars";
 import Interface from "../Interface";
 
+import { lightTheme } from  "../../react/themes"
+
 class CMS extends Interface {
   constructor() {
     const signatures = {
@@ -34,6 +36,11 @@ class CMS extends Interface {
     order.water = this.extractWater();
     order.totalCost = this.extractTotalCost();
     order.files = this.extractFiles() || [];
+    order.status = this.extractOrderStatus();
+    order.originalReturnDate = this.extractOriginalReturnDate();
+    order.latestReturnDate = this.extractLatestReturnDate();
+
+    console.log(order)
     
     return order;
   }
@@ -56,6 +63,37 @@ class CMS extends Interface {
       chrome.storage.local.set({ order, notification });
       chrome.storage.local.remove([ "planning", "building" ]);
     }
+  }
+
+  extractOrderStatus() {
+
+    const aElement = <HTMLLinkElement | null> queryElement(["id:orderComplete"]);
+    if(aElement == null) return null;
+
+    return aElement.innerText === "Mark as Completed";
+
+  }
+
+  extractLatestReturnDate() {
+
+    const inputElements = document.getElementsByName("LatestReturnDate");
+    if(inputElements.length === 0) return null;
+    const inputElement = <HTMLInputElement> inputElements.item(inputElements.length - 1)
+
+    const returnDate = this.parseDate(inputElement.value).getTime();
+    
+    return (isNaN(returnDate) ? null : returnDate);
+
+  }
+
+  extractOriginalReturnDate() {
+
+    const inputElement = <HTMLInputElement | null> queryElement([ "id:ReturnDate" ]);
+    if(inputElement == null) return null;
+
+    const returnDate = this.parseDate(inputElement.value).getTime()
+
+    return (isNaN(returnDate) ? null : returnDate);
   }
 
   extractReference() {
@@ -191,6 +229,16 @@ class CMS extends Interface {
 
   }
 
+  parseDate(dateString: string) {
+
+    const dateArray = dateString
+      .split("/")
+      .map((dateItem: string) => parseInt(dateItem));
+    return new Date(dateArray[2], dateArray[1] - 1, dateArray[0]);
+    
+  }
+
 }
+
 
 new CMS();

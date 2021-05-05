@@ -17,6 +17,7 @@ import { getShortcodesMenuData, ShortcodeType } from "../../lib/shortcodes";
 
 const styles = (theme: Theme) => ({
   header: {
+    height: theme.spacing(6),
     minHeight: theme.spacing(6),
     marginRight: theme.spacing(2) + 1
   },
@@ -226,7 +227,7 @@ class TabController extends Component<Props, State> {
       <>
         <Box display="flex">
           <Box flexGrow={1} hidden={currentDisplay == null}>
-            <Toolbar disableGutters={true} className={classes.header} hidden={currentDisplay == null} >
+            <Toolbar disableGutters className={classes.header} hidden={currentDisplay == null} >
               <Grid container justify="flex-start">
                 <Tooltip title="Close" PopperProps={{ disablePortal: true }} >
                   <IconButton onClick={() => { this.changeTab(displays.length) }} className={classes.closeIcon} >

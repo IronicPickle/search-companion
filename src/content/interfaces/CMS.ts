@@ -39,8 +39,6 @@ class CMS extends Interface {
     order.status = this.extractOrderStatus();
     order.originalReturnDate = this.extractOriginalReturnDate();
     order.latestReturnDate = this.extractLatestReturnDate();
-
-    console.log(order)
     
     return order;
   }

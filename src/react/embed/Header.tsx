@@ -3,7 +3,7 @@
 // Main imports
 import React, { Component } from "react";
 import { Divider, Grid, Theme, Typography, withStyles } from "@material-ui/core";
-import { globalContext } from "../../contexts";
+import { globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 const styles = (theme: Theme) => ({

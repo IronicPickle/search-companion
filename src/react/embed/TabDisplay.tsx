@@ -1,6 +1,6 @@
 // Main imports
 import React, { Component } from "react";
-import { Divider, Theme, withStyles, Snackbar, Box } from "@material-ui/core";
+import { Divider, Theme, withStyles, Snackbar, Typography } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import Planning from "./displays/Planning";
@@ -9,11 +9,11 @@ import Alert from "@material-ui/lab/Alert";
 import { Notification, Storage } from "../../lib/interfaces";
 import _ from "lodash";
 import chromep from "chrome-promise";
+import Header from "./Header";
 import Building from "./displays/Building";
 import History from "./displays/History";
 import Property from "./displays/Property";
 import Kanban from "./displays/Kanban";
-import Header from "./displays/Header";
 import Mapping from "./displays/Mapping";
 import Files from "./displays/Files";
 

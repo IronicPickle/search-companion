@@ -128,7 +128,8 @@ class Embed extends Component<Props, State> {
           right: 0,
           bottom: 0,
           left: 0,
-          zIndex: -100
+          zIndex: -100,
+          borderRadius: 8
         }}/>
         <NoSsr>
           <FrameComponent
@@ -137,7 +138,7 @@ class Embed extends Component<Props, State> {
               mountTarget="#mountHere"
               id="EXTENSC-iframe"
               onLoad={this.iframeLoad}
-              style={{ width: 68, height: 68, border: 0 }}
+              style={{ display: "block", width: 68, height: 68, border: 0 }}
             >
             <FrameContextConsumer>
               {({ document, window }) => {
@@ -215,14 +216,7 @@ async function injectEmbed() {
     iframeCover.style.boxShadow = "0 0 2px black";
     pageCover.hidden = false;
   }
-  function onMouseMove(event: MouseEvent) {
-    if(!dragging) return;
-    mousePosition = { x: event.clientX, y: event.clientY };
-    iframeReposition(iframeCalcPosition(mousePosition, mouseOffset));
-  }
-  window.onmousemove = onMouseMove;
-  pageCover.onmousemove = onMouseMove;
-  window.onmouseup = async (event: MouseEvent) => {
+  window.onmouseup = async () => {
     if(!dragging) return;
     dragging = false
     iframeCover.style.zIndex = "-100";
@@ -232,6 +226,15 @@ async function injectEmbed() {
     chrome.storage.local.set({ settings });
     pageCover.hidden = true;
   }
+
+  function onMouseMove(event: MouseEvent) {
+    if(!dragging) return;
+    mousePosition = { x: event.clientX, y: event.clientY };
+    iframeReposition(iframeCalcPosition(mousePosition, mouseOffset));
+  }
+  window.onmousemove = onMouseMove;
+  pageCover.onmousemove = onMouseMove;
+
   window.onmessage = (event: MessageEvent<any>) => {
     const frameDataOld = { frameWidth: iframeElement.clientWidth, frameHeight: iframeElement.clientHeight };
     if(event.data.hasOwnProperty("frameHeight")) {
@@ -249,6 +252,7 @@ async function injectEmbed() {
       popoverElements.forEach(popoverElement => popoverElement.style.visibility = "hidden");
     }
   }
+
   window.onresize = async () => {
     const rect = embeddedRoot.getBoundingClientRect();
     iframeReposition(iframeCalcPosition({ x: rect.x, y: rect.y }, { x: 0, y: 0 }));

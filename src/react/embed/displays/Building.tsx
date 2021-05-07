@@ -1,19 +1,13 @@
 // Icon Imports
 
 // Main imports
-import React, { Component } from "react";
-import { Container, Divider, Grid, TextField, Theme, Typography, withStyles } from "@material-ui/core";
+import React, { Component, CSSProperties } from "react";
+import { Container, Grid, TextField, Theme, Typography, withStyles } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../../contexts";
-import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
 import moment from "moment";
 
 const styles = (theme: Theme) => ({
-  mainContainer: {
-    paddingRight: 0,
-    paddingLeft: 0,
-    minWidth: theme.spacing(48),
-    height: 252
-  },
   field: {
     margin: theme.spacing(2),
     width: theme.spacing(64)
@@ -26,8 +20,8 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface Props {
-  classes: ClassNameMap;
+interface Props extends WithStyles<typeof styles> {
+  style: CSSProperties;
 }
 
 interface State {
@@ -44,7 +38,7 @@ class Building extends Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { style, classes } = this.props;
     let { building } = this.context as GlobalContext;
 
     let buildingString = `{reference}\n{descripton}\n{address}\n{extra} {extraDate}\n{decision} {decisionDate}\nreceived {receivedDate}`;
@@ -99,7 +93,7 @@ class Building extends Component<Props, State> {
       .join("\n");
 
     let display = (
-      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+      <Grid container direction="column" justify="center" style={style}>
         <Typography
           variant="subtitle2"
           component="p"
@@ -113,21 +107,19 @@ class Building extends Component<Props, State> {
 
     if(buildingString !== "(no further details)") display = (
       <>
-        <Container className={classes.mainContainer}>
-          <div className={classes.infoContainer}>
-            <Typography
-              variant="subtitle2"
-              component="div"
-            >
-              <TextField
-                value={buildingString.toUpperCase()}
-                className={classes.field}
-                multiline={true}
-                rows={10}
-                variant="outlined"
-              />
-            </Typography>
-          </div>
+        <Container style={style}>
+          <Typography
+            variant="subtitle2"
+            component="div"
+          >
+            <TextField
+              value={buildingString.toUpperCase()}
+              className={classes.field}
+              multiline={true}
+              rows={10}
+              variant="outlined"
+            />
+          </Typography>
         </Container>
       </> 
     )

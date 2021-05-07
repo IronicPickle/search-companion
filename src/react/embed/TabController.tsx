@@ -6,7 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Box, Collapse, Divider, Grid, IconButton, TextField, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, Collapse, Divider, Grid, IconButton, TextField, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles, LinearProgress } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
@@ -53,10 +53,6 @@ const styles = (theme: Theme) => ({
   },
   menuItem: {
     minHeight: 0
-  },
-
-  displayContainer: {
-    height: 370
   }
 });
 
@@ -316,8 +312,8 @@ class TabController extends Component<Props, State> {
           </Box>
         </Box>
         <Collapse in={tabBarState} style={{ position: "relative" as "relative" }}>
-          <Box display="flex" >
-            <Box flexGrow={1} className={classes.displayContainer}>
+          <Box display="flex" style={{ maxHeight: 376 }}>
+            <Box position="relative" flexGrow={1} display="flex" flexDirection="column">
               <TabDisplay currentTab={currentTab} />
             </Box>
             <Box hidden={currentDisplay == null}>
@@ -327,6 +323,7 @@ class TabController extends Component<Props, State> {
               <TabBar onSelect={this.changeTab} currentTab={currentTab} />
             </Box>
           </Box>
+          <LinearProgress />
         </Collapse>
       </>
     )

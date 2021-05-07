@@ -1,23 +1,16 @@
 // Icon Imports
 
 // Main imports
-import React, { Component } from "react";
+import React, { Component, CSSProperties } from "react";
 import { Button, Container, Grid, TextField, Theme, Toolbar, Typography, withStyles, WithTheme } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../../contexts";
-import { ClassNameMap, WithStyles } from "@material-ui/core/styles/withStyles";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
 import _, { round } from "lodash";
 import OsGridRef, { LatLon } from "geodesy/osgridref";
 import { createNotification } from "../../../lib/utils";
-import { Location, Storage } from "../../../lib/interfaces";
+import { Location } from "../../../lib/interfaces";
 
 const styles = (theme: Theme) => ({
-  mainContainer: {
-    paddingRight: 0,
-    paddingLeft: 0,
-    minWidth: theme.spacing(48),
-    height: 252
-  },
-
   title: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1)
@@ -32,7 +25,7 @@ const styles = (theme: Theme) => ({
 });
 
 interface Props extends WithStyles<typeof styles>, WithTheme {
-
+  style: CSSProperties;
 }
 
 interface State {
@@ -160,12 +153,12 @@ class Mapping extends Component<Props, State> {
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const { style, classes, theme } = this.props;
     const { location } = this.state;
     const { order } = this.context as GlobalContext;
 
     let display = (
-      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+      <Grid container direction="column" justify="center" style={style}>
         <Typography
           variant="subtitle2"
           component="p"
@@ -180,7 +173,7 @@ class Mapping extends Component<Props, State> {
     if(order != null) {
       const { osGridRef, latLon } = location;
       display = (
-        <Container className={classes.mainContainer}>
+        <Container style={style}>
           <Typography
             variant="subtitle2"
             component="h2"

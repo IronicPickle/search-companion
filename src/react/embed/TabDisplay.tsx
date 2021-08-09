@@ -1,19 +1,19 @@
 // Main imports
 import React, { Component } from "react";
-import { Divider, Theme, withStyles, Snackbar, Box } from "@material-ui/core";
+import { Divider, Theme, withStyles, Snackbar, WithTheme, Box } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
-import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
 import Planning from "./displays/Planning";
 import Products from "./displays/Products";
 import Alert from "@material-ui/lab/Alert";
 import { Notification, Storage } from "../../lib/interfaces";
 import _ from "lodash";
 import chromep from "chrome-promise";
+import Header from "./Header";
 import Building from "./displays/Building";
 import History from "./displays/History";
 import Property from "./displays/Property";
 import Kanban from "./displays/Kanban";
-import Header from "./displays/Header";
 import Mapping from "./displays/Mapping";
 import Files from "./displays/Files";
 
@@ -24,8 +24,7 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface Props {
-  classes: ClassNameMap
+interface Props extends WithStyles<typeof styles>, WithTheme {
   currentTab: number;
 }
 
@@ -53,14 +52,14 @@ class TabDisplay extends Component<Props, State> {
   }
 
   render() {
-    const { classes, currentTab } = this.props;
+    const { classes, theme, currentTab } = this.props;
     const { prevNotification } = this.state;
     const { notification, order } = this.context as GlobalContext;
 
     if(displays[currentTab] == null) return <></>;
 
     return (
-      <>
+      <Box flexGrow={1} display="flex" flexDirection="column" style={{ overflow: "hidden" }}>
         <Divider className={classes.divider} />
         <Header
           reference={order?.reference}
@@ -69,7 +68,14 @@ class TabDisplay extends Component<Props, State> {
           water={order?.water}
         />
         <Divider className={classes.divider} />
-        {displays[currentTab].component}
+        { React.createElement(displays[currentTab].component, { style: {
+          paddingRight: 0,
+          paddingLeft: 0,
+          marginBottom: theme.spacing(2),
+          minWidth: theme.spacing(48),
+          flexGrow: 1,
+          overflow: "auto"
+        } }) }
         {
           (notification != null) ?
             <Snackbar
@@ -82,21 +88,21 @@ class TabDisplay extends Component<Props, State> {
             </Snackbar>
           : <></>
         }
-      </>
+      </Box>
     )
 
   }
 }
 
 export const displays: any[] = [
-  { name: "Property Info", component: <Property/> },
-  { name: "Products", component: <Products/> },
-  { name: "Planning Application Info", component: <Planning/> },
-  { name: "Building Regulation Info", component: <Building/> },
-  { name: "Order History", component: <History/> },
-  { name: "Mapping", component: <Mapping /> },
-  { name: "Files", component: <Files/> },
-  { name: "KanBan", component: <Kanban/> }
+  { name: "Property Info", component: Property },
+  { name: "Products", component: Products },
+  { name: "Planning Application Info", component: Planning },
+  { name: "Building Regulation Info", component: Building },
+  { name: "Order History", component: History },
+  { name: "Mapping", component: Mapping },
+  { name: "Files", component: Files },
+  { name: "KanBan", component: Kanban }
 ]
 
 export default withStyles(styles, { withTheme: true })(TabDisplay);

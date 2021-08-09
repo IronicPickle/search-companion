@@ -47,3 +47,14 @@
 
 1.2.1:
 - Fixed issued with CMs interface not picking up all files
+
+1.2.2:
+
+- Indicators now represent order status and whether it's overdue
+  - Blue = Not Overdue
+  - Red = Overdue
+  - Pulsating = Active
+  - Static = Inactive
+- Fixed the Products Tab header height
+- Added overdue header
+- Revered CMS version to 2.7

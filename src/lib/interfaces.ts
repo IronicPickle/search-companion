@@ -77,6 +77,9 @@ export interface Order {
   water: string;
   totalCost: string;
   files: Files[];
+  status: boolean | null;
+  originalReturnDate: number | null;
+  latestReturnDate: number | null;
 }
 
 export type OrderHistory = (Order & { lastViewed: number; })[]

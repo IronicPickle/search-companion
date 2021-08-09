@@ -3,19 +3,12 @@ import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import OpacityIcon from "@material-ui/icons/Opacity";
 
 // Main imports
-import React, { Component } from "react";
+import React, { Component, CSSProperties } from "react";
 import { Box, Container, Divider, Grid, IconButton, Theme, Toolbar, Tooltip, Typography, WithStyles, withStyles, WithTheme } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
 import { createNotification } from "../../../lib/utils";
 
 const styles = (theme: Theme) => ({
-  mainContainer: {
-    paddingRight: 0,
-    paddingLeft: 0,
-    minWidth: theme.spacing(48),
-    height: 252,
-    overflow: "auto"
-  },
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
@@ -45,7 +38,7 @@ const styles = (theme: Theme) => ({
 });
 
 interface Props extends WithStyles<typeof styles>, WithTheme {
-
+  style: CSSProperties;
 }
 
 interface State {
@@ -61,11 +54,11 @@ class Files extends Component<Props, State> {
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const { style, classes, theme } = this.props;
     const { order } = this.context as GlobalContext;
 
     let display = (
-      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+      <Grid container direction="column" justify="center" style={style}>
         <Typography
           variant="subtitle2"
           component="p"
@@ -78,7 +71,7 @@ class Files extends Component<Props, State> {
     )
 
     if(order?.files != null && order.files.length > 0) display = (
-      <Container className={classes.mainContainer}>
+      <Container style={style}>
         <div className={classes.infoContainer}>
           <Typography
             variant="subtitle2"

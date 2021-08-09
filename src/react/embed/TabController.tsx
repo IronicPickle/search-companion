@@ -6,7 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 // Main imports
 import React, { Component, MouseEvent } from "react";
-import { Box, Collapse, Divider, Grid, IconButton, TextField, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, Collapse, Divider, Grid, IconButton, TextField, Menu, MenuItem, Theme, Toolbar, Tooltip, Typography, withStyles, LinearProgress } from "@material-ui/core";
 import { GlobalContext, globalContext } from "../contexts";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import TabDisplay, { displays } from "./TabDisplay";
@@ -17,6 +17,7 @@ import { getShortcodesMenuData, ShortcodeType } from "../../lib/shortcodes";
 
 const styles = (theme: Theme) => ({
   header: {
+    height: theme.spacing(6),
     minHeight: theme.spacing(6),
     marginRight: theme.spacing(2) + 1
   },
@@ -52,10 +53,6 @@ const styles = (theme: Theme) => ({
   },
   menuItem: {
     minHeight: 0
-  },
-
-  displayContainer: {
-    height: 370
   }
 });
 
@@ -226,7 +223,7 @@ class TabController extends Component<Props, State> {
       <>
         <Box display="flex">
           <Box flexGrow={1} hidden={currentDisplay == null}>
-            <Toolbar disableGutters={true} className={classes.header} hidden={currentDisplay == null} >
+            <Toolbar disableGutters className={classes.header} hidden={currentDisplay == null} >
               <Grid container justify="flex-start">
                 <Tooltip title="Close" PopperProps={{ disablePortal: true }} >
                   <IconButton onClick={() => { this.changeTab(displays.length) }} className={classes.closeIcon} >
@@ -315,8 +312,8 @@ class TabController extends Component<Props, State> {
           </Box>
         </Box>
         <Collapse in={tabBarState} style={{ position: "relative" as "relative" }}>
-          <Box display="flex" >
-            <Box flexGrow={1} className={classes.displayContainer}>
+          <Box display="flex" style={{ maxHeight: 376 }}>
+            <Box position="relative" flexGrow={1} display="flex" flexDirection="column">
               <TabDisplay currentTab={currentTab} />
             </Box>
             <Box hidden={currentDisplay == null}>

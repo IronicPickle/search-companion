@@ -1,19 +1,13 @@
 // Icon Imports
 
 // Main imports
-import React, { Component } from "react";
+import React, { Component, CSSProperties } from "react";
 import { Box, Button, Container, Divider, Grid, TextField, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
-import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
 import { cmsVersion } from "../../../lib/vars";
 
 const styles = (theme: Theme) => ({
-  mainContainer: {
-    paddingRight: 0,
-    paddingLeft: 0,
-    minWidth: theme.spacing(48),
-    height: 252
-  },
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -41,8 +35,8 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface Props {
-  classes: ClassNameMap;
+interface Props extends WithStyles<typeof styles> {
+  style: CSSProperties
 }
 
 interface State {
@@ -59,13 +53,13 @@ class Kanban extends Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { style, classes } = this.props;
     const { kanbanOrder } = this.context as GlobalContext;
 
     if(kanbanOrder == null) return <></>;
     return (
       <>
-        <Container className={classes.mainContainer}>
+        <Container style={style}>
           <Typography
             variant="subtitle1"
             component="h2"

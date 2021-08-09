@@ -1,20 +1,14 @@
 // Icon Imports
 
 // Main imports
-import React, { Component } from "react";
-import { Box, Container, Grid, TextField, Theme, Toolbar, Typography, withStyles } from "@material-ui/core";
+import React, { Component, CSSProperties } from "react";
+import { Box, Container, Grid, TextField, Theme, Toolbar, Typography, withStyles, WithTheme } from "@material-ui/core";
 import { globalContext, GlobalContext } from "../../contexts";
-import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
 import { orderFields } from "../../../lib/vars";
+import moment from "moment";
 
 const styles = (theme: Theme) => ({
-  mainContainer: {
-    paddingRight: 0,
-    paddingLeft: 0,
-    minWidth: theme.spacing(48),
-    height: 252,
-    overflow: "auto"
-  },
   infoContainer: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
@@ -38,8 +32,8 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface Props {
-  classes: ClassNameMap;
+interface Props extends WithStyles<typeof styles>, WithTheme {
+  style: CSSProperties;
 }
 
 interface State {
@@ -56,11 +50,16 @@ class Property extends Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { style, classes, theme } = this.props;
     const { order } = this.context as GlobalContext;
 
+    const { originalReturnDate, latestReturnDate, status } = order || {};
+    const returnDate = latestReturnDate || originalReturnDate;
+
+    const isOverdue = (returnDate == null) ? false : returnDate < new Date().getTime();
+
     let display = (
-      <Grid container direction="column" justify="center" className={classes.mainContainer}>
+      <Grid container direction="column" justify="center" style={style}>
         <Typography
           variant="subtitle2"
           component="p"
@@ -74,7 +73,16 @@ class Property extends Component<Props, State> {
 
     if(order != null) display = (
       <>
-        <Container className={classes.mainContainer}>
+        <Container style={style}>
+          { (isOverdue && status) && <Typography
+            variant="caption"
+            component="div"
+            align="center"
+            style={{ fontWeight: 600 }}
+          >
+            <span style={{ color: theme.palette.error.dark }}>Order Overdue </span>
+            - {moment(returnDate).format("DD/MM/YYYY")}
+          </Typography> }
           <div className={classes.infoContainer}>
             <Typography
               variant="subtitle2"

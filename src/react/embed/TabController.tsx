@@ -323,7 +323,6 @@ class TabController extends Component<Props, State> {
               <TabBar onSelect={this.changeTab} currentTab={currentTab} />
             </Box>
           </Box>
-          <LinearProgress />
         </Collapse>
       </>
     )

@@ -57,3 +57,4 @@
   - Static = Inactive
 - Fixed the Products Tab header height
 - Added overdue header
+- Revered CMS version to 2.7
